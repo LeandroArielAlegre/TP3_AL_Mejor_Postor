@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Presentador.PresentadorOfertas;
@@ -52,23 +53,57 @@ public class Pantalla {
 	private void initialize() {
 		presentadorOfertas = new PresentadorOfertas();
 		frame = new JFrame();
-		frame.setBackground(new Color(115, 136, 123));
+		//frame.setBackground(new Color(74, 102, 232));
 		frame.setBounds(100, 100, 1066, 568);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		JPanel panelInicio = new JPanel();
+		panelInicio.setBorder(new LineBorder(new Color(0, 0, 0)));
+		//panelInicio.setBackground(new Color(74, 102, 232));
+		panelInicio.setBounds(10, 4, 1000, 510);
+		panelInicio.setLayout(null);
+		frame.getContentPane().add(panelInicio);
+		
 		
 		DefaultTableModel model = new DefaultTableModel(new Object[]{"Nombre","DNI" , "Precio", "Horario"}, 0);
         JTable table = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(35, 41, 853, 388);
-		frame.getContentPane().add(scrollPane);
+		panelInicio.add(scrollPane);
 		
 		 JButton btnAgregarFila = new JButton("Agregar Oferta");
 		    btnAgregarFila.setBounds(24, 440, 120, 30);
 		    btnAgregarFila.addActionListener(e -> {
 		    	crearOferta(model);
 		    });
-		    frame.getContentPane().add(btnAgregarFila);
+		    panelInicio.add(btnAgregarFila);
+		    
+		    JButton btnLimpiarTabla = new JButton("Limpiar Tabla");
+		    btnLimpiarTabla.setBounds(154, 440, 120, 30);
+		    btnLimpiarTabla.addActionListener(e -> {
+		    	limpiarTabla(model);
+		    	//Deberia tambien limpiar el modelo
+		    });
+		    panelInicio.add(btnLimpiarTabla);
+		    
+		    
+		    JButton btnGuardarTabla = new JButton("Guardar");
+		    btnGuardarTabla.setBounds(284, 440, 120, 30);
+		    btnGuardarTabla.addActionListener(e -> {
+		    	guardarOfertas();
+		    	//le pregunto al presenter etc
+		    });
+		    panelInicio.add(btnGuardarTabla);
+		    
+		    JButton btnCargarTabla = new JButton("Cargar");
+		    btnCargarTabla.setBounds(414, 440, 120, 30);
+		    btnCargarTabla.addActionListener(e -> {
+		    	
+		    	
+		    	
+		    });
+		    panelInicio.add(btnCargarTabla);
 	}
 	
 	
@@ -124,7 +159,48 @@ public class Pantalla {
 			
 		}
 	}
+	public void limpiarTabla(DefaultTableModel model) {
+	    model.setRowCount(0);
+	}
 	
+	private String guardarOfertas() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 1));
+		JLabel label = new JLabel("Coloque el nombre del archivo:");
+		panel.add(label);
+		JTextField textField = new JTextField(10);
+		panel.add(textField);
+		int resultado = JOptionPane.showConfirmDialog(null, panel, "Guardar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (resultado == JOptionPane.OK_OPTION) {
+			String nombreArchivo = textField.getText().trim();
+			if(nombreArchivo.isEmpty()) {
+				return null;
+			}
+			return nombreArchivo;
+			
+		}else {
+			return null;
+		}
+	}
+	/*
+	private String cargarOfertas() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 1));
+		JLabel label = new JLabel("Coloque el nombre del archivo:");
+		panel.add(label);
+		JTextField textField = new JTextField(10);
+		panel.add(textField);
+		int resultado = JOptionPane.showConfirmDialog(null, panel, "Cargar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (resultado == JOptionPane.OK_OPTION) {
+			String nombreArchivo = textField.getText().trim();
+			if(nombreArchivo.isEmpty()) {
+				return null;
+			}
+			return nombreArchivo;
+		} else {
+			return null;
+		}
+	}*/
 	
 }
 
