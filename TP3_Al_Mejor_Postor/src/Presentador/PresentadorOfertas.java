@@ -1,6 +1,9 @@
 package Presentador;
 
+import java.util.HashMap;
+
 import Modelo.Logica;
+import Modelo.Oferta;
 
 public class PresentadorOfertas {
 	private Logica logica;
@@ -29,6 +32,34 @@ public class PresentadorOfertas {
 			return false;
 			
 		}
+	}
+
+	public HashMap<Integer, Oferta> devolverOfertas() {
+		try {
+			return logica.devolverOfertas();
+			
+		} catch (IllegalArgumentException e) {
+			//System.out.println("Error: " + e.getMessage());
+			return null;
+		}
+	}
+
+	public boolean guardarOfertas(HashMap<Integer, Oferta> ofertas, String nombreArchivo) {
+		// TODO Auto-generated method stub
+		if(logica.guardarOferta(ofertas, nombreArchivo)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean cargarOfertas(String nombreArchivo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public HashMap<Integer, Oferta> devolverOfertasArchivo() {
+		// TODO Auto-generated method stub
+		return logica.devolverOfertasArchivo();
 	}
 	
 	

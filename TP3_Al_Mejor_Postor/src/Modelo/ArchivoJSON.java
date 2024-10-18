@@ -13,14 +13,14 @@ public class ArchivoJSON {
 private HashMap<Integer,Oferta> listaDeOfertas = new HashMap<Integer,Oferta>();
 
 public ArchivoJSON() {
-   
+	 this.listaDeOfertas = new HashMap<>();
 }
 
 public void generarJSON(String archivo) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(this);
     // Ruta relativa al directorio "resource" dentro del proyecto
-    String ruta = System.getProperty("user.dir") + "/src/resources/";
+    String ruta = System.getProperty("user.dir") + "/src/recursos/";
 
     try {
         FileWriter writer = new FileWriter(ruta + archivo);
@@ -37,7 +37,7 @@ public ArchivoJSON leerJSON(String archivo) {
     ArchivoJSON ret = null;
 
     // Ruta relativa al directorio "resources" dentro del proyecto
-    String ruta = System.getProperty("user.dir") + "/src/resources/";
+    String ruta = System.getProperty("user.dir") + "/src/recursos/";
 
     try {
         BufferedReader br = new BufferedReader(new FileReader(ruta + archivo));
@@ -56,7 +56,7 @@ public HashMap<Integer,Oferta> getListaDeOfertas() {
 }
 
 
-public void setGrafo(HashMap<Integer,Oferta> nuevalistaDeOfertas) {
+public void setListaDeOfertas(HashMap<Integer,Oferta> nuevalistaDeOfertas) {
     this.listaDeOfertas = nuevalistaDeOfertas;
 }
 

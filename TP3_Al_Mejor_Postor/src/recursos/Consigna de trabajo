@@ -1,0 +1,32 @@
+/*
+	 * El objetivo del trabajo practico es implementar una aplicacion para gestionar las reservas de
+	   una sala de ensayos, que se licitan con costos prefijados por los usuarios
+
+	   La empresa cuenta con una sala, que se reserva por horas completas durante las 24 horas
+	   del dia.
+
+	  	Cada dıa se reciben las ofertas para el dıa siguiente, que deben incluir el horario
+		deseado (por ejemplo, de 8 a 12 hs) y el monto que la persona esta dispuesta a pagar
+
+		Una vez recibidas las ofertas, la aplicaci´on debe determinar que ofertas seleccionar para maximizar
+		la ganancia de la empresa, y de modo tal que las ofertas seleccionadas no se superpongan en
+		el tiempo
+		(OBJETIVOS OBLIGATORIOS)
+		La aplicacion implementada debe contar con la siguiente funcionalidad:
+1. Registrar una nueva oferta.
+2. Mostrar las ofertas registradas hasta el momento.
+3. Resolver el problema de adjudicaci´on, por medio de una heurıstica golosa.
+
+		La informacion sobre las ofertas se debe almacenar serializada en un archivo, de modo tal
+		que sea recuperada al iniciar cada sesi´on con la aplicacion. La aplicacion debe contar con una
+		interfaz visual y un diseno adecuado.
+
+		(OBJETIVOS OPCIONALES NO OBLIGATORIOS)
+		se pueden contemplar los siguientes elementos:
+		1. Registrar otros datos junto con la oferta, como el nombre del oferente, equipamiento
+		que solicita, etc.
+		2. Mostrar las ofertas recibidas y adjudicadas sobre un calendario grafico.
+		3. El problema de maximizar las ganancias se puede resolver en tiempo polinomial! Implementar un algoritmo polinomial para el problema y comparar con el resultado de la
+		heurıstica golosa.
+
+	 */
