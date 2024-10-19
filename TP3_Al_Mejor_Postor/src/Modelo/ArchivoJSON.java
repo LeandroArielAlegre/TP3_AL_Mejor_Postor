@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -56,7 +55,7 @@ public HashMap<Integer,Oferta> getListaDeOfertas() {
 }
 
 
-public void setGrafo(HashMap<Integer,Oferta> nuevalistaDeOfertas) {
+public void setListaDeOfertas(HashMap<Integer,Oferta> nuevalistaDeOfertas) {
     this.listaDeOfertas = nuevalistaDeOfertas;
 }
 

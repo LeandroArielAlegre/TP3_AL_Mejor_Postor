@@ -1,0 +1,11 @@
+{
+  "listaDeOfertas": {
+    "44": {
+      "nombre": "leandro",
+      "dni": 44,
+      "precio": 44.0,
+      "horaDeInicio": 2,
+      "horaDeFinalizacion": 4
+    }
+  }
+}

@@ -2,7 +2,6 @@ package Modelo;
 
 import java.io.Serializable;
 
-
 public class Oferta implements Serializable{
 	private String nombre;
 	private int dni;

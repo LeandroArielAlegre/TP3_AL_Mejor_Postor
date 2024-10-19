@@ -2,6 +2,7 @@ package View;
 
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,9 +22,9 @@ import java.awt.Color;
 public class Pantalla {
 
 	private JFrame frame;
-	private JTable table;
+	//private JTable table;
 	private PresentadorOfertas presentadorOfertas;
-
+	private ArrayList<Integer> listaDeDniClientes;
 	/**
 	 * Launch the application.
 	 */
@@ -52,6 +53,7 @@ public class Pantalla {
 	 */
 	private void initialize() {
 		presentadorOfertas = new PresentadorOfertas();
+		listaDeDniClientes =  new ArrayList<Integer>();
 		frame = new JFrame();
 		//frame.setBackground(new Color(74, 102, 232));
 		frame.setBounds(100, 100, 1066, 568);
@@ -91,14 +93,45 @@ public class Pantalla {
 		    JButton btnGuardarTabla = new JButton("Guardar");
 		    btnGuardarTabla.setBounds(284, 440, 120, 30);
 		    btnGuardarTabla.addActionListener(e -> {
-		    	guardarOfertas();
-		    	//le pregunto al presenter etc
+		    	String nombreDeArchivo =guardarOfertas();
+		    	if(nombreDeArchivo != null) {
+		    		if(presentadorOfertas.guardarEnArchivo(nombreDeArchivo)) {
+			    		JOptionPane.showMessageDialog(null, "El archivo se guardo exitosamente");
+			    	}else{
+			    		JOptionPane.showMessageDialog(null, "ERROR: no se pudo guardar el archivo");
+			    	}
+		    		
+		    	}else {
+		    		JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");
+		    	}
+		    	
 		    });
 		    panelInicio.add(btnGuardarTabla);
 		    
 		    JButton btnCargarTabla = new JButton("Cargar");
 		    btnCargarTabla.setBounds(414, 440, 120, 30);
 		    btnCargarTabla.addActionListener(e -> {
+		    	String nombreDeArchivo =cargarOfertas();
+		    	if(nombreDeArchivo != null) {
+		    		if(presentadorOfertas.cargarDeArchivo(nombreDeArchivo)) {
+		    			limpiarTabla(model);
+		    			convertirDniDeStringAInteger();
+		    			for (int dni : this.listaDeDniClientes) {
+		    				String dniCliente = String.valueOf(dni);
+		    				ArrayList<String> ofertaDatos = new ArrayList<String>();
+		    				System.out.println(presentadorOfertas.devolverOfertaEnLista(dniCliente));
+		    				ofertaDatos = presentadorOfertas.devolverOfertaEnLista(dniCliente);
+		    				model.addRow(new Object[]{ofertaDatos.get(0), ofertaDatos.get(1), "$"+ofertaDatos.get(2), ofertaDatos.get(3) + " a " + ofertaDatos.get(4)});
+							
+						}
+			    		JOptionPane.showMessageDialog(null, "El archivo se cargo exitosamente");
+			    	}else{
+			    		JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
+			    	}
+		    		
+		    	}else {
+		    		JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");
+		    	}
 		    	
 		    	
 		    	
@@ -148,6 +181,7 @@ public class Pantalla {
 				Double precioOfertado =Double.parseDouble(precioOferta);
 				int horarioFinal =Integer.parseInt(horarioF);
 				if(presentadorOfertas.agregarOferta(nombreOferta,dniCliente,precioOfertado,horarioInicial,horarioFinal)) {
+					this.listaDeDniClientes.add(dniCliente);
 					model.addRow(new Object[]{nombreOferta, dniOferta, "$"+precioOferta, horarioI + " a " + horarioF});
 				}else {
 					JOptionPane.showMessageDialog(null, "Error: No se pudo crear la oferta");
@@ -160,7 +194,9 @@ public class Pantalla {
 		}
 	}
 	public void limpiarTabla(DefaultTableModel model) {
+		//presentadorOfertas.borrarListaDeOfertas();
 	    model.setRowCount(0);
+	    
 	}
 	
 	private String guardarOfertas() {
@@ -182,7 +218,7 @@ public class Pantalla {
 			return null;
 		}
 	}
-	/*
+	
 	private String cargarOfertas() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 1));
@@ -200,7 +236,18 @@ public class Pantalla {
 		} else {
 			return null;
 		}
-	}*/
+	}
 	
+	private void convertirDniDeStringAInteger() {
+		listaDeDniClientes.clear();
+		ArrayList<String> listaDeDni = new ArrayList<String>();
+		listaDeDni = presentadorOfertas.devolverTodosLosDniDeLosClientes();
+		for (String dniString : listaDeDni) {
+			int dniCliente = Integer.parseInt(dniString);
+			listaDeDniClientes.add(dniCliente);
+		}
+		
+		
+	}
 }
 
