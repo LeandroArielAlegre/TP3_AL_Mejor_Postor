@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Logica {
@@ -15,27 +16,24 @@ public class Logica {
 		admOfertas.agregarOferta(nombre,dni,precio, horaDeInicio, horaDeFinalizacion);
 	}
 	
+	
+
+	public boolean guardarOferta(String nombreArchivo) {
+		HashMap<Integer, Oferta> ofertasLocales= devolverOfertas();
+	    try {
+	        archivoJSON.setListaDeOfertas(ofertasLocales);
+	        archivoJSON.generarJSON(nombreArchivo);
+	        return true;
+	    } catch (Exception e) {
+	        System.out.println("Error al guardar el archivo: " + e.getMessage());
+	        return false;
+	    }
+	}
+
 	public void eliminarOferta(int dni) {
 		admOfertas.eliminarOferta(dni);
 	}
-
-	public boolean guardarOferta(HashMap<Integer, Oferta> ofertas, String nombreArchivo) {
-			// TODO Auto-generated method stub
-			try {
-				archivoJSON.setListaDeOfertas(ofertas);
-				archivoJSON.generarJSON(nombreArchivo);
-
-			} catch (IllegalArgumentException e) {
-				return false;
-			} catch (Exception e) {
-
-				return false;
-			}
-		
-		return true;
-		
-	}
-
+	
 	public HashMap<Integer, Oferta> devolverOfertas() {
 
 		return admOfertas.getListaDeOfertas();
@@ -45,6 +43,30 @@ public class Logica {
 
 		return this.archivoJSON.getListaDeOfertas();
 	}
+
+
+	public void actualizarOfertas(HashMap<Integer, Oferta> ofertasCargadas) {
+	    this.admOfertas.setListaDeOfertas(ofertasCargadas);
+	}
+
+	public void cargarOfertasDeArchivo(String archivo) {
+		this.archivoJSON = archivoJSON.leerJSON(archivo);
+		admOfertas.setListaDeOfertas(archivoJSON.getListaDeOfertas());
+	}
+
+	public ArrayList<String> devolverOfertaEnLista(String dni){
+		return admOfertas.devolverOfertaEnLista(dni);
+		
+	}
+	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
+		return admOfertas.devolverTodosLosDniDeLosClientes();
+		
+	}
+
+	public void borrarListaDeOfertas() {
+		admOfertas.borrarListaDeOfertas();
+	}
+
 	
 	
 }

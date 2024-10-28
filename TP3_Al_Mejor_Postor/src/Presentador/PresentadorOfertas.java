@@ -1,5 +1,6 @@
 package Presentador;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Modelo.Logica;
@@ -11,16 +12,14 @@ public class PresentadorOfertas {
 		logica = new Logica();
 	}
 
-	public boolean agregarOferta(String nombre, int dni,double precio, int horaDeInicio , int horaDeFinalizacion) {
-		try {
-			logica.agregarOferta(nombre,dni,precio,horaDeInicio,horaDeFinalizacion);
-			return true;
-			
-		}catch (IllegalArgumentException e){
-			return false;
-			
-		}
-		
+	public boolean agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
+	    try {
+	        logica.agregarOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+	        return true;
+	    } catch (IllegalArgumentException e) {
+//	        System.out.println("Error al agregar oferta: " + e.getMessage()); // Log para detalles del error
+	        return false;
+	    }
 	}
 	
 	public boolean eliminarOferta(int dni) {
@@ -39,29 +38,64 @@ public class PresentadorOfertas {
 			return logica.devolverOfertas();
 			
 		} catch (IllegalArgumentException e) {
-			//System.out.println("Error: " + e.getMessage());
 			return null;
 		}
 	}
 
-	public boolean guardarOfertas(HashMap<Integer, Oferta> ofertas, String nombreArchivo) {
-		// TODO Auto-generated method stub
-		if(logica.guardarOferta(ofertas, nombreArchivo)) {
-			return true;
-		}
-		return false;
+	public boolean guardarOfertas(String nombreArchivo) {
+	    return logica.guardarOferta(nombreArchivo);
 	}
 
-	public boolean cargarOfertas(String nombreArchivo) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public boolean cargarOfertasDeArchivo(String nombreArchivo) {
+
+			try {
+				logica.cargarOfertasDeArchivo(nombreArchivo);
+				return true;
+				
+			}catch (IllegalArgumentException e){
+				return false;
+				
+			
+		}
 	}
 
 	public HashMap<Integer, Oferta> devolverOfertasArchivo() {
-		// TODO Auto-generated method stub
+
 		return logica.devolverOfertasArchivo();
 	}
 	
+	public boolean borrarListaDeOfertas() {
+		try {
+			logica.borrarListaDeOfertas();
+			return true;
+			
+		}catch (IllegalArgumentException e){
+			return false;
+			
+		}
+	}
 	
+	public ArrayList<String> devolverOfertaEnLista(String dni){
+		try {
+			return logica.devolverOfertaEnLista(dni);
+			
+		}catch (IllegalArgumentException e){
+			return null;
+			
+		}
+		
+	}
+	
+	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
+		try {
+			return logica.devolverTodosLosDniDeLosClientes();
+			
+		}catch (IllegalArgumentException e){
+			return null;
+			
+		}
+		
+	}
 	
 }

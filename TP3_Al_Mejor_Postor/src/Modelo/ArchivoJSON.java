@@ -10,17 +10,17 @@ import com.google.gson.GsonBuilder;
 
 public class ArchivoJSON {
 
-private HashMap<Integer,Oferta> listaDeOfertas = new HashMap<Integer,Oferta>();
 
+private HashMap<Integer, Oferta> listaDeOfertas;
 public ArchivoJSON() {
-	 this.listaDeOfertas = new HashMap<>();
+this.listaDeOfertas=new HashMap<>();
 }
 
 public void generarJSON(String archivo) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(this);
-    // Ruta relativa al directorio "resource" dentro del proyecto
-    String ruta = System.getProperty("user.dir") + "/src/recursos/";
+    // Ruta relativa al directorio "caja" dentro del proyecto
+    String ruta = System.getProperty("user.dir") + "/src/caja/";
 
     try {
         FileWriter writer = new FileWriter(ruta + archivo);
@@ -36,8 +36,8 @@ public ArchivoJSON leerJSON(String archivo) {
     Gson gson = new Gson();
     ArchivoJSON ret = null;
 
-    // Ruta relativa al directorio "resources" dentro del proyecto
-    String ruta = System.getProperty("user.dir") + "/src/recursos/";
+    // Ruta relativa al directorio "caja" dentro del proyecto
+    String ruta = System.getProperty("user.dir") + "/src/caja/";
 
     try {
         BufferedReader br = new BufferedReader(new FileReader(ruta + archivo));
@@ -45,19 +45,19 @@ public ArchivoJSON leerJSON(String archivo) {
     } catch (Exception e) {
         throw new IllegalArgumentException("ERROR INESPERADO");
     }
-
+    
     return ret;
 }
 
 
 
-public HashMap<Integer,Oferta> getListaDeOfertas() {
-    return listaDeOfertas;
+public HashMap<Integer, Oferta> getListaDeOfertas() {
+    return this.listaDeOfertas;
 }
 
 
-public void setListaDeOfertas(HashMap<Integer,Oferta> nuevalistaDeOfertas) {
-    this.listaDeOfertas = nuevalistaDeOfertas;
+public void setListaDeOfertas(HashMap<Integer, Oferta> listaDeOfertas) {
+    this.listaDeOfertas = listaDeOfertas;
 }
 
 }
