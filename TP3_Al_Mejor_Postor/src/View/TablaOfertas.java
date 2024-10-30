@@ -16,7 +16,6 @@ public class TablaOfertas extends JPanel {
 
     public TablaOfertas() {
         setLayout(null);
-        setBorder(new LineBorder(new Color(0, 0, 0)));
         setBounds(new Rectangle(0, 0, 847, 416));
 
         // Configurar el modelo de la tabla
