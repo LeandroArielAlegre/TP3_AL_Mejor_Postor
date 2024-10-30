@@ -26,7 +26,7 @@ public class Pantalla {
 
 	private JFrame frame;
 	private TablaOfertas tablaOfertas;
-	private TablaMejoresOfertas tablaMejoresOfertas;
+	private TablaOfertas tablaMejoresOfertas;
 	private JPanel panelPaginas;
 
 	private PresentadorOfertas presentadorOfertas;
@@ -63,7 +63,7 @@ public class Pantalla {
 		listaDeDniClientes= new ArrayList<Integer>();
 		frame = new JFrame();
 		tablaOfertas = new TablaOfertas();
-		tablaMejoresOfertas = new TablaMejoresOfertas();
+		tablaMejoresOfertas = new TablaOfertas();
 		//frame.setBackground(new Color(74, 102, 232));
 		frame.setBounds(100, 100, 1066, 568);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,47 +1,54 @@
 package View;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import Presentador.PresentadorOfertas;
-
 import java.awt.Rectangle;
-import java.util.ArrayList;
+import javax.swing.ScrollPaneConstants;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 public class TablaOfertas extends JPanel {
+    private static final long serialVersionUID = 1L;
+    private JTable table;
+    private DefaultTableModel model;
+    private JScrollPane scrollPane;
 
-	private static final long serialVersionUID = 1L;
-	private JTable table;
-	private DefaultTableModel model = new DefaultTableModel(new Object[]{"Nombre","DNI" , "Precio", "Horario"}, 0);
-	private JScrollPane scrollPane;
-	/**
-	 * Create the panel.
-	 */
-	public TablaOfertas() {
-		setBounds(new Rectangle(123, 30, 867, 438));
-		setLayout(null);
-		
-		table = new JTable(model);
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 0, 830, 438);
-		add(scrollPane);
-		
+    public TablaOfertas() {
+        setLayout(null);
+        setBorder(new LineBorder(new Color(0, 0, 0)));
+        setBounds(new Rectangle(0, 0, 847, 416));
 
+        // Configurar el modelo de la tabla
+        model = new DefaultTableModel(new Object[]{"Nombre", "DNI", "Precio", "Horario"}, 0); 
+           
+        
 
-	}
-	public void agregarOfertaEnTabla(String nombreOferta, String dniCliente, String precioOferta, String horario ) {
-		model.addRow(new Object[]{nombreOferta, dniCliente, "$" + precioOferta, horario});
-	}
-	public void limpiarTabla() {
-		model.setRowCount(0);
-	}
-	
+        // Configurar la tabla
+        table = new JTable(model);
+//        table.getTableHeader().setReorderingAllowed(false); // Evitar que se reordenen las columnas
+//        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-		
-		
-	
-	
+        // Configurar el ScrollPane
+        scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(10, 10, 827, 396); // Dejar un pequeño margen
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+        
+        // Asegurarse de que la tabla llene el viewport
+//        table.setFillsViewportHeight(true);
+        
+        add(scrollPane);
+    }
 
+    public void agregarOfertaEnTabla(String nombreOferta, String dniCliente, String precioOferta, String horario) {
+        model.addRow(new Object[]{nombreOferta, dniCliente, precioOferta, horario});
+        // Hacer scroll a la última fila añadida
+        table.scrollRectToVisible(table.getCellRect(table.getRowCount()-1, 0, true));
+    }
+
+    public void limpiarTabla() {
+        model.setRowCount(0);
+    }
 }
