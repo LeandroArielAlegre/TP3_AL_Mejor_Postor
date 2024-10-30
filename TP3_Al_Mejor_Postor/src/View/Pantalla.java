@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 public class Pantalla {
 
 	private JFrame frame;
+	private TablaOfertas tablaOfertas;
+	private JPanel panelPaginas;
 
 	private PresentadorOfertas presentadorOfertas;
 	private ArrayList<Integer> listaDeDniClientes;
@@ -58,10 +60,12 @@ public class Pantalla {
 		presentadorOfertas = new PresentadorOfertas();
 		listaDeDniClientes= new ArrayList<Integer>();
 		frame = new JFrame();
+		tablaOfertas = new TablaOfertas();
 		//frame.setBackground(new Color(74, 102, 232));
 		frame.setBounds(100, 100, 1066, 568);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 
 		JPanel panelInicio = new JPanel();
 		panelInicio.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -69,31 +73,42 @@ public class Pantalla {
 		panelInicio.setBounds(10, 4, 1000, 510);
 		panelInicio.setLayout(null);
 		frame.getContentPane().add(panelInicio);
+		
+		 panelPaginas = new JPanel();
+		 panelPaginas.setBounds(123, 30, 867, 438);
+		 panelPaginas.setBorder(new LineBorder(new Color(0, 0, 0)));
+		 panelPaginas.setLayout(null);
+		 panelInicio.add(panelPaginas);
 
+		 
+		 //Muestro el panel bienvenida
+		 mostrarPanelPagina(tablaOfertas,panelPaginas);
+		 
 
+		 /*
 		DefaultTableModel model = new DefaultTableModel(new Object[]{"Nombre","DNI" , "Precio", "Horario"}, 0);
 		JTable table = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(35, 41, 853, 388);
-		panelInicio.add(scrollPane);
-
+		scrollPane.setBounds(0, 0, 867, 438);
+		panelPaginas.add(scrollPane);
+		  */
 		JButton btnAgregarOferta = new JButton("Agregar Oferta");
-		btnAgregarOferta.setBounds(24, 440, 120, 30);
+		btnAgregarOferta.setBounds(10, 40, 103, 30);
 		btnAgregarOferta.addActionListener(e -> {
-			crearOferta(model);
+			crearOferta();
 
 		});
 		panelInicio.add(btnAgregarOferta);
 
 		JButton btnLimpiarTabla = new JButton("Limpiar Tabla");
-		btnLimpiarTabla.setBounds(154, 440, 120, 30);
+		btnLimpiarTabla.setBounds(10, 81, 93, 30);
 		btnLimpiarTabla.addActionListener(e -> {
-			limpiarTabla(model);
+			limpiarTabla();
 			//Deberia tambien limpiar el modelo
 		});
 		panelInicio.add(btnLimpiarTabla);
 		JButton btnGuardarTabla = new JButton("Guardar");
-	    btnGuardarTabla.setBounds(284, 440, 120, 30);
+	    btnGuardarTabla.setBounds(10, 122, 94, 30);
 	    btnGuardarTabla.addActionListener(e -> {
 	    	String nombreDeArchivo =guardarOfertas();
 	    	if(nombreDeArchivo != null) {
@@ -110,15 +125,19 @@ public class Pantalla {
 	    });
 	    panelInicio.add(btnGuardarTabla);
 	    
+	    
 
 		JButton btnCargarTabla = new JButton("Cargar");
-	    btnCargarTabla.setBounds(414, 440, 120, 30);
+	    btnCargarTabla.setBounds(10, 163, 103, 30);
 	    btnCargarTabla.addActionListener(e -> {
 	    	String nombreDeArchivo =cargarOfertas();
 	    	if(nombreDeArchivo != null) {
 	    		if(presentadorOfertas.cargarOfertasDeArchivo(nombreDeArchivo)) {
-	    			limpiarTabla(model);
+	    			limpiarTabla();
 	    			convertirDniDeStringAInteger();
+	    			//lO mando a la tabla
+	    			tablaOfertas.cargarTablaDeArchivo(listaDeDniClientes);
+	    			/*
 	    			for (int dni : this.listaDeDniClientes) {
 	    				String dniCliente = String.valueOf(dni);
 	    				ArrayList<String> ofertaDatos = new ArrayList<String>();
@@ -126,7 +145,7 @@ public class Pantalla {
 	    				ofertaDatos = presentadorOfertas.devolverOfertaEnLista(dniCliente);
 	    				model.addRow(new Object[]{ofertaDatos.get(0), ofertaDatos.get(1), "$"+ofertaDatos.get(2), ofertaDatos.get(3) + " a " + ofertaDatos.get(4)});
 						
-					}
+					}*/
 		    		JOptionPane.showMessageDialog(null, "El archivo se cargo exitosamente");
 		    	}else{
 		    		JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
@@ -179,14 +198,25 @@ public class Pantalla {
 			private void crearPantallaDeMejoresOfertas(JPanel panelMejoresOfertas) {
 				JFrame pantallaDeMejoresOfertas = new JFrame("Mejores Ofertas");
 				pantallaDeMejoresOfertas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-				pantallaDeMejoresOfertas.add(panelMejoresOfertas);
+				pantallaDeMejoresOfertas.getContentPane().add(panelMejoresOfertas);
 				pantallaDeMejoresOfertas.setSize(1100, 600); 
 				pantallaDeMejoresOfertas.setLocationRelativeTo(null); 
 				pantallaDeMejoresOfertas.setVisible(true);
 			}
 	    });
-	    btnMejoresOfertas.setBounds(724, 440, 163, 23);
+	    btnMejoresOfertas.setBounds(10, 204, 103, 41);
 	    panelInicio.add(btnMejoresOfertas);
+	    
+	   
+	    
+	}
+	
+	private void mostrarPanelPagina(JPanel nuevoPanel, JPanel contenedor) {
+		nuevoPanel.setBounds(10, 11, 857, 451);
+		contenedor.removeAll();
+		contenedor.add(nuevoPanel);
+		contenedor.revalidate();
+		contenedor.repaint();
 	}
 
 
@@ -202,7 +232,7 @@ public class Pantalla {
 		
 	}
 
-	private void crearOferta(DefaultTableModel model) {
+	private void crearOferta() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0, 1));
 		JLabel nombre = new JLabel("Nombre");
@@ -242,7 +272,9 @@ public class Pantalla {
 					double precioOfertado = Double.parseDouble(precioOferta);
 
 					if (presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {
-						model.addRow(new Object[]{nombreOferta, dniCliente, "$" + precioOferta, horarioI + " a " + horarioF});
+						mostrarPanelPagina(tablaOfertas,panelPaginas);
+						tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioI, horarioF);
+						//model.addRow(new Object[]{nombreOferta, dniCliente, "$" + precioOferta, horarioI + " a " + horarioF});
 					} else {
 						JOptionPane.showMessageDialog(null, "Error: No se pudo crear la oferta");
 					}
@@ -255,9 +287,11 @@ public class Pantalla {
 		}
 	}
 
-	public void limpiarTabla(DefaultTableModel model) {
-
-		model.setRowCount(0);
+	public void limpiarTabla() {
+		//FALTA QUE LIMPIE EL MODELO
+		mostrarPanelPagina(tablaOfertas,panelPaginas);
+		tablaOfertas.limpiarTabla();
+		
 	}
 
 
