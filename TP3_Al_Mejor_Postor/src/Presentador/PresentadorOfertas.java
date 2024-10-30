@@ -87,6 +87,17 @@ public class PresentadorOfertas {
 		
 	}
 	
+	public ArrayList<Oferta> devolverListaDeOfertasOrdenada(){
+		   
+    	try {
+    		return logica.devolverListaDeOfertasOrdenada();
+			
+		}catch (IllegalArgumentException e){
+			return null;
+			
+		}
+    }
+	
 	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
 		try {
 			return logica.devolverTodosLosDniDeLosClientes();

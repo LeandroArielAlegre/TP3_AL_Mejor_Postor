@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -75,6 +76,40 @@ public class AdministradorOfertas {
         }
         listaDeOfertas.remove(dni);
     }
+    
+    
+    public ArrayList<Oferta> devolverListaDeOfertasOrdenada(){
+   
+    	ArrayList<Oferta> listaDeOfertasOrdenada = new ArrayList<Oferta>(this.listaDeOfertas.values());
+     	Collections.sort(listaDeOfertasOrdenada, (o1,o2) -> Double.compare(o1.getGananciasPorHora(), o2.getGananciasPorHora()));
+     	Collections.reverse(listaDeOfertasOrdenada);
+ 
+     	ArrayList<Oferta> listaDeOfertasPorBeneficio = new ArrayList<Oferta>(filtrarMejoresOfertas(listaDeOfertasOrdenada));
+    	return listaDeOfertasPorBeneficio;
+    	
+    }
+    
+    public ArrayList<Oferta> filtrarMejoresOfertas(ArrayList<Oferta> listaDeOfertasOrdenada){
+    	ArrayList<Oferta> listaDeOfertasPorBeneficio = new ArrayList<Oferta>();
+    	
+    	for (Oferta ofertaActual : listaDeOfertasOrdenada) {
+            boolean seSolapa = false;
+
+            for (Oferta ofertaSeleccionada : listaDeOfertasPorBeneficio) {
+                if (ofertaActual.seSolapaCon(ofertaSeleccionada)) {
+                    seSolapa = true;
+                    break; 
+                }
+            }
+
+            if (!seSolapa) {
+                listaDeOfertasPorBeneficio.add(ofertaActual);
+            }
+        }
+
+        return listaDeOfertasPorBeneficio;
+    }
+    
 
     public HashMap<Integer, Oferta> getListaDeOfertas() {
         return new HashMap<>(listaDeOfertas); // Retorna una copia defensiva

@@ -14,9 +14,12 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Modelo.Oferta;
 import Presentador.PresentadorOfertas;
 import javax.swing.JScrollPane;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Pantalla {
 
@@ -119,7 +122,7 @@ public class Pantalla {
 	    			for (int dni : this.listaDeDniClientes) {
 	    				String dniCliente = String.valueOf(dni);
 	    				ArrayList<String> ofertaDatos = new ArrayList<String>();
-	    				System.out.println(presentadorOfertas.devolverOfertaEnLista(dniCliente));
+	    				//System.out.println(presentadorOfertas.devolverOfertaEnLista(dniCliente));
 	    				ofertaDatos = presentadorOfertas.devolverOfertaEnLista(dniCliente);
 	    				model.addRow(new Object[]{ofertaDatos.get(0), ofertaDatos.get(1), "$"+ofertaDatos.get(2), ofertaDatos.get(3) + " a " + ofertaDatos.get(4)});
 						
@@ -137,6 +140,53 @@ public class Pantalla {
 	    	
 	    });
 	    panelInicio.add(btnCargarTabla);
+	    
+	    JButton btnMejoresOfertas = new JButton("Mostrar mejores ofertas");
+	    btnMejoresOfertas.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            ArrayList<Oferta> listaOfertaOrdenada = new ArrayList<>(presentadorOfertas.devolverListaDeOfertasOrdenada());
+	            if (!listaOfertaOrdenada.isEmpty()) {
+	                JPanel panelMejoresOfertas = crearTablaDeMejoresOfertas(listaOfertaOrdenada);
+	                crearPantallaDeMejoresOfertas(panelMejoresOfertas);
+	                
+	            } else {
+	                JOptionPane.showMessageDialog(null, "Error: no existen ofertas");
+	            }
+	        }
+
+			private JPanel crearTablaDeMejoresOfertas(ArrayList<Oferta> listaOfertaOrdenada) {
+				JPanel panelMejoresOfertas = new JPanel();
+				panelMejoresOfertas.setBounds(100, 100, 1066, 568);
+
+				DefaultTableModel model2 = new DefaultTableModel(new Object[]{"Nombre", "DNI", "Precio", "Horario"}, 0);
+				JTable tableMejores = new JTable(model2);
+				JScrollPane scrollPaneMejores = new JScrollPane(tableMejores);
+				scrollPaneMejores.setBounds(35, 41, 853, 388);
+				panelMejoresOfertas.setLayout(null); // Establece layout nulo si necesitas posiciones específicas
+				panelMejoresOfertas.add(scrollPaneMejores);
+
+				for (Oferta oferta : listaOfertaOrdenada) {
+				    model2.addRow(new Object[]{
+				        oferta.getNombre(), 
+				        oferta.getDni(), 
+				        "$" + oferta.getPrecio(), 
+				        oferta.getHoraDeInicio() + " a " + oferta.getHoraDeFinalizacion()
+				    });
+				}
+				return panelMejoresOfertas;
+			}
+
+			private void crearPantallaDeMejoresOfertas(JPanel panelMejoresOfertas) {
+				JFrame pantallaDeMejoresOfertas = new JFrame("Mejores Ofertas");
+				pantallaDeMejoresOfertas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+				pantallaDeMejoresOfertas.add(panelMejoresOfertas);
+				pantallaDeMejoresOfertas.setSize(1100, 600); 
+				pantallaDeMejoresOfertas.setLocationRelativeTo(null); 
+				pantallaDeMejoresOfertas.setVisible(true);
+			}
+	    });
+	    btnMejoresOfertas.setBounds(724, 440, 163, 23);
+	    panelInicio.add(btnMejoresOfertas);
 	}
 
 

@@ -26,7 +26,13 @@ public class Oferta implements Serializable, Comparable<Oferta> {
         this.horaDeFinalizacion = horaDeFinalizacion;
     }
 
-    public int getHoraDeInicio() {
+    @Override
+	public String toString() {
+		return "Oferta [nombre=" + nombre + ", dni=" + dni + ", precio=" + precio + ", horaDeInicio=" + horaDeInicio
+				+ ", horaDeFinalizacion=" + horaDeFinalizacion + "]\n";
+	}
+
+	public int getHoraDeInicio() {
         return horaDeInicio;
     }
 
@@ -58,7 +64,7 @@ public class Oferta implements Serializable, Comparable<Oferta> {
 
     // Verificar si dos ofertas se solapan
     public boolean seSolapaCon(Oferta otra) {
-        return (this.horaDeFinalizacion < otra.horaDeInicio || otra.horaDeFinalizacion < this.horaDeInicio);
+    	return !(this.horaDeFinalizacion <= otra.horaDeInicio || otra.horaDeFinalizacion <= this.horaDeInicio);
     }
 
     // Calcular las ganancias por hora

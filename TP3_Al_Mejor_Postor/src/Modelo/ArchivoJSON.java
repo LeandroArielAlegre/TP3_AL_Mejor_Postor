@@ -20,7 +20,7 @@ public void generarJSON(String archivo) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(this);
     // Ruta relativa al directorio "caja" dentro del proyecto
-    String ruta = System.getProperty("user.dir") + "/src/caja/";
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
 
     try {
         FileWriter writer = new FileWriter(ruta + archivo);
@@ -37,7 +37,7 @@ public ArchivoJSON leerJSON(String archivo) {
     ArchivoJSON ret = null;
 
     // Ruta relativa al directorio "caja" dentro del proyecto
-    String ruta = System.getProperty("user.dir") + "/src/caja/";
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
 
     try {
         BufferedReader br = new BufferedReader(new FileReader(ruta + archivo));

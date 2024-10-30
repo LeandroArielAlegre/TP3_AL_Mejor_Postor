@@ -62,6 +62,12 @@ public class Logica {
 		return admOfertas.devolverTodosLosDniDeLosClientes();
 		
 	}
+	
+	public ArrayList<Oferta> devolverListaDeOfertasOrdenada(){
+		   
+    	return admOfertas.devolverListaDeOfertasOrdenada();
+    	
+    }
 
 	public void borrarListaDeOfertas() {
 		admOfertas.borrarListaDeOfertas();
