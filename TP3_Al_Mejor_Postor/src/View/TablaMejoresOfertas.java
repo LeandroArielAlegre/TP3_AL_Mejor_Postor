@@ -10,7 +10,7 @@ import Presentador.PresentadorOfertas;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-public class TablaOfertas extends JPanel {
+public class TablaMejoresOfertas extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
@@ -19,7 +19,7 @@ public class TablaOfertas extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TablaOfertas() {
+	public TablaMejoresOfertas() {
 		setBounds(new Rectangle(123, 30, 867, 438));
 		setLayout(null);
 		

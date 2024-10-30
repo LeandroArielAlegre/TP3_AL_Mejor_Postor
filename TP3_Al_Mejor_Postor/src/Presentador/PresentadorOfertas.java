@@ -65,15 +65,9 @@ public class PresentadorOfertas {
 		return logica.devolverOfertasArchivo();
 	}
 	
-	public boolean borrarListaDeOfertas() {
-		try {
-			logica.borrarListaDeOfertas();
-			return true;
-			
-		}catch (IllegalArgumentException e){
-			return false;
-			
-		}
+	public void borrarListaDeOfertas() {
+		logica.borrarListaDeOfertas();	
+		
 	}
 	
 	public ArrayList<String> devolverOfertaEnLista(String dni){
@@ -108,5 +102,6 @@ public class PresentadorOfertas {
 		}
 		
 	}
+	
 	
 }
