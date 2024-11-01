@@ -281,10 +281,16 @@ public class Pantalla {
 						int horarioFinal = Integer.parseInt(horarioF);
 						double precioOfertado = Double.parseDouble(precioOferta);
 						if (presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {
+							
 							mostrarPanelPagina(tablaOfertas,panelPaginas);
 							String horarioOferta =  horarioI + " a" + horarioF;
+							//Verifico si ya estaba en la tabla, si es el caso elimino su primera aparición
 							tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
+							eliminarFilaDeTablaConDniSiEsRepetido(dniCliente);
+							
 						} else {
+							
+
 							JOptionPane.showMessageDialog(null, "Error: No se pudo crear la oferta");
 						}
 					
@@ -297,6 +303,14 @@ public class Pantalla {
 		panel.add(btnEnviar);
 		
 		
+		
+	}
+	
+	public void eliminarFilaDeTablaConDniSiEsRepetido(int dni) {
+			String dniCliente = String.valueOf(dni);
+			if(tablaOfertas.contarDuplicadosPorDni(dniCliente) > 1){
+				tablaOfertas.eliminarFilaPorDni(dniCliente);
+			}
 		
 	}
 

@@ -46,8 +46,27 @@ public class TablaOfertas extends JPanel {
         // Hacer scroll a la última fila añadida
         table.scrollRectToVisible(table.getCellRect(table.getRowCount()-1, 0, true));
     }
+    public void eliminarFilaPorDni(String dni) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 1).toString().equals(dni)) { 
+                model.removeRow(i);
+                break; 
+            }
+        }
+    }
+    public int contarDuplicadosPorDni(String dni) {
+        int contador = 0;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 1).toString().equals(dni)) { // 
+                contador++;
+            }
+        }
+        return contador;
+    }
+    
 
     public void limpiarTabla() {
         model.setRowCount(0);
     }
+    
 }
