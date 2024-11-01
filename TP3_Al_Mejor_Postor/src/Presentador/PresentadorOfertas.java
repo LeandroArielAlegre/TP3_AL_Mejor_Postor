@@ -12,14 +12,8 @@ public class PresentadorOfertas {
 		logica = new Logica();
 	}
 
-	public boolean agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-	    try {
-	        logica.agregarOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
-	        return true;
-	    } catch (IllegalArgumentException e) {
-//	        System.out.println("Error al agregar oferta: " + e.getMessage()); // Log para detalles del error
-	        return false;
-	    }
+	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {	
+	        return logica.puedeAgregarOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);	   
 	}
 	
 	public boolean eliminarOferta(int dni) {
@@ -70,9 +64,9 @@ public class PresentadorOfertas {
 		
 	}
 	
-	public ArrayList<String> devolverOfertaEnLista(String dni){
+	public ArrayList<String> devolverOfertaComoUnaLista(String dni){
 		try {
-			return logica.devolverOfertaEnLista(dni);
+			return logica.devolverOfertaComoUnaLista(dni);
 			
 		}catch (IllegalArgumentException e){
 			return null;
@@ -81,10 +75,10 @@ public class PresentadorOfertas {
 		
 	}
 	
-	public ArrayList<Oferta> devolverListaDeOfertasOrdenada(){
+	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
 		   
     	try {
-    		return logica.devolverListaDeOfertasOrdenada();
+    		return logica.devolverListaDeOfertasOrdenadaPorBeneficio();
 			
 		}catch (IllegalArgumentException e){
 			return null;
@@ -100,6 +94,27 @@ public class PresentadorOfertas {
 			return null;
 			
 		}
+		
+	}
+
+	public ArrayList<Oferta> devolverOfertasQueNoSeSolapan(ArrayList<Oferta> listaOfertaOrdenadas) {
+		try {
+    		return logica.devolverOfertasQueNoSeSolapan(listaOfertaOrdenadas);
+			
+		}catch (IllegalArgumentException e){
+			return null;
+			
+		}
+	}
+
+	public ArrayList<Integer> devolverDNISComoInteger() {
+		// TODO Auto-generated method stub
+		return logica.devolverDNISComoInteger();
+	}
+
+	public void agregarOferta(String nombreOferta, int dniCliente, double precioOfertado, int horarioInicial,
+			int horarioFinal) {
+		logica.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
 		
 	}
 	

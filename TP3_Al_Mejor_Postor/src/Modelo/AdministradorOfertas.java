@@ -13,17 +13,15 @@ public class AdministradorOfertas {
         this.listaDeOfertas = new HashMap<>();
     }
 
-    public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-        validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+    public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
         
-        if (listaDeOfertas.containsKey(dni)) {
-            manejarOfertaExistente(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
-        } else {
-            agregarNuevaOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
-        }
+    	if(validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion)){
+    		return true;
+    	}
+        return false;
     }
 
-    private void validarDatosOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
+    private boolean validarDatosOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacío");
         }
@@ -36,8 +34,17 @@ public class AdministradorOfertas {
         if (horaDeInicio < 0 || horaDeFinalizacion > 24 || horaDeInicio >= horaDeFinalizacion) {
             throw new IllegalArgumentException("El intervalo de tiempo es inválido");
         }
+        return true;
     }
-
+    
+    public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
+		if (listaDeOfertas.containsKey(dni)) {
+            manejarOfertaExistente(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+        } else {
+            agregarNuevaOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+        }
+	}
+    
     private void manejarOfertaExistente(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
         Oferta ofertaExistente = listaDeOfertas.get(dni);
         
@@ -78,18 +85,17 @@ public class AdministradorOfertas {
     }
     
     
-    public ArrayList<Oferta> devolverListaDeOfertasOrdenada(){
+    public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
    
     	ArrayList<Oferta> listaDeOfertasOrdenada = new ArrayList<Oferta>(this.listaDeOfertas.values());
      	Collections.sort(listaDeOfertasOrdenada, (o1,o2) -> Double.compare(o1.getGananciasPorHora(), o2.getGananciasPorHora()));
      	Collections.reverse(listaDeOfertasOrdenada);
  
-     	ArrayList<Oferta> listaDeOfertasPorBeneficio = new ArrayList<Oferta>(filtrarMejoresOfertas(listaDeOfertasOrdenada));
-    	return listaDeOfertasPorBeneficio;
+     	return listaDeOfertasOrdenada;
     	
     }
     
-    public ArrayList<Oferta> filtrarMejoresOfertas(ArrayList<Oferta> listaDeOfertasOrdenada){
+    public ArrayList<Oferta> devolverOfertasQueNoSeSolapen(ArrayList<Oferta> listaDeOfertasOrdenada){
     	ArrayList<Oferta> listaDeOfertasPorBeneficio = new ArrayList<Oferta>();
     	
     	for (Oferta ofertaActual : listaDeOfertasOrdenada) {
@@ -140,19 +146,19 @@ public class AdministradorOfertas {
         this.listaDeOfertas = new HashMap<>(ofertasCargadas);
     }
 
-    public ArrayList<String> devolverOfertaEnLista(String dni){
+    public ArrayList<String> devolverOfertaComoUnaLista(String dni){
 		int dniCliente = Integer.parseInt(dni);
-		ArrayList<String> listaDeUnaOferta = new ArrayList<String>();
+		ArrayList<String> ofertaComoUnaLista = new ArrayList<String>();
 		Oferta oferta = this.listaDeOfertas.get(dniCliente);
 		String precioString = String.valueOf(oferta.getPrecio());
 		String horaInicio =String.valueOf(oferta.getHoraDeInicio());
 		String horaFin = String.valueOf(oferta.getHoraDeFinalizacion());
-		listaDeUnaOferta.add(oferta.getNombre());
-		listaDeUnaOferta.add(dni);
-		listaDeUnaOferta.add(precioString);
-		listaDeUnaOferta.add(horaInicio);
-		listaDeUnaOferta.add(horaFin);
-		return listaDeUnaOferta;
+		ofertaComoUnaLista.add(oferta.getNombre());
+		ofertaComoUnaLista.add(dni);
+		ofertaComoUnaLista.add(precioString);
+		ofertaComoUnaLista.add(horaInicio);
+		ofertaComoUnaLista.add(horaFin);
+		return ofertaComoUnaLista;
 	}
 
 	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
@@ -166,5 +172,19 @@ public class AdministradorOfertas {
 
 	public void borrarListaDeOfertas() {
 		listaDeOfertas.clear();
+	}
+
+	public ArrayList<Integer> devolverDNISComoInteger() {
+//		listaDeDniClientes.clear();
+		ArrayList<String> listaDeDniStrings = new ArrayList<String>();
+		ArrayList<Integer> listaDeDniNumericos = new ArrayList<Integer>();
+
+		listaDeDniStrings = devolverTodosLosDniDeLosClientes();
+		for (String dniString : listaDeDniStrings) {
+			int dniCliente = Integer.parseInt(dniString);
+			listaDeDniNumericos.add(dniCliente);
+		}
+		return listaDeDniNumericos;
+
 	}
 }

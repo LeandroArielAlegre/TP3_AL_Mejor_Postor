@@ -5,8 +5,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Rectangle;
 import javax.swing.ScrollPaneConstants;
-import java.awt.Color;
-import javax.swing.border.LineBorder;
+//import java.awt.Color;
+//import javax.swing.border.LineBorder;
 
 public class TablaOfertas extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -19,9 +19,7 @@ public class TablaOfertas extends JPanel {
         setBounds(new Rectangle(0, 0, 847, 416));
 
         // Configurar el modelo de la tabla
-        model = new DefaultTableModel(new Object[]{"Nombre", "DNI", "Precio", "Horario"}, 0); 
-           
-        
+        model = new DefaultTableModel(new Object[]{"Nombre", "DNI", "Precio", "Horario"}, 0);                  
 
         // Configurar la tabla
         table = new JTable(model);
@@ -33,7 +31,7 @@ public class TablaOfertas extends JPanel {
         scrollPane.setBounds(10, 10, 827, 396); // Dejar un pequeño margen
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+//        scrollPane.setBorder(new LineBorder(new Color(0, 0, 0)));
         
         // Asegurarse de que la tabla llene el viewport
 //        table.setFillsViewportHeight(true);

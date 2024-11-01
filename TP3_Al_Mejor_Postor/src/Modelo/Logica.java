@@ -12,8 +12,8 @@ public class Logica {
 		archivoJSON = new ArchivoJSON();
 	}
 
-	public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio , int horaDeFinalizacion) {
-		admOfertas.agregarOferta(nombre,dni,precio, horaDeInicio, horaDeFinalizacion);
+	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio , int horaDeFinalizacion) {
+		return admOfertas.puedeAgregarOferta(nombre,dni,precio, horaDeInicio, horaDeFinalizacion);
 	}
 	
 	
@@ -25,7 +25,7 @@ public class Logica {
 	        archivoJSON.generarJSON(nombreArchivo);
 	        return true;
 	    } catch (Exception e) {
-	        System.out.println("Error al guardar el archivo: " + e.getMessage());
+//	        System.out.println("Error al guardar el archivo: " + e.getMessage());
 	        return false;
 	    }
 	}
@@ -54,8 +54,8 @@ public class Logica {
 		admOfertas.setListaDeOfertas(archivoJSON.getListaDeOfertas());
 	}
 
-	public ArrayList<String> devolverOfertaEnLista(String dni){
-		return admOfertas.devolverOfertaEnLista(dni);
+	public ArrayList<String> devolverOfertaComoUnaLista(String dni){
+		return admOfertas.devolverOfertaComoUnaLista(dni);
 		
 	}
 	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
@@ -63,14 +63,30 @@ public class Logica {
 		
 	}
 	
-	public ArrayList<Oferta> devolverListaDeOfertasOrdenada(){
+	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
 		   
-    	return admOfertas.devolverListaDeOfertasOrdenada();
+    	return admOfertas.devolverListaDeOfertasOrdenadaPorBeneficio();
     	
     }
 
 	public void borrarListaDeOfertas() {
 		admOfertas.borrarListaDeOfertas();
+	}
+
+	public ArrayList<Oferta> devolverOfertasQueNoSeSolapan(ArrayList<Oferta> listaOfertaOrdenadas) {
+
+		return admOfertas.devolverOfertasQueNoSeSolapen(listaOfertaOrdenadas);
+	}
+
+	public ArrayList<Integer> devolverDNISComoInteger() {
+		// TODO Auto-generated method stub
+		return admOfertas.devolverDNISComoInteger();
+	}
+
+	public void agregarOferta(String nombreOferta, int dniCliente, double precioOfertado, int horarioInicial,
+			int horarioFinal) {
+		admOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
+		
 	}
 
 	
