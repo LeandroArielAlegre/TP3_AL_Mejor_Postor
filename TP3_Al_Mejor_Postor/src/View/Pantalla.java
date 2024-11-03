@@ -309,7 +309,9 @@ public class Pantalla {
 						presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
 						mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
 						String horarioOferta =  horarioI + " a " + horarioF;
+						//Verifico si ya estaba en la tabla, si es el caso elimino su primera aparición
 						tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
+						eliminarFilaDeTablaConDniSiEsRepetido(dniCliente);						
 						}
 					}catch (IllegalArgumentException ex) {
 						JOptionPane.showMessageDialog(null, ex.getMessage());
