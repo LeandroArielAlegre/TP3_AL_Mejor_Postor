@@ -305,6 +305,7 @@ public class Pantalla {
 
 					try { 				
 						if (presentadorOfertas.puedeAgregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {
+						
 						presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
 						mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
 						String horarioOferta =  horarioI + " a " + horarioF;
@@ -344,7 +345,13 @@ public class Pantalla {
 			return false;
 		}
 	}
-
+	public void eliminarFilaDeTablaConDniSiEsRepetido(int dni) {
+		String dniCliente = String.valueOf(dni);
+		if(tablaOfertas.contarDuplicadosPorDni(dniCliente) > 1){
+			tablaOfertas.eliminarFilaPorDni(dniCliente);
+		}
+	
+}
 	private boolean contieneLetras(String precioOferta) {
 		return precioOferta.contains("a")||precioOferta.contains("e")||precioOferta.contains("i")||precioOferta.contains("o")||precioOferta.contains("u");
 
