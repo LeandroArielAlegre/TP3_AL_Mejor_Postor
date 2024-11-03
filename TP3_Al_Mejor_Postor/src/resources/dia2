@@ -1,0 +1,165 @@
+{
+  "listaDeOfertas": {
+    "45794245": {
+      "nombre": "leandroPagnat",
+      "dni": 45794245,
+      "precio": 24444.0,
+      "horaDeInicio": 2,
+      "horaDeFinalizacion": 4
+    },
+    "44794245": {
+      "nombre": "leandroAlegre",
+      "dni": 44794245,
+      "precio": 46244.0,
+      "horaDeInicio": 6,
+      "horaDeFinalizacion": 14
+    },
+    "43794245": {
+      "nombre": "juanCruz",
+      "dni": 43794245,
+      "precio": 84424.0,
+      "horaDeInicio": 15,
+      "horaDeFinalizacion": 23
+    },
+    "46794245": {
+      "nombre": "tichoAlderete",
+      "dni": 46794245,
+      "precio": 51200.0,
+      "horaDeInicio": 0,
+      "horaDeFinalizacion": 5
+    },
+    "42794245": {
+      "nombre": "carlosPerez",
+      "dni": 42794245,
+      "precio": 37890.0,
+      "horaDeInicio": 11,
+      "horaDeFinalizacion": 20
+    },
+    "41794245": {
+      "nombre": "juliaGomez",
+      "dni": 41794245,
+      "precio": 79999.0,
+      "horaDeInicio": 18,
+      "horaDeFinalizacion": 22
+    },
+    "40794245": {
+      "nombre": "pabloFernandez",
+      "dni": 40794245,
+      "precio": 62345.0,
+      "horaDeInicio": 9,
+      "horaDeFinalizacion": 15
+    },
+    "48794245": {
+      "nombre": "luciaRamos",
+      "dni": 48794245,
+      "precio": 23455.0,
+      "horaDeInicio": 5,
+      "horaDeFinalizacion": 10
+    },
+    "49794245": {
+      "nombre": "marcosDiaz",
+      "dni": 49794245,
+      "precio": 92100.0,
+      "horaDeInicio": 3,
+      "horaDeFinalizacion": 8
+    },
+    "46784245": {
+      "nombre": "fernandaSuarez",
+      "dni": 46784245,
+      "precio": 40200.0,
+      "horaDeInicio": 17,
+      "horaDeFinalizacion": 21
+    },
+    "47794245": {
+      "nombre": "emilioQuispe",
+      "dni": 47794245,
+      "precio": 11000.0,
+      "horaDeInicio": 12,
+      "horaDeFinalizacion": 19
+    },
+    "48784245": {
+      "nombre": "andreaMendoza",
+      "dni": 48784245,
+      "precio": 45000.0,
+      "horaDeInicio": 4,
+      "horaDeFinalizacion": 6
+    },
+    "49784245": {
+      "nombre": "ramiroTorres",
+      "dni": 49784245,
+      "precio": 55340.0,
+      "horaDeInicio": 13,
+      "horaDeFinalizacion": 18
+    },
+    "40784245": {
+      "nombre": "lauraGutierrez",
+      "dni": 40784245,
+      "precio": 48950.0,
+      "horaDeInicio": 16,
+      "horaDeFinalizacion": 23
+    },
+    "43784245": {
+      "nombre": "valentinaMartinez",
+      "dni": 43784245,
+      "precio": 35500.0,
+      "horaDeInicio": 7,
+      "horaDeFinalizacion": 9
+    },
+    "44784245": {
+      "nombre": "leonardoLeyer",
+      "dni": 44784245,
+      "precio": 60500.0,
+      "horaDeInicio": 1,
+      "horaDeFinalizacion": 5
+    },
+    "45784245": {
+      "nombre": "aliciaRuiz",
+      "dni": 45784245,
+      "precio": 70000.0,
+      "horaDeInicio": 14,
+      "horaDeFinalizacion": 20
+    },
+    "46784246": {
+      "nombre": "pedroSilva",
+      "dni": 46784246,
+      "precio": 52000.0,
+      "horaDeInicio": 10,
+      "horaDeFinalizacion": 17
+    },
+    "47784245": {
+      "nombre": "monicaSoto",
+      "dni": 47784245,
+      "precio": 90000.0,
+      "horaDeInicio": 2,
+      "horaDeFinalizacion": 8
+    },
+    "48784246": {
+      "nombre": "francoHerrera",
+      "dni": 48784246,
+      "precio": 65000.0,
+      "horaDeInicio": 21,
+      "horaDeFinalizacion": 23
+    },
+    "49794246": {
+      "nombre": "anaGarcia",
+      "dni": 49794246,
+      "precio": 79000.0,
+      "horaDeInicio": 19,
+      "horaDeFinalizacion": 24
+    },
+    "40784246": {
+      "nombre": "gastonLuna",
+      "dni": 40784246,
+      "precio": 41000.0,
+      "horaDeInicio": 0,
+      "horaDeFinalizacion": 3
+    },
+    "43784246": {
+      "nombre": "vivianaCampos",
+      "dni": 43784246,
+      "precio": 35000.0,
+      "horaDeInicio": 11,
+      "horaDeFinalizacion": 16
+    }
+  }
+}

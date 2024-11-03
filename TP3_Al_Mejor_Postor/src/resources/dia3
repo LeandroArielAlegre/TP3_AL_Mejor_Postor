@@ -1,0 +1,32 @@
+{
+  "listaDeOfertas": {
+    "45768": {
+      "nombre": "pagnat",
+      "dni": 45768,
+      "precio": 53678.0,
+      "horaDeInicio": 6,
+      "horaDeFinalizacion": 12
+    },
+    "43689": {
+      "nombre": "jau",
+      "dni": 43689,
+      "precio": 526666.0,
+      "horaDeInicio": 1,
+      "horaDeFinalizacion": 3
+    },
+    "44668932": {
+      "nombre": "santiagoleon",
+      "dni": 44668932,
+      "precio": 7868.0,
+      "horaDeInicio": 9,
+      "horaDeFinalizacion": 10
+    },
+    "430000": {
+      "nombre": "alderete",
+      "dni": 430000,
+      "precio": 4050.0,
+      "horaDeInicio": 4,
+      "horaDeFinalizacion": 7
+    }
+  }
+}

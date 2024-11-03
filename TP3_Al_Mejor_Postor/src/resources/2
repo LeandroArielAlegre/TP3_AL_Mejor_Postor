@@ -1,0 +1,11 @@
+{
+  "listaDeOfertas": {
+    "1": {
+      "nombre": "q",
+      "dni": 1,
+      "precio": 2.0,
+      "horaDeInicio": 2,
+      "horaDeFinalizacion": 3
+    }
+  }
+}
