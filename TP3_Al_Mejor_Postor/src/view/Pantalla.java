@@ -26,6 +26,7 @@ import java.awt.Component;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
 public class Pantalla {
@@ -43,6 +44,7 @@ public class Pantalla {
 	private Timer timer;
     private long duracionDeDia = 7 * 1000;
 	private JCalendar calendar;
+	private LocalDate fechaActual; //= LocalDate.of(2024, 11, 5);
 	/**
 	 * Launch the application.
 	 */
@@ -72,22 +74,38 @@ public class Pantalla {
 	private void initialize() {
 		diaTranscurrido = false;
 		presentadorOfertas = new PresentadorOfertas();
+		//System.out.println(presentadorOfertas.actualizarFechaActual(fechaActual));
+		fechaActual =presentadorOfertas.devolverFechaActual();
 		frame = new JFrame();
 		tablaOfertas = new TablaOfertas();
 		tablaMejoresOfertas = new TablaOfertas();
-		
-		
+				
 		frame.setBounds(100, 100, 1010, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		iniciarTemporizador();
-		
+
 		panelPaginas = new JPanel();
 		panelPaginas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelPaginas.setBounds(123, 30, 861, 435);
 		panelPaginas.setLayout(null);
 		frame.getContentPane().add(panelPaginas);
 		mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
+		
+		// Instanciar 
+		calendar = new JCalendar(); 
+		
+		
+		// Ubicar y agregar al panel
+		/*calendar.setBounds(0, 0, 300, 300);
+		otroFrame.getContentPane().add(calendar);
+			//System.out.println(calendar.getDate());*/
+		
+		JLabel lblFechaActual = new JLabel(" ");
+		lblFechaActual.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFechaActual.setBounds(407, 11, 166, 14);
+		actualizarLabelFechaActual(lblFechaActual);
+		frame.getContentPane().add(lblFechaActual);
 
 		JButton btnAgregarOferta = new JButton("Agregar Oferta");
 		btnAgregarOferta.setFocusable(false);
@@ -240,9 +258,18 @@ public class Pantalla {
 			public void actionPerformed(ActionEvent e) {
 				diaTranscurrido=false;
 				btnMejoresOfertas.setVisible(false);
+				btnSiguienteDia.setVisible(false);
 				presentadorOfertas.borrarListaDeOfertas();
-				limpiarTablaOfertas();				
+				limpiarTablaOfertas();
+				incrementarUnDia();
+				actualizarLabelFechaActual(lblFechaActual);
 				iniciarTemporizador();
+			}
+
+			private void incrementarUnDia() {
+				LocalDate nuevaFecha = fechaActual.plusDays(1);
+				fechaActual = nuevaFecha;
+				presentadorOfertas.actualizarFechaActual(nuevaFecha);
 			}
 		});
 		btnSiguienteDia.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -250,19 +277,34 @@ public class Pantalla {
 		btnSiguienteDia.setBounds(10, 320, 103, 30);
 		frame.getContentPane().add(btnSiguienteDia);		
 		
+		JButton btnCalendario = new JButton("Calendario");
+		btnCalendario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel panelCalendario = new JPanel();
+				panelCalendario.setBounds(123, 30, 861, 435);
+				panelCalendario.add(calendar);
+				mostrarPanelEnContenedor(panelCalendario,panelPaginas);
+				
+			}
+		});
+		btnCalendario.setBounds(10, 360, 89, 23);
+		frame.getContentPane().add(btnCalendario);
+		
+		
+		
 		
 
 		 
-//		// Instanciar Componente
-//		calendar = new JCalendar();
-//		 
-//		// Ubicar y agregar al panel
-//		calendar.setBounds(0, 0, 300, 300);
-//		JFrame otroFrame = new JFrame();
-//		otroFrame.getContentPane().add(calendar);
-////		otroFrame.setAlwaysOnTop(true);
-//		otroFrame.setVisible(true);
+	
+
 	}
+
+	
+	private void actualizarLabelFechaActual(JLabel lblFechaActual) {
+		String _fecha = convertirLocalDateAString(fechaActual);
+		lblFechaActual.setText(_fecha);
+	}
+	
 	private void iniciarTemporizador() {
 		 timer = new Timer();
 		 
@@ -432,6 +474,13 @@ public class Pantalla {
 		} else {
 			return null;
 		}
+	}
+	
+	private String convertirLocalDateAString(LocalDate fecha) {
+		String año = String.valueOf(fecha.getYear());
+		String mes=String.valueOf(fecha.getMonthValue());
+		String dia=String.valueOf(fecha.getDayOfMonth());
+		return año + " - " + mes + " - " + dia;
 	}
 }
 

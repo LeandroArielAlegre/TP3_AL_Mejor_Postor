@@ -1,5 +1,6 @@
 package presentador;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -113,6 +114,27 @@ public class PresentadorOfertas {
 			int horarioFinal) {
 		logica.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
 		
+	}
+	
+	public boolean actualizarFechaActual(LocalDate nuevaFechaActual) {
+		try {
+    		logica.actualizarFechaActual(nuevaFechaActual);
+    		return true;
+			
+		}catch (IllegalArgumentException e){
+			return false;
+			
+		}
+	}
+	
+	public LocalDate devolverFechaActual() {
+		try {
+    		return 	logica.devolverFechaActual();
+			
+		}catch (IllegalArgumentException e){
+			return null;
+			
+		}
 	}
 	
 	

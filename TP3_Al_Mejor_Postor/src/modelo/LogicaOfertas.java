@@ -1,5 +1,6 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,10 +10,12 @@ import java.util.Map.Entry;
 public class LogicaOfertas {
     private HashMap<Integer, Oferta> mapDeOfertas;
     private ArchivoJSON  archivoJSON;
+    private ArchivoJSON  archivoJSONFecha;
     
     public LogicaOfertas() {
         this.mapDeOfertas = new HashMap<>();
         archivoJSON = new ArchivoJSON();
+        archivoJSONFecha = new ArchivoJSON();
     }
     
     public boolean guardarOferta(String nombreArchivo) {
@@ -197,4 +200,28 @@ public class LogicaOfertas {
 		}
 		return listaDeDniNumericos;
 	}
+
+	public void actualizarFechaActual(LocalDate nuevaFechaActual) {
+		String año = String.valueOf(nuevaFechaActual.getYear());
+		String mes=String.valueOf(nuevaFechaActual.getMonthValue());
+		String dia=String.valueOf(nuevaFechaActual.getDayOfMonth());
+		ArrayList<String> _nuevaFechaActual = new ArrayList<String>();
+		_nuevaFechaActual.add(año);
+		_nuevaFechaActual.add(mes);
+		_nuevaFechaActual.add(dia);
+		archivoJSONFecha.setFecha(_nuevaFechaActual);
+		archivoJSONFecha.generarJSON("fechaActual");  
+	}
+	public LocalDate devolverFechaActual() {
+	    archivoJSONFecha = archivoJSONFecha.leerJSON("fechaActual");
+	    try {
+	    	ArrayList<String> nuevaFecha = new ArrayList<String>();
+	        nuevaFecha = archivoJSONFecha.getFecha();
+	        LocalDate fechaActual = LocalDate.of(Integer.parseInt(nuevaFecha.get(0)), Integer.parseInt(nuevaFecha.get(1)), Integer.parseInt(nuevaFecha.get(2)));
+	        return fechaActual;
+	    } catch (Exception e) {
+	        throw new IllegalArgumentException("ERROR: No se pudo leer la fecha actual");
+	    }
+	}
+
 }
