@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import com.toedter.calendar.JCalendar;
+
 import modelo.Oferta;
 import presentador.PresentadorOfertas;
 
@@ -40,7 +42,7 @@ public class Pantalla {
 	private JButton btnFinalizarDia;
 	private Timer timer;
     private long duracionDeDia = 7 * 1000;
-	
+	private JCalendar calendar;
 	/**
 	 * Launch the application.
 	 */
@@ -247,6 +249,19 @@ public class Pantalla {
 		btnSiguienteDia.setFocusable(false);
 		btnSiguienteDia.setBounds(10, 320, 103, 30);
 		frame.getContentPane().add(btnSiguienteDia);		
+		
+		
+
+		 
+//		// Instanciar Componente
+//		calendar = new JCalendar();
+//		 
+//		// Ubicar y agregar al panel
+//		calendar.setBounds(0, 0, 300, 300);
+//		JFrame otroFrame = new JFrame();
+//		otroFrame.getContentPane().add(calendar);
+////		otroFrame.setAlwaysOnTop(true);
+//		otroFrame.setVisible(true);
 	}
 	private void iniciarTemporizador() {
 		 timer = new Timer();
