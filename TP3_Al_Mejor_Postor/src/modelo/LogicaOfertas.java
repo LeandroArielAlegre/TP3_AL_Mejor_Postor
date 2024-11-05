@@ -10,18 +10,21 @@ import java.util.Map.Entry;
 public class LogicaOfertas {
     private HashMap<Integer, Oferta> mapDeOfertas;
     private ArchivoJSON  archivoJSON;
-    private ArchivoJSON  archivoJSONFecha;
+//    private ArchivoJSON  archivoJSONFecha;
     
     public LogicaOfertas() {
         this.mapDeOfertas = new HashMap<>();
         archivoJSON = new ArchivoJSON();
-        archivoJSONFecha = new ArchivoJSON();
+//        archivoJSONFecha = new ArchivoJSON();
     }
     
     public boolean guardarOferta(String nombreArchivo) {
 		HashMap<Integer, Oferta> ofertasLocales= getListaDeOfertas();
+		
 	    try {
 	        archivoJSON.setListaDeOfertas(ofertasLocales);
+	        actualizarFechaActual(devolverFechaActual());
+//	        archivoJSON.setFecha(actualizarFechaActual(devolverFechaActual()));
 	        archivoJSON.generarJSON(nombreArchivo);
 	        return true;
 	    } catch (Exception e) {
@@ -209,14 +212,26 @@ public class LogicaOfertas {
 		_nuevaFechaActual.add(año);
 		_nuevaFechaActual.add(mes);
 		_nuevaFechaActual.add(dia);
-		archivoJSONFecha.setFecha(_nuevaFechaActual);
-		archivoJSONFecha.generarJSON("fechaActual");  
+		archivoJSON.setFecha(_nuevaFechaActual);
+//		archivoJSON.generarJSON("fechaActual");  
+	}
+	public ArrayList<String> devolverFechaComoLista(LocalDate nuevaFechaActual) {
+		String año = String.valueOf(nuevaFechaActual.getYear());
+		String mes=String.valueOf(nuevaFechaActual.getMonthValue());
+		String dia=String.valueOf(nuevaFechaActual.getDayOfMonth());
+		ArrayList<String> _nuevaFechaActual = new ArrayList<String>();
+		_nuevaFechaActual.add(año);
+		_nuevaFechaActual.add(mes);
+		_nuevaFechaActual.add(dia);
+//		archivoJSON.setFecha(_nuevaFechaActual);
+		return _nuevaFechaActual;
+//		archivoJSON.generarJSON("fechaActual");  
 	}
 	public LocalDate devolverFechaActual() {
-	    archivoJSONFecha = archivoJSONFecha.leerJSON("fechaActual");
+	    archivoJSON = archivoJSON.leerJSON("fechaActual");
 	    try {
 	    	ArrayList<String> nuevaFecha = new ArrayList<String>();
-	        nuevaFecha = archivoJSONFecha.getFecha();
+	        nuevaFecha = archivoJSON.getFecha();
 	        LocalDate fechaActual = LocalDate.of(Integer.parseInt(nuevaFecha.get(0)), Integer.parseInt(nuevaFecha.get(1)), Integer.parseInt(nuevaFecha.get(2)));
 	        return fechaActual;
 	    } catch (Exception e) {

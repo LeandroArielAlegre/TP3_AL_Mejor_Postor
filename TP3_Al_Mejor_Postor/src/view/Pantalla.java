@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDayChooser;
 
 import modelo.Oferta;
 import presentador.PresentadorOfertas;
@@ -26,8 +28,10 @@ import java.awt.Component;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class Pantalla {
 
@@ -42,8 +46,8 @@ public class Pantalla {
 	private JButton btnSiguienteDia;
 	private JButton btnFinalizarDia;
 	private Timer timer;
-    private long duracionDeDia = 7 * 1000;
-	private JCalendar calendar;
+    private long duracionDeDia = 15 * 1000;
+//	private JCalendar calendar;
 	private LocalDate fechaActual; //= LocalDate.of(2024, 11, 5);
 	/**
 	 * Launch the application.
@@ -75,7 +79,9 @@ public class Pantalla {
 		diaTranscurrido = false;
 		presentadorOfertas = new PresentadorOfertas();
 		//System.out.println(presentadorOfertas.actualizarFechaActual(fechaActual));
+
 		fechaActual =presentadorOfertas.devolverFechaActual();
+		
 		frame = new JFrame();
 		tablaOfertas = new TablaOfertas();
 		tablaMejoresOfertas = new TablaOfertas();
@@ -93,12 +99,13 @@ public class Pantalla {
 		mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
 		
 		// Instanciar 
-		calendar = new JCalendar(); 
+//		calendar = new JCalendar(); 
 		
 		
 		// Ubicar y agregar al panel
-		/*calendar.setBounds(0, 0, 300, 300);
-		otroFrame.getContentPane().add(calendar);
+		
+//		calendar.setBounds(0, 0, 800, 800);
+//		otroFrame.getContentPane().add(calendar);
 			//System.out.println(calendar.getDate());*/
 		
 		JLabel lblFechaActual = new JLabel(" ");
@@ -221,6 +228,8 @@ public class Pantalla {
 		btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnVolver.addActionListener(e-> {
 			mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
+			
+		
 		});
 		btnVolver.setBounds(10, 28, 103, 30);
 		frame.getContentPane().add(btnVolver);
@@ -239,6 +248,7 @@ public class Pantalla {
                     diaTranscurrido = true;
                     btnMejoresOfertas.setVisible(true);
                     btnSiguienteDia.setVisible(true);
+                    btnFinalizarDia.setVisible(false);
                     if (timer != null) {
                         timer.cancel();
                     }
@@ -278,14 +288,37 @@ public class Pantalla {
 		frame.getContentPane().add(btnSiguienteDia);		
 		
 		JButton btnCalendario = new JButton("Calendario");
-		btnCalendario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnCalendario.addActionListener(e->{
+			
 				JPanel panelCalendario = new JPanel();
 				panelCalendario.setBounds(123, 30, 861, 435);
-				panelCalendario.add(calendar);
+//				panelCalendario.add(calendar);
+				JDateChooser dateChooser = new JDateChooser();
+				dateChooser.setBounds(80, 69, 70, 20);
+				panelCalendario.add(dateChooser);
+				
+//				JDayChooser dayChooser = calendar.getDayChooser();
+//				dayChooser.setAlwaysFireDayProperty(true); // here is the key
+//				dayChooser.addPropertyChangeListener("day", calendar);
+//				calendar.getDayChooser();
+				JButton btnMostrarFecha = new JButton("Calendario");				
+				panelCalendario.add(btnMostrarFecha);
+				btnMostrarFecha.setBounds(430, 353, 100, 100);
+				btnMostrarFecha.addActionListener(e2->{
+					Date fecha = dateChooser.getDate();
+					SimpleDateFormat formato = new SimpleDateFormat("d/MM/yyyy");
+					String stFecha= formato.format(fecha);
+					
+					JOptionPane.showMessageDialog(null,
+	                        ""+ formato.format(fecha));
+					
+				});
 				mostrarPanelEnContenedor(panelCalendario,panelPaginas);
 				
-			}
+				
+//				btnCalendario.addActionListener
+			
+				
 		});
 		btnCalendario.setBounds(10, 360, 89, 23);
 		frame.getContentPane().add(btnCalendario);
@@ -314,6 +347,7 @@ public class Pantalla {
 	                    diaTranscurrido = true;
 	                    btnMejoresOfertas.setVisible(true);
 	                    btnSiguienteDia.setVisible(true);
+	                    btnFinalizarDia.setVisible(false);
 	                    JOptionPane.showMessageDialog(frame, 
 	                        "El día ha finalizado. Ya no se pueden ingresar más ofertas.",
 	                        "Fin del día",
