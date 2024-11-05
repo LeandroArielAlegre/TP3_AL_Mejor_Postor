@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,13 +6,50 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class AdministradorOfertas {
-    private HashMap<Integer, Oferta> listaDeOfertas;
-
-    public AdministradorOfertas() {
-        this.listaDeOfertas = new HashMap<>();
+public class LogicaOfertas {
+    private HashMap<Integer, Oferta> mapDeOfertas;
+    private ArchivoJSON  archivoJSON;
+    
+    public LogicaOfertas() {
+        this.mapDeOfertas = new HashMap<>();
+        archivoJSON = new ArchivoJSON();
     }
+    
+    public boolean guardarOferta(String nombreArchivo) {
+		HashMap<Integer, Oferta> ofertasLocales= getListaDeOfertas();
+	    try {
+	        archivoJSON.setListaDeOfertas(ofertasLocales);
+	        archivoJSON.generarJSON(nombreArchivo);
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    }
+	}
+    public void cargarOfertasDeArchivo(String archivo) {
+		this.archivoJSON = archivoJSON.leerJSON(archivo);
+		setListaDeOfertas(archivoJSON.getListaDeOfertas());
+	}
+    
+    public void setListaDeOfertas(HashMap<Integer, Oferta> ofertasCargadas) {
+        if (ofertasCargadas == null) {
+            throw new IllegalArgumentException("La lista de ofertas no puede ser null");
+        }
+        
+        for (Map.Entry<Integer, Oferta> entry : ofertasCargadas.entrySet()) {
+            if (entry.getValue() == null) {
+                throw new IllegalArgumentException("Oferta nula encontrada para DNI: " + entry.getKey());
+            }
+            if (!entry.getKey().equals(entry.getValue().getDni())) {
+                throw new IllegalArgumentException("DNI inconsistente encontrado: " + entry.getKey());
+            }
+        }
+        
+        this.mapDeOfertas = new HashMap<>(ofertasCargadas);
+    }
+    public HashMap<Integer, Oferta> devolverOfertasArchivo() {
 
+		return this.archivoJSON.getListaDeOfertas();
+	}
     public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
         
     	if(validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion)){
@@ -38,118 +75,93 @@ public class AdministradorOfertas {
     }
     
     public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-		if (listaDeOfertas.containsKey(dni)) {
+		if (mapDeOfertas.containsKey(dni)) {
             manejarOfertaExistente(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
         } else {
             agregarNuevaOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
         }
 	}
     
-    private void manejarOfertaExistente(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-        Oferta ofertaExistente = listaDeOfertas.get(dni);
-        
-        if (ofertaExistente.getPrecio() > precio) {
+    private void manejarOfertaExistente(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) 
+    {
+        Oferta ofertaExistente = mapDeOfertas.get(dni);     
+        if (ofertaExistente.getPrecio() > precio) 
+        {
             throw new IllegalArgumentException("La nueva oferta debe superar el precio actual de " + 
                 ofertaExistente.getPrecio());
-        }
-        
-        if (esOfertaIdentica(ofertaExistente, precio, horaDeInicio, horaDeFinalizacion)) {
+        }        
+        if (esOfertaIdentica(ofertaExistente, precio, horaDeInicio, horaDeFinalizacion)) 
+        {
             throw new IllegalArgumentException("Esta oferta es idéntica a la existente");
-        }
-        
-        listaDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+        }      
+        mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
     }
-
     private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
         return oferta.getPrecio() == precio && 
                oferta.getHoraDeInicio() == horaDeInicio && 
                oferta.getHoraDeFinalizacion() == horaDeFinalizacion;
     }
 
-    private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-        // Verificar solapamiento con otras ofertas
-//        for (Oferta ofertaExistente : listaDeOfertas.values()) {
-//            if (ofertaExistente.seSolapaCon(new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion))) {
-//                throw new IllegalArgumentException("La nueva oferta se solapa con una oferta existente");
-//            }
-//        }
-        
-        listaDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+    private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {        
+        mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
     }
 
     public void eliminarOferta(int dni) {
-        if (!listaDeOfertas.containsKey(dni)) {
+        if (!mapDeOfertas.containsKey(dni)) {
             throw new IllegalArgumentException("No existe ninguna oferta registrada con el DNI: " + dni);
         }
-        listaDeOfertas.remove(dni);
+        mapDeOfertas.remove(dni);
     }
-    
-    
+      
     public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
    
-    	ArrayList<Oferta> listaDeOfertasOrdenada = new ArrayList<Oferta>(this.listaDeOfertas.values());
-     	Collections.sort(listaDeOfertasOrdenada, (o1,o2) -> Double.compare(o1.getGananciasPorHora(), o2.getGananciasPorHora()));
+    	ArrayList<Oferta> listaDeOfertasOrdenada = new ArrayList<Oferta>(this.mapDeOfertas.values());
+     	Collections.sort(listaDeOfertasOrdenada, (o1,o2) -> Double.compare(o1.calcularGananciasPorHora(), o2.calcularGananciasPorHora()));
      	Collections.reverse(listaDeOfertasOrdenada);
  
      	return listaDeOfertasOrdenada;
     	
     }
     
-    public ArrayList<Oferta> devolverOfertasQueNoSeSolapen(ArrayList<Oferta> listaDeOfertasOrdenada){
-    	ArrayList<Oferta> listaDeOfertasPorBeneficio = new ArrayList<Oferta>();
+    public ArrayList<Oferta> devolverOfertasQueNoSeSolapan(ArrayList<Oferta> listaDeOfertasOrdenada){
+    	ArrayList<Oferta> listaDeOfertasQueNoSeSolapan = new ArrayList<Oferta>();
     	
     	for (Oferta ofertaActual : listaDeOfertasOrdenada) {
-            boolean seSolapa = false;
-
-            for (Oferta ofertaSeleccionada : listaDeOfertasPorBeneficio) {
+            boolean seSolapan = false;
+            
+            for (Oferta ofertaSeleccionada : listaDeOfertasQueNoSeSolapan) {
                 if (ofertaActual.seSolapaCon(ofertaSeleccionada)) {
-                    seSolapa = true;
+                    seSolapan = true;
                     break; 
                 }
             }
 
-            if (!seSolapa) {
-                listaDeOfertasPorBeneficio.add(ofertaActual);
+            if (!seSolapan) {
+                listaDeOfertasQueNoSeSolapan.add(ofertaActual);
             }
         }
 
-        return listaDeOfertasPorBeneficio;
+        return listaDeOfertasQueNoSeSolapan;
     }
     
 
     public HashMap<Integer, Oferta> getListaDeOfertas() {
-        return new HashMap<>(listaDeOfertas); // Retorna una copia defensiva
+        return new HashMap<>(mapDeOfertas); 
     }
 
-    public Oferta obtenerOfertaDadoDNI(int dni) {
-        if (!listaDeOfertas.containsKey(dni)) {
+    public Oferta obtenerOfertaAsociadaConDNI(int dni) {
+        if (!mapDeOfertas.containsKey(dni)) {
             throw new IllegalArgumentException("No existe ninguna oferta con el DNI: " + dni);
         }
-        return listaDeOfertas.get(dni);
+        return mapDeOfertas.get(dni);
     }
 
-    public void setListaDeOfertas(HashMap<Integer, Oferta> ofertasCargadas) {
-        if (ofertasCargadas == null) {
-            throw new IllegalArgumentException("La lista de ofertas no puede ser null");
-        }
-        
-        // Validar todas las ofertas antes de hacer el set
-        for (Map.Entry<Integer, Oferta> entry : ofertasCargadas.entrySet()) {
-            if (entry.getValue() == null) {
-                throw new IllegalArgumentException("Oferta nula encontrada para DNI: " + entry.getKey());
-            }
-            if (!entry.getKey().equals(entry.getValue().getDni())) {
-                throw new IllegalArgumentException("DNI inconsistente encontrado: " + entry.getKey());
-            }
-        }
-        
-        this.listaDeOfertas = new HashMap<>(ofertasCargadas);
-    }
+    
 
     public ArrayList<String> devolverOfertaComoUnaLista(String dni){
 		int dniCliente = Integer.parseInt(dni);
 		ArrayList<String> ofertaComoUnaLista = new ArrayList<String>();
-		Oferta oferta = this.listaDeOfertas.get(dniCliente);
+		Oferta oferta = this.mapDeOfertas.get(dniCliente);
 		String precioString = String.valueOf(oferta.getPrecio());
 		String horaInicio =String.valueOf(oferta.getHoraDeInicio());
 		String horaFin = String.valueOf(oferta.getHoraDeFinalizacion());
@@ -163,7 +175,7 @@ public class AdministradorOfertas {
 
 	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
 		ArrayList<String> listaDeDni = new ArrayList<String>();
-		for (Entry<Integer, Oferta> ofertaCliente : listaDeOfertas.entrySet()) {
+		for (Entry<Integer, Oferta> ofertaCliente : mapDeOfertas.entrySet()) {
 			String dniCliente = String.valueOf(ofertaCliente.getKey());
 			listaDeDni.add(dniCliente);
 		}
@@ -171,11 +183,10 @@ public class AdministradorOfertas {
 	}
 
 	public void borrarListaDeOfertas() {
-		listaDeOfertas.clear();
+		mapDeOfertas.clear();
 	}
 
-	public ArrayList<Integer> devolverDNISComoInteger() {
-//		listaDeDniClientes.clear();
+	public ArrayList<Integer> devolverDNISComoListaDeIntegers() {
 		ArrayList<String> listaDeDniStrings = new ArrayList<String>();
 		ArrayList<Integer> listaDeDniNumericos = new ArrayList<Integer>();
 
@@ -185,6 +196,5 @@ public class AdministradorOfertas {
 			listaDeDniNumericos.add(dniCliente);
 		}
 		return listaDeDniNumericos;
-
 	}
 }

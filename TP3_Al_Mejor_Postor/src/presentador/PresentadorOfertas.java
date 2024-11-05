@@ -1,15 +1,15 @@
-package Presentador;
+package presentador;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Modelo.Logica;
-import Modelo.Oferta;
+import modelo.LogicaOfertas;
+import modelo.Oferta;
 
 public class PresentadorOfertas {
-	private Logica logica;
+	private LogicaOfertas logica;
 	public PresentadorOfertas() {
-		logica = new Logica();
+		logica = new LogicaOfertas();
 	}
 
 	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {	
@@ -29,7 +29,7 @@ public class PresentadorOfertas {
 
 	public HashMap<Integer, Oferta> devolverOfertas() {
 		try {
-			return logica.devolverOfertas();
+			return logica.getListaDeOfertas();
 			
 		} catch (IllegalArgumentException e) {
 			return null;
@@ -48,9 +48,7 @@ public class PresentadorOfertas {
 				return true;
 				
 			}catch (IllegalArgumentException e){
-				return false;
-				
-			
+				return false;							
 		}
 	}
 
@@ -66,7 +64,7 @@ public class PresentadorOfertas {
 	
 	public ArrayList<String> devolverOfertaComoUnaLista(String dni){
 		try {
-			return logica.devolverOfertaComoUnaLista(dni);
+			return 	logica.devolverOfertaComoUnaLista(dni);
 			
 		}catch (IllegalArgumentException e){
 			return null;
@@ -78,7 +76,7 @@ public class PresentadorOfertas {
 	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
 		   
     	try {
-    		return logica.devolverListaDeOfertasOrdenadaPorBeneficio();
+    		return 	logica.devolverListaDeOfertasOrdenadaPorBeneficio();
 			
 		}catch (IllegalArgumentException e){
 			return null;
@@ -88,7 +86,7 @@ public class PresentadorOfertas {
 	
 	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
 		try {
-			return logica.devolverTodosLosDniDeLosClientes();
+			return 	logica.devolverTodosLosDniDeLosClientes();
 			
 		}catch (IllegalArgumentException e){
 			return null;
@@ -99,7 +97,7 @@ public class PresentadorOfertas {
 
 	public ArrayList<Oferta> devolverOfertasQueNoSeSolapan(ArrayList<Oferta> listaOfertaOrdenadas) {
 		try {
-    		return logica.devolverOfertasQueNoSeSolapan(listaOfertaOrdenadas);
+    		return 	logica.devolverOfertasQueNoSeSolapan(listaOfertaOrdenadas);
 			
 		}catch (IllegalArgumentException e){
 			return null;
@@ -108,8 +106,7 @@ public class PresentadorOfertas {
 	}
 
 	public ArrayList<Integer> devolverDNISComoInteger() {
-		// TODO Auto-generated method stub
-		return logica.devolverDNISComoInteger();
+		return 	logica.devolverDNISComoListaDeIntegers();
 	}
 
 	public void agregarOferta(String nombreOferta, int dniCliente, double precioOfertado, int horarioInicial,

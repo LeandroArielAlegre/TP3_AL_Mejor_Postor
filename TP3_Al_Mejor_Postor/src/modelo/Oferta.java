@@ -1,8 +1,8 @@
-package Modelo;
+package modelo;
 
 import java.io.Serializable;
 
-public class Oferta implements Serializable, Comparable<Oferta> {
+public class Oferta implements Serializable,  Comparable<Oferta>{
     private String nombre;
     private int dni;
     private double precio;
@@ -18,12 +18,22 @@ public class Oferta implements Serializable, Comparable<Oferta> {
         if (precio <= 0) {
             throw new IllegalArgumentException("El precio debe ser positivo.");
         }
-
+        if (nombre==null) {
+            throw new IllegalArgumentException("Se debe ingresar un nombre");
+        }
         this.nombre = nombre;
         this.dni = dni;
         this.precio = precio;
         this.horaDeInicio = horaDeInicio;
         this.horaDeFinalizacion = horaDeFinalizacion;
+    }
+
+    public boolean seSolapaCon(Oferta otra) {
+    	return !(this.horaDeFinalizacion <= otra.horaDeInicio || otra.horaDeFinalizacion <= this.horaDeInicio);
+    }
+
+    public double calcularGananciasPorHora() {
+        return precio / (horaDeFinalizacion - horaDeInicio);
     }
 
     @Override
@@ -62,22 +72,14 @@ public class Oferta implements Serializable, Comparable<Oferta> {
         return dni;
     }
 
-    // Verificar si dos ofertas se solapan
-    public boolean seSolapaCon(Oferta otra) {
-    	return !(this.horaDeFinalizacion <= otra.horaDeInicio || otra.horaDeFinalizacion <= this.horaDeInicio);
-    }
-
-    // Calcular las ganancias por hora
-    public double getGananciasPorHora() {
-        return precio / (horaDeFinalizacion - horaDeInicio);
-    }
-
-    // Comparación para ordenar ofertas por precio
-    @Override
-    public int compareTo(Oferta otra) {
-        return Double.compare(otra.getPrecio(), this.getPrecio());  // De mayor a menor
-    }
-
     // ID serial para asegurar compatibilidad en la serialización
     private static final long serialVersionUID = 1L;
+
+	@Override
+	public int compareTo(Oferta o) {
+		if (this.getDni()==o.getDni()&&this.getNombre().equals(o.getNombre())&&this.getPrecio()==o.getPrecio()) {
+			return 0;
+		}
+		return -1;
+	}
 }
