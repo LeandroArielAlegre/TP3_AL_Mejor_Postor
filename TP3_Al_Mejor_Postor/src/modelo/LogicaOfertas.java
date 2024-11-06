@@ -213,7 +213,7 @@ public class LogicaOfertas {
 		_nuevaFechaActual.add(mes);
 		_nuevaFechaActual.add(dia);
 		archivoJSON.setFecha(_nuevaFechaActual);
-//		archivoJSON.generarJSON("fechaActual");  
+		archivoJSON.generarJSON("fechaActual");  
 	}
 	public ArrayList<String> devolverFechaComoLista(LocalDate nuevaFechaActual) {
 		String año = String.valueOf(nuevaFechaActual.getYear());
@@ -224,8 +224,9 @@ public class LogicaOfertas {
 		_nuevaFechaActual.add(mes);
 		_nuevaFechaActual.add(dia);
 //		archivoJSON.setFecha(_nuevaFechaActual);
+//		archivoJSON.generarJSON("fechaActual"); 
 		return _nuevaFechaActual;
-//		archivoJSON.generarJSON("fechaActual");  
+		 
 	}
 	public LocalDate devolverFechaActual() {
 	    archivoJSON = archivoJSON.leerJSON("fechaActual");

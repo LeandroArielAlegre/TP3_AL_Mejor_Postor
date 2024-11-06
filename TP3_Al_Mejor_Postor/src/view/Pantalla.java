@@ -13,16 +13,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDayChooser;
-
 import modelo.Oferta;
 import presentador.PresentadorOfertas;
-
 import java.awt.Color;
 import javax.swing.SwingConstants;
-
 import java.awt.Font;
 import java.awt.Component;
 import java.util.Timer;
@@ -80,7 +74,7 @@ public class Pantalla {
 		presentadorOfertas = new PresentadorOfertas();
 		//System.out.println(presentadorOfertas.actualizarFechaActual(fechaActual));
 
-		fechaActual =presentadorOfertas.devolverFechaActual();
+		fechaActual = presentadorOfertas.devolverFechaActual();
 		
 		frame = new JFrame();
 		tablaOfertas = new TablaOfertas();
@@ -89,7 +83,7 @@ public class Pantalla {
 		frame.setBounds(100, 100, 1010, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		iniciarTemporizador();
+		iniciarTemporizadorDia();
 
 		panelPaginas = new JPanel();
 		panelPaginas.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -140,15 +134,14 @@ public class Pantalla {
 		btnGuardarTabla.setFocusable(false);
 		btnGuardarTabla.setBounds(10, 151, 103, 30);
 		btnGuardarTabla.addActionListener(e -> {
-			String nombreDeArchivo = cargarNombreDeArchivo();
+
+			String nombreDeArchivo = (cargarNombreDeArchivo()+"_"+fechaActual.toString());
 			if(nombreDeArchivo != null) {
 				if(presentadorOfertas.guardarOfertas(nombreDeArchivo)) {
 					JOptionPane.showMessageDialog(null, "El archivo se guardo exitosamente");
 				}		
-			}else {
-				JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");
 			}
-
+//				JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");			
 		});
 		frame.getContentPane().add(btnGuardarTabla);
 
@@ -269,11 +262,12 @@ public class Pantalla {
 				diaTranscurrido=false;
 				btnMejoresOfertas.setVisible(false);
 				btnSiguienteDia.setVisible(false);
+				btnFinalizarDia.setVisible(true);
 				presentadorOfertas.borrarListaDeOfertas();
 				limpiarTablaOfertas();
 				incrementarUnDia();
 				actualizarLabelFechaActual(lblFechaActual);
-				iniciarTemporizador();
+				iniciarTemporizadorDia();
 			}
 
 			private void incrementarUnDia() {
@@ -307,7 +301,8 @@ public class Pantalla {
 				btnMostrarFecha.addActionListener(e2->{
 					Date fecha = dateChooser.getDate();
 					SimpleDateFormat formato = new SimpleDateFormat("d/MM/yyyy");
-					String stFecha= formato.format(fecha);
+//					@SuppressWarnings("unused")
+//					String stFecha= formato.format(fecha);
 					
 					JOptionPane.showMessageDialog(null,
 	                        ""+ formato.format(fecha));
@@ -338,10 +333,17 @@ public class Pantalla {
 		lblFechaActual.setText(_fecha);
 	}
 	
-	private void iniciarTemporizador() {
+	private String convertirLocalDateAString(LocalDate fecha) {
+		String año = String.valueOf(fecha.getYear());
+		String mes=String.valueOf(fecha.getMonthValue());
+		String dia=String.valueOf(fecha.getDayOfMonth());
+		return año + " - " + mes + " - " + dia;
+	}
+	
+	private void iniciarTemporizadorDia() {
 		 timer = new Timer();
 		 
-		 TimerTask task1 = new TimerTask() {
+		 TimerTask tarea1 = new TimerTask() {
 	            public void run() {
 	            	EventQueue.invokeLater(() -> {
 	                    diaTranscurrido = true;
@@ -355,7 +357,7 @@ public class Pantalla {
 	                });
 	            }
 	        };
-	    timer.schedule(task1, duracionDeDia);
+	    timer.schedule(tarea1, duracionDeDia);
 		
 	}
 
@@ -510,11 +512,6 @@ public class Pantalla {
 		}
 	}
 	
-	private String convertirLocalDateAString(LocalDate fecha) {
-		String año = String.valueOf(fecha.getYear());
-		String mes=String.valueOf(fecha.getMonthValue());
-		String dia=String.valueOf(fecha.getDayOfMonth());
-		return año + " - " + mes + " - " + dia;
-	}
+	
 }
 

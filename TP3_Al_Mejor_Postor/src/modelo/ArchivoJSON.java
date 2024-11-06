@@ -3,7 +3,6 @@ package modelo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,7 +28,7 @@ public void generarJSON(String archivo) {
         writer.write(json);
         writer.close();
     } catch (Exception e) {
-        e.printStackTrace();
+//        e.printStackTrace();
         throw new IllegalArgumentException("ERROR INESPERADO: " + e.getMessage());
     }
 }
