@@ -18,18 +18,14 @@ public class LogicaOfertas {
 //        archivoJSONFecha = new ArchivoJSON();
     }
     
-    public boolean guardarOferta(String nombreArchivo) {
+    public void guardarOferta(String nombreArchivo) {
 		HashMap<Integer, Oferta> ofertasLocales= getListaDeOfertas();
 		
-	    try {
 	        archivoJSON.setListaDeOfertas(ofertasLocales);
 	        actualizarFechaActual(devolverFechaActual());
 //	        archivoJSON.setFecha(actualizarFechaActual(devolverFechaActual()));
 	        archivoJSON.generarJSON(nombreArchivo);
-	        return true;
-	    } catch (Exception e) {
-	        return false;
-	    }
+
 	}
     public void cargarOfertasDeArchivo(String archivo) {
 		this.archivoJSON = archivoJSON.leerJSON(archivo);
@@ -238,6 +234,13 @@ public class LogicaOfertas {
 	    } catch (Exception e) {
 	        throw new IllegalArgumentException("ERROR: No se pudo leer la fecha actual");
 	    }
+	}
+
+	public boolean puedeGuardarOferta(String nombreDeArchivo) {
+		if (nombreDeArchivo.isEmpty()||nombreDeArchivo==null) {
+			return false;
+		}
+		return true;
 	}
 
 }

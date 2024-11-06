@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
 import modelo.Oferta;
 import presentador.PresentadorOfertas;
 import java.awt.Color;
@@ -25,7 +26,8 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
-import com.toedter.calendar.JDateChooser;
+
+import com.toedter.calendar.JCalendar;
 
 public class Pantalla {
 
@@ -41,8 +43,7 @@ public class Pantalla {
 	private JButton btnFinalizarDia;
 	private Timer timer;
     private long duracionDeDia = 15 * 1000;
-//	private JCalendar calendar;
-	private LocalDate fechaActual; //= LocalDate.of(2024, 11, 5);
+	private LocalDate fechaActual;
 	/**
 	 * Launch the application.
 	 */
@@ -72,10 +73,7 @@ public class Pantalla {
 	private void initialize() {
 		diaTranscurrido = false;
 		presentadorOfertas = new PresentadorOfertas();
-		//System.out.println(presentadorOfertas.actualizarFechaActual(fechaActual));
-
-		fechaActual = presentadorOfertas.devolverFechaActual();
-		
+		fechaActual = presentadorOfertas.devolverFechaActual();		
 		frame = new JFrame();
 		tablaOfertas = new TablaOfertas();
 		tablaMejoresOfertas = new TablaOfertas();
@@ -90,7 +88,7 @@ public class Pantalla {
 		panelPaginas.setBounds(123, 30, 861, 435);
 		panelPaginas.setLayout(null);
 		frame.getContentPane().add(panelPaginas);
-		mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
+		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
 		
 		// Instanciar 
 //		calendar = new JCalendar(); 
@@ -124,26 +122,26 @@ public class Pantalla {
 		btnLimpiarTabla.setFocusable(false);
 		btnLimpiarTabla.setBounds(10, 110, 103, 30);
 		btnLimpiarTabla.addActionListener(e -> {
+			
 			presentadorOfertas.borrarListaDeOfertas();
 			limpiarTablaOfertas();
 		});
 		frame.getContentPane().add(btnLimpiarTabla);
 		
-		JButton btnGuardarTabla = new JButton("Guardar");
-		btnGuardarTabla.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnGuardarTabla.setFocusable(false);
-		btnGuardarTabla.setBounds(10, 151, 103, 30);
-		btnGuardarTabla.addActionListener(e -> {
-
-			String nombreDeArchivo = (cargarNombreDeArchivo()+"_"+fechaActual.toString());
-			if(nombreDeArchivo != null) {
-				if(presentadorOfertas.guardarOfertas(nombreDeArchivo)) {
+		JButton btnGuardarOfertas = new JButton("Guardar");
+		btnGuardarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnGuardarOfertas.setFocusable(false);
+		btnGuardarOfertas.setBounds(10, 151, 103, 30);
+		btnGuardarOfertas.addActionListener(e -> {
+			String nombreDeArchivo = (fechaActual.toString());
+				if(presentadorOfertas.puedeGuardarOfertas(nombreDeArchivo)) {
+					presentadorOfertas.guardarOfertas(nombreDeArchivo);
 					JOptionPane.showMessageDialog(null, "El archivo se guardo exitosamente");
-				}		
-			}
-//				JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");			
-		});
-		frame.getContentPane().add(btnGuardarTabla);
+				}else {		
+					JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");			
+				}
+				});
+		frame.getContentPane().add(btnGuardarOfertas);
 
 		JButton btnCargarOfertas = new JButton("Cargar");
 		btnCargarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -156,9 +154,9 @@ public class Pantalla {
 					limpiarTablaOfertas();
 					diaTranscurrido = true;
                     btnMejoresOfertas.setVisible(true);                 
-//                    btnSiguienteDia.setVisible(false);
                     btnFinalizarDia.setVisible(false);
-                    
+                    btnGuardarOfertas.setVisible(false); 
+                    btnSiguienteDia.setVisible(true);
                     if (timer != null) {
                         timer.cancel();
                     }
@@ -197,7 +195,7 @@ public class Pantalla {
 			if (!listaOfertaOrdenadas.isEmpty()) {
 				ArrayList<Oferta> mejoresOfertasPorBeneficio = new ArrayList<>(presentadorOfertas.devolverOfertasQueNoSeSolapan(listaOfertaOrdenadas));
 				if (!mejoresOfertasPorBeneficio.isEmpty()) {
-					mostrarPanelEnContenedor(tablaMejoresOfertas,panelPaginas);
+					mostrarPanelEnOtroPanel(tablaMejoresOfertas,panelPaginas);
 					tablaMejoresOfertas.limpiarTabla();
 					for (Oferta oferta : mejoresOfertasPorBeneficio) {
 						String dniCliente = String.valueOf(oferta.getDni());
@@ -220,9 +218,7 @@ public class Pantalla {
 		btnVolver.setFocusable(false);
 		btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnVolver.addActionListener(e-> {
-			mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
-			
-		
+			mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);					
 		});
 		btnVolver.setBounds(10, 28, 103, 30);
 		frame.getContentPane().add(btnVolver);
@@ -281,52 +277,70 @@ public class Pantalla {
 		btnSiguienteDia.setBounds(10, 320, 103, 30);
 		frame.getContentPane().add(btnSiguienteDia);		
 		
-		JButton btnCalendario = new JButton("Calendario");
+		JPanel panelCalendario = new JPanel();
+		panelCalendario.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelCalendario.setBounds(123, 30, 861, 435);
+		panelCalendario.setLayout(null);
+		JCalendar calendario = new JCalendar();
+		calendario.setBounds(18, 18, panelCalendario.getWidth()-50, panelCalendario.getHeight()-80);
+		panelCalendario.add(calendario);
+		
+		JButton btnMostrarFecha = new JButton("Mostrar ofertas de fecha seleccionada");		
+		btnMostrarFecha.setText("<html>" + btnMostrarFecha.getText().replace("\n", "<br>") + "</html>");
+		btnMostrarFecha.setBounds(10, panelCalendario.getHeight() - 95, 100, 70);
+		panelCalendario.add(btnMostrarFecha);
+		
+		btnMostrarFecha.addActionListener(e->{
+			Date fecha = calendario.getDate();
+			SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/d");
+//			ArchivoJSON json= new ArchivoJSON();
+			String stFecha= formato.format(fecha);
+			
+			JOptionPane.showMessageDialog(null,
+                    ""+ stFecha.replace("/", "-"));
+			
+		});
+		
+		JButton btnCalendario = new JButton("Cargar con calendario");
+		btnCalendario.setText("<html>" + btnCalendario.getText().replace("\n", "<br>") + "</html>");		
+		btnCalendario.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnCalendario.addActionListener(e->{
 			
-				JPanel panelCalendario = new JPanel();
-				panelCalendario.setBounds(123, 30, 861, 435);
-//				panelCalendario.add(calendar);
-				JDateChooser dateChooser = new JDateChooser();
-				dateChooser.setBounds(80, 69, 70, 20);
-				panelCalendario.add(dateChooser);
-				
-//				JDayChooser dayChooser = calendar.getDayChooser();
-//				dayChooser.setAlwaysFireDayProperty(true); // here is the key
-//				dayChooser.addPropertyChangeListener("day", calendar);
-//				calendar.getDayChooser();
-				JButton btnMostrarFecha = new JButton("Calendario");				
-				panelCalendario.add(btnMostrarFecha);
-				btnMostrarFecha.setBounds(430, 353, 100, 100);
-				btnMostrarFecha.addActionListener(e2->{
-					Date fecha = dateChooser.getDate();
-					SimpleDateFormat formato = new SimpleDateFormat("d/MM/yyyy");
-//					@SuppressWarnings("unused")
+			mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);	
+//				JPanel panelCalendario = new JPanel();
+//				panelCalendario.setBounds(123, 30, 861, 435);
+////				panelCalendario.add(calendar);
+//				JCalendar calendario = new JCalendar();
+////				calendario.setBounds(0, 0, 861, 435);
+////				JDateChooser dateChooser = new JDateChooser();
+//
+////				dateChooser.setBounds(0, 0, 800, 800);
+//				panelCalendario.add(calendario);
+//				
+////				JDayChooser dayChooser = calendar.getDayChooser();
+////				dayChooser.setAlwaysFireDayProperty(true); // here is the key
+////				dayChooser.addPropertyChangeListener("day", calendar);
+////				calendar.getDayChooser();
+//				JButton btnMostrarFecha = new JButton("Mostrar Fecha Seleccionada");		
+//				btnMostrarFecha.setText("<html>" + btnMostrarFecha.getText().replace("\n", "<br>") + "</html>");
+//				btnMostrarFecha.setBounds(430, 353, 700, 700);
+//				panelCalendario.add(btnMostrarFecha);
+//				
+//				btnMostrarFecha.addActionListener(e2->{
+//					Date fecha = calendario.getDate();
+//					SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/d");
+////					ArchivoJSON json= new ArchivoJSON();
 //					String stFecha= formato.format(fecha);
-					
-					JOptionPane.showMessageDialog(null,
-	                        ""+ formato.format(fecha));
-					
-				});
-				mostrarPanelEnContenedor(panelCalendario,panelPaginas);
-				
-				
-//				btnCalendario.addActionListener
-			
-				
+//					
+//					JOptionPane.showMessageDialog(null,
+//	                        ""+ stFecha.replace("/", "-"));
+//					
+//				});
+//				mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);							
 		});
-		btnCalendario.setBounds(10, 360, 89, 23);
-		frame.getContentPane().add(btnCalendario);
-		
-		
-		
-		
-
-		 
-	
-
+		btnCalendario.setBounds(10, 361, 103, 47);
+		frame.getContentPane().add(btnCalendario);								 	
 	}
-
 	
 	private void actualizarLabelFechaActual(JLabel lblFechaActual) {
 		String _fecha = convertirLocalDateAString(fechaActual);
@@ -359,18 +373,6 @@ public class Pantalla {
 	        };
 	    timer.schedule(tarea1, duracionDeDia);
 		
-	}
-
-	/**
-	   @param nuevoPanel Panel a crear
-	   @param contenedor Panel que alojara al nuevo panel
-	 */
-	private void mostrarPanelEnContenedor(JPanel nuevoPanel, JPanel contenedor) {
-		nuevoPanel.setBounds(10, 11, 841, 415);
-		contenedor.removeAll();
-		contenedor.add(nuevoPanel);
-		contenedor.revalidate();
-		contenedor.repaint();
 	}
 	
 	private void crearOferta() {
@@ -417,7 +419,7 @@ public class Pantalla {
 		textHorarioFin.setBounds(180, 180, 150, 25);
 		panel.add(textHorarioFin);
 
-		mostrarPanelEnContenedor(panel,panelPaginas);	
+		mostrarPanelEnOtroPanel(panel,panelPaginas);	
 
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(e->{
@@ -439,7 +441,7 @@ public class Pantalla {
 					try { 				
 						if (presentadorOfertas.puedeAgregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {					
 						presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
-						mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
+						mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
 						String horarioOferta =  horarioI + " a " + horarioF;
 						
 						tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
@@ -488,9 +490,17 @@ public class Pantalla {
 	}
 
 	public void limpiarTablaOfertas() {
-		mostrarPanelEnContenedor(tablaOfertas,panelPaginas);
 		tablaOfertas.limpiarTabla();
+		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
 
+	}
+	
+	private void mostrarPanelEnOtroPanel(JPanel nuevoPanel, JPanel contenedor) {
+		nuevoPanel.setBounds(10, 11, 841, 415);
+		contenedor.removeAll();
+		contenedor.add(nuevoPanel);
+		contenedor.revalidate();
+		contenedor.repaint();
 	}
 	
 	private String cargarNombreDeArchivo() {
@@ -511,7 +521,5 @@ public class Pantalla {
 			return null;
 		}
 	}
-	
-	
 }
 
