@@ -8,13 +8,13 @@ public class Oferta implements Serializable,  Comparable<Oferta>{
     private double precio;
     private int horaDeInicio;
     private int horaDeFinalizacion;
-
+    private static final long serialVersionUID = 1L;
+    
     public Oferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
         if (horaDeInicio >= horaDeFinalizacion || horaDeInicio < 0 || horaDeFinalizacion > 24) {
             throw new IllegalArgumentException("El intervalo de tiempo desde " + horaDeInicio 
                     + " hasta " + horaDeFinalizacion + " es inválido.");
         }
-
         if (precio <= 0) {
             throw new IllegalArgumentException("El precio debe ser positivo.");
         }
@@ -35,12 +35,6 @@ public class Oferta implements Serializable,  Comparable<Oferta>{
     public double calcularGananciasPorHora() {
         return precio / (horaDeFinalizacion - horaDeInicio);
     }
-
-    @Override
-	public String toString() {
-		return "Oferta [nombre=" + nombre + ", dni=" + dni + ", precio=" + precio + ", horaDeInicio=" + horaDeInicio
-				+ ", horaDeFinalizacion=" + horaDeFinalizacion + "]\n";
-	}
 
 	public int getHoraDeInicio() {
         return horaDeInicio;
@@ -70,11 +64,8 @@ public class Oferta implements Serializable,  Comparable<Oferta>{
 
     public int getDni() {
         return dni;
-    }
-
-    // ID serial para asegurar compatibilidad en la serialización
-    private static final long serialVersionUID = 1L;
-
+    }   
+    
 	@Override
 	public int compareTo(Oferta o) {
 		if (this.getDni()==o.getDni()&&this.getNombre().equals(o.getNombre())&&this.getPrecio()==o.getPrecio()) {

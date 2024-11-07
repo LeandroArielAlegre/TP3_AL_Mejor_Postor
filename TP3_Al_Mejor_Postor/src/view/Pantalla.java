@@ -41,12 +41,13 @@ public class Pantalla {
 	private JButton btnMejoresOfertas;
 	private JButton btnSiguienteDia;
 	private JButton btnFinalizarDia;
+	private JButton btnGuardarOfertas;
 	private Timer timer;
-    private long duracionDeDia = 15 * 1000;
+	Integer tiempo;
+	private long duracionDeDia = 30 * 1000;
 	private LocalDate fechaActual;
-	/**
-	 * Launch the application.
-	 */
+	private JLabel lblTiempoActual;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,16 +61,11 @@ public class Pantalla {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
+
 	public Pantalla() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		diaTranscurrido = false;
 		presentadorOfertas = new PresentadorOfertas();
@@ -77,7 +73,7 @@ public class Pantalla {
 		frame = new JFrame();
 		tablaOfertas = new TablaOfertas();
 		tablaMejoresOfertas = new TablaOfertas();
-				
+
 		frame.setBounds(100, 100, 1010, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -89,17 +85,7 @@ public class Pantalla {
 		panelPaginas.setLayout(null);
 		frame.getContentPane().add(panelPaginas);
 		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
-		
-		// Instanciar 
-//		calendar = new JCalendar(); 
-		
-		
-		// Ubicar y agregar al panel
-		
-//		calendar.setBounds(0, 0, 800, 800);
-//		otroFrame.getContentPane().add(calendar);
-			//System.out.println(calendar.getDate());*/
-		
+
 		JLabel lblFechaActual = new JLabel(" ");
 		lblFechaActual.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFechaActual.setBounds(407, 11, 166, 14);
@@ -116,31 +102,31 @@ public class Pantalla {
 			crearOferta();
 		});
 		frame.getContentPane().add(btnAgregarOferta);
-		
+
 		JButton btnLimpiarTabla = new JButton("Limpiar Tabla");
 		btnLimpiarTabla.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnLimpiarTabla.setFocusable(false);
 		btnLimpiarTabla.setBounds(10, 110, 103, 30);
-		btnLimpiarTabla.addActionListener(e -> {
-			
+		btnLimpiarTabla.addActionListener(e -> {			
 			presentadorOfertas.borrarListaDeOfertas();
 			limpiarTablaOfertas();
 		});
 		frame.getContentPane().add(btnLimpiarTabla);
-		
-		JButton btnGuardarOfertas = new JButton("Guardar");
+
+		btnGuardarOfertas = new JButton("Guardar");
 		btnGuardarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnGuardarOfertas.setFocusable(false);
 		btnGuardarOfertas.setBounds(10, 151, 103, 30);
+		btnGuardarOfertas.setVisible(false);
 		btnGuardarOfertas.addActionListener(e -> {
 			String nombreDeArchivo = (fechaActual.toString());
-				if(presentadorOfertas.puedeGuardarOfertas(nombreDeArchivo)) {
-					presentadorOfertas.guardarOfertas(nombreDeArchivo);
-					JOptionPane.showMessageDialog(null, "El archivo se guardo exitosamente");
-				}else {		
-					JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");			
-				}
-				});
+			if(presentadorOfertas.puedeGuardarOfertas(nombreDeArchivo)) {
+				presentadorOfertas.guardarOfertas(nombreDeArchivo);
+				JOptionPane.showMessageDialog(null, "El archivo se guardo exitosamente");
+			}else {		
+				JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");			
+			}
+		});
 		frame.getContentPane().add(btnGuardarOfertas);
 
 		JButton btnCargarOfertas = new JButton("Cargar");
@@ -150,20 +136,21 @@ public class Pantalla {
 		btnCargarOfertas.addActionListener(e -> {
 			String nombreDeArchivo = cargarNombreDeArchivo();
 			if(nombreDeArchivo != null) {
-				if(presentadorOfertas.cargarOfertasDeArchivo(nombreDeArchivo)) {
+				if(presentadorOfertas.puedeCargarOfertasDeArchivo(nombreDeArchivo)) {
+					presentadorOfertas.cargarOfertasDeArchivo(nombreDeArchivo);
 					limpiarTablaOfertas();
 					diaTranscurrido = true;
-                    btnMejoresOfertas.setVisible(true);                 
-                    btnFinalizarDia.setVisible(false);
-                    btnGuardarOfertas.setVisible(false); 
-                    btnSiguienteDia.setVisible(true);
-                    if (timer != null) {
-                        timer.cancel();
-                    }
-                    JOptionPane.showMessageDialog(frame,
-                            "El día ha finalizado. Ya no se pueden ingresar más ofertas.",
-                            "Fin del día",
-                            JOptionPane.INFORMATION_MESSAGE);
+					btnMejoresOfertas.setVisible(true);                 
+					btnFinalizarDia.setVisible(false);
+					btnGuardarOfertas.setVisible(false); 
+					btnSiguienteDia.setVisible(true);
+					if (timer != null) {
+						timer.cancel();
+					}
+					JOptionPane.showMessageDialog(frame,
+							"El día ha finalizado. Ya no se pueden ingresar más ofertas.",
+							"Fin del día",
+							JOptionPane.INFORMATION_MESSAGE);
 					ArrayList<Integer> listaDeDNIClientes = presentadorOfertas.devolverDNISComoInteger();
 
 					for (int dni : listaDeDNIClientes) {
@@ -173,7 +160,7 @@ public class Pantalla {
 						tablaOfertas.agregarOfertaEnTabla(datosDeOferta.get(0), datosDeOferta.get(1), "$"+datosDeOferta.get(2), datosDeOferta.get(3) + " a " + datosDeOferta.get(4));
 					}
 					JOptionPane.showMessageDialog(null, "El archivo se cargo exitosamente");
-					
+
 				}else{
 					JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
 				}
@@ -182,7 +169,7 @@ public class Pantalla {
 			}
 		});
 		frame.getContentPane().add(btnCargarOfertas);
-		
+
 		btnMejoresOfertas = new JButton("Mostrar mejores ofertas");
 		btnMejoresOfertas.setVisible(false);
 		btnMejoresOfertas.setVerticalAlignment(SwingConstants.TOP);
@@ -213,7 +200,7 @@ public class Pantalla {
 		});
 		btnMejoresOfertas.setBounds(10, 233, 103, 35);
 		frame.getContentPane().add(btnMejoresOfertas);
-		
+
 		JButton btnVolver = new JButton("Volver Atras");
 		btnVolver.setFocusable(false);
 		btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -222,35 +209,36 @@ public class Pantalla {
 		});
 		btnVolver.setBounds(10, 28, 103, 30);
 		frame.getContentPane().add(btnVolver);
-		
+
 		btnFinalizarDia = new JButton("Finalizar Dia");
 		btnFinalizarDia.setFocusable(false);
 		btnFinalizarDia.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnFinalizarDia.addActionListener(e-> {
-            if (!diaTranscurrido) {
-                int confirmacion = JOptionPane.showConfirmDialog(frame,
-                    "¿Está seguro que desea finalizar el día?\nNo podrá agregar más ofertas.",
-                    "Confirmar finalización",
-                    JOptionPane.YES_NO_OPTION);
-                
-                if (confirmacion == JOptionPane.YES_OPTION) {
-                    diaTranscurrido = true;
-                    btnMejoresOfertas.setVisible(true);
-                    btnSiguienteDia.setVisible(true);
-                    btnFinalizarDia.setVisible(false);
-                    if (timer != null) {
-                        timer.cancel();
-                    }
-                    JOptionPane.showMessageDialog(frame,
-                        "El día ha finalizado. Ya no se pueden ingresar más ofertas.",
-                        "Fin del día",
-                        JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
+			if (!diaTranscurrido) {
+				int confirmacion = JOptionPane.showConfirmDialog(frame,
+						"¿Está seguro que desea finalizar el día?\nNo podrá agregar más ofertas.",
+						"Confirmar finalización",
+						JOptionPane.YES_NO_OPTION);
+
+				if (confirmacion == JOptionPane.YES_OPTION) {
+					diaTranscurrido = true;
+					btnMejoresOfertas.setVisible(true);
+					btnSiguienteDia.setVisible(true);
+					btnFinalizarDia.setVisible(false);
+					btnGuardarOfertas.setVisible(true);
+					if (timer != null) {
+						timer.cancel();
+					}
+					JOptionPane.showMessageDialog(frame,
+							"El día ha finalizado. Ya no se pueden ingresar más ofertas.",
+							"Fin del día",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
 		});
 		btnFinalizarDia.setBounds(10, 279, 103, 30);
 		frame.getContentPane().add(btnFinalizarDia);		
-		
+
 		btnSiguienteDia = new JButton("Siguiente Dia");
 		btnSiguienteDia.setVisible(false);
 		btnSiguienteDia.addActionListener(new ActionListener() {
@@ -259,13 +247,14 @@ public class Pantalla {
 				btnMejoresOfertas.setVisible(false);
 				btnSiguienteDia.setVisible(false);
 				btnFinalizarDia.setVisible(true);
+				btnGuardarOfertas.setVisible(false);
 				presentadorOfertas.borrarListaDeOfertas();
 				limpiarTablaOfertas();
 				incrementarUnDia();
 				actualizarLabelFechaActual(lblFechaActual);
 				iniciarTemporizadorDia();
 			}
-
+ 
 			private void incrementarUnDia() {
 				LocalDate nuevaFecha = fechaActual.plusDays(1);
 				fechaActual = nuevaFecha;
@@ -276,113 +265,129 @@ public class Pantalla {
 		btnSiguienteDia.setFocusable(false);
 		btnSiguienteDia.setBounds(10, 320, 103, 30);
 		frame.getContentPane().add(btnSiguienteDia);		
-		
+
 		JPanel panelCalendario = new JPanel();
 		panelCalendario.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelCalendario.setBounds(123, 30, 861, 435);
 		panelCalendario.setLayout(null);
+		
 		JCalendar calendario = new JCalendar();
-		calendario.setBounds(18, 18, panelCalendario.getWidth()-50, panelCalendario.getHeight()-80);
+		calendario.setBounds(14, 8, panelCalendario.getWidth()-48, panelCalendario.getHeight()-102);
 		panelCalendario.add(calendario);
-		
-		JButton btnMostrarFecha = new JButton("Mostrar ofertas de fecha seleccionada");		
-		btnMostrarFecha.setText("<html>" + btnMostrarFecha.getText().replace("\n", "<br>") + "</html>");
-		btnMostrarFecha.setBounds(10, panelCalendario.getHeight() - 95, 100, 70);
-		panelCalendario.add(btnMostrarFecha);
-		
-		btnMostrarFecha.addActionListener(e->{
+
+		JButton btnMostrarOfertasDeFechaSeleccionada = new JButton("Mostrar ofertas de fecha seleccionada");		
+		btnMostrarOfertasDeFechaSeleccionada.setText("<html>" + btnMostrarOfertasDeFechaSeleccionada.getText().replace("\n", "<br>") + "</html>");
+		btnMostrarOfertasDeFechaSeleccionada.setBounds(panelCalendario.getWidth()-135, panelCalendario.getHeight() - 95, 100, 70);
+		panelCalendario.add(btnMostrarOfertasDeFechaSeleccionada);
+
+		btnMostrarOfertasDeFechaSeleccionada.addActionListener(e->{
 			Date fecha = calendario.getDate();
 			SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/d");
-//			ArchivoJSON json= new ArchivoJSON();
-			String stFecha= formato.format(fecha);
-			
-			JOptionPane.showMessageDialog(null,
-                    ""+ stFecha.replace("/", "-"));
-			
+			String stFecha= formato.format(fecha).replace("/", "-");
+			if(presentadorOfertas.puedeCargarOfertasDeArchivo(stFecha)) {
+				presentadorOfertas.cargarOfertasDeArchivo(stFecha);
+				limpiarTablaOfertas();
+				diaTranscurrido = true;
+				btnMejoresOfertas.setVisible(true);                 
+				btnFinalizarDia.setVisible(false);
+				btnGuardarOfertas.setVisible(false); 
+				btnSiguienteDia.setVisible(true);
+				if (timer != null) {
+					timer.cancel();
+				}
+				JOptionPane.showMessageDialog(frame,
+						"El día ha finalizado. Ya no se pueden ingresar más ofertas.",
+						"Fin del día",
+						JOptionPane.INFORMATION_MESSAGE);
+				ArrayList<Integer> listaDeDNIClientes = presentadorOfertas.devolverDNISComoInteger();
+
+				for (int dni : listaDeDNIClientes) {
+					String dniCliente = String.valueOf(dni);
+					ArrayList<String> datosDeOferta = new ArrayList<String>();
+					datosDeOferta = presentadorOfertas.devolverOfertaComoUnaLista(dniCliente);
+					tablaOfertas.agregarOfertaEnTabla(datosDeOferta.get(0), datosDeOferta.get(1), "$"+datosDeOferta.get(2), datosDeOferta.get(3) + " a " + datosDeOferta.get(4));
+				}
+				JOptionPane.showMessageDialog(null, "El archivo se cargo exitosamente");
+
+			}else{
+				JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
+			}
+
 		});
-		
-		JButton btnCalendario = new JButton("Cargar con calendario");
-		btnCalendario.setText("<html>" + btnCalendario.getText().replace("\n", "<br>") + "</html>");		
-		btnCalendario.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnCalendario.addActionListener(e->{
-			
-			mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);	
-//				JPanel panelCalendario = new JPanel();
-//				panelCalendario.setBounds(123, 30, 861, 435);
-////				panelCalendario.add(calendar);
-//				JCalendar calendario = new JCalendar();
-////				calendario.setBounds(0, 0, 861, 435);
-////				JDateChooser dateChooser = new JDateChooser();
-//
-////				dateChooser.setBounds(0, 0, 800, 800);
-//				panelCalendario.add(calendario);
-//				
-////				JDayChooser dayChooser = calendar.getDayChooser();
-////				dayChooser.setAlwaysFireDayProperty(true); // here is the key
-////				dayChooser.addPropertyChangeListener("day", calendar);
-////				calendar.getDayChooser();
-//				JButton btnMostrarFecha = new JButton("Mostrar Fecha Seleccionada");		
-//				btnMostrarFecha.setText("<html>" + btnMostrarFecha.getText().replace("\n", "<br>") + "</html>");
-//				btnMostrarFecha.setBounds(430, 353, 700, 700);
-//				panelCalendario.add(btnMostrarFecha);
-//				
-//				btnMostrarFecha.addActionListener(e2->{
-//					Date fecha = calendario.getDate();
-//					SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/d");
-////					ArchivoJSON json= new ArchivoJSON();
-//					String stFecha= formato.format(fecha);
-//					
-//					JOptionPane.showMessageDialog(null,
-//	                        ""+ stFecha.replace("/", "-"));
-//					
-//				});
-//				mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);							
+
+		JButton btnCargarConCalendario = new JButton("Cargar con calendario");
+		btnCargarConCalendario.setFocusable(false);
+		btnCargarConCalendario.setText("<html>" + btnCargarConCalendario.getText().replace("\n", "<br>") + "</html>");		
+		btnCargarConCalendario.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnCargarConCalendario.addActionListener(e->{
+
+			mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);							
 		});
-		btnCalendario.setBounds(10, 361, 103, 47);
-		frame.getContentPane().add(btnCalendario);								 	
+		btnCargarConCalendario.setBounds(10, 361, 103, 47);
+		frame.getContentPane().add(btnCargarConCalendario);								 	
+
+		lblTiempoActual = new JLabel("Tiempo restante");
+		lblTiempoActual.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTiempoActual.setBounds(789, 11, 166, 14);
+		frame.getContentPane().add(lblTiempoActual);
 	}
-	
+
 	private void actualizarLabelFechaActual(JLabel lblFechaActual) {
 		String _fecha = convertirLocalDateAString(fechaActual);
 		lblFechaActual.setText(_fecha);
 	}
-	
+
 	private String convertirLocalDateAString(LocalDate fecha) {
 		String año = String.valueOf(fecha.getYear());
 		String mes=String.valueOf(fecha.getMonthValue());
 		String dia=String.valueOf(fecha.getDayOfMonth());
 		return año + " - " + mes + " - " + dia;
 	}
-	
+
 	private void iniciarTemporizadorDia() {
-		 timer = new Timer();
-		 
-		 TimerTask tarea1 = new TimerTask() {
-	            public void run() {
-	            	EventQueue.invokeLater(() -> {
-	                    diaTranscurrido = true;
-	                    btnMejoresOfertas.setVisible(true);
-	                    btnSiguienteDia.setVisible(true);
-	                    btnFinalizarDia.setVisible(false);
-	                    JOptionPane.showMessageDialog(frame, 
-	                        "El día ha finalizado. Ya no se pueden ingresar más ofertas.",
-	                        "Fin del día",
-	                        JOptionPane.INFORMATION_MESSAGE);
-	                });
-	            }
-	        };
-	    timer.schedule(tarea1, duracionDeDia);
-		
+		timer = new Timer();
+		tiempo = (int) (duracionDeDia/1000);;
+		TimerTask tarea1 = new TimerTask() {			
+			public void run() {							
+				EventQueue.invokeLater(() -> {
+					diaTranscurrido = true;
+					btnMejoresOfertas.setVisible(true);
+					btnSiguienteDia.setVisible(true);
+					btnFinalizarDia.setVisible(false);
+					btnGuardarOfertas.setVisible(true);
+					JOptionPane.showMessageDialog(frame, 
+							"El día ha finalizado. Ya no se pueden ingresar más ofertas.",
+							"Fin del día",
+							JOptionPane.INFORMATION_MESSAGE);
+				});
+			}
+		};
+		TimerTask tareaActualizarlbl = new TimerTask() {
+			
+			public void run() {						
+				EventQueue.invokeLater(() -> {
+					if(tiempo>0) { 
+						tiempo--;	            	
+						lblTiempoActual.setText("Tiempo restante " + tiempo.toString());
+					}else {
+						timer.cancel();
+					}
+				});
+			}
+		};
+		timer.schedule(tarea1, duracionDeDia);
+		timer.scheduleAtFixedRate(tareaActualizarlbl, 0, 1000);
+ 
 	}
-	
+
 	private void crearOferta() {
 		if (diaTranscurrido) {
-            JOptionPane.showMessageDialog(frame,
-                "No se pueden agregar más ofertas. El día ha finalizado.",
-                "Día finalizado",
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+			JOptionPane.showMessageDialog(frame,
+					"No se pueden agregar más ofertas. El día ha finalizado.",
+					"Día finalizado",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		JPanel panel = new JPanel();
 		panel.setBounds(new Rectangle(123, 30, 867, 438));
 		panel.setLayout(null);
@@ -428,10 +433,10 @@ public class Pantalla {
 			String precioOferta = textPrecio.getText().trim().toLowerCase();
 			String horarioI = textHorarioInicio.getText().trim().toLowerCase();
 			String horarioF = textHorarioFin.getText().trim().toLowerCase();
-			
+
 			if(!nombreOferta.isEmpty() && !dniOferta.isEmpty() && !precioOferta.isEmpty() && 
 					!horarioI.isEmpty() && !horarioF.isEmpty() ) {
-				
+
 				if (!contieneLetras(dniOferta)&&!contieneLetrasElHorario(horarioI,horarioF)&& !contieneLetras(precioOferta))	{	
 					int dniCliente = Integer.parseInt(dniOferta);
 					int horarioInicial = Integer.parseInt(horarioI);
@@ -440,17 +445,17 @@ public class Pantalla {
 
 					try { 				
 						if (presentadorOfertas.puedeAgregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {					
-						presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
-						mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
-						String horarioOferta =  horarioI + " a " + horarioF;
-						
-						tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
-						eliminarFilaDeTablaConDniSiEsRepetido(dniCliente);						
+							presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
+							mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
+							String horarioOferta =  horarioI + " a " + horarioF;
+
+							tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
+							eliminarFilaDeTablaConDniSiEsRepetido(dniCliente);						
 						}
 					}catch (IllegalArgumentException ex) {
 						JOptionPane.showMessageDialog(null, ex.getMessage());
 					}
-							
+
 				}else {
 					JOptionPane.showMessageDialog(null, "Error: Las entradas numericas no deben tener letras involucradas");
 				}
@@ -475,15 +480,15 @@ public class Pantalla {
 			return false;
 		}
 	}
-	
+
 	public void eliminarFilaDeTablaConDniSiEsRepetido(int dni) {
 		String dniCliente = String.valueOf(dni);
 		if(tablaOfertas.contarDuplicadosPorDni(dniCliente) > 1){
 			tablaOfertas.eliminarFilaPorDni(dniCliente);
 		}
-		
+
 	}
-	
+
 	private boolean contieneLetras(String precioOferta) {
 		return precioOferta.contains("a")||precioOferta.contains("e")||precioOferta.contains("i")||precioOferta.contains("o")||precioOferta.contains("u");
 
@@ -494,7 +499,7 @@ public class Pantalla {
 		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
 
 	}
-	
+
 	private void mostrarPanelEnOtroPanel(JPanel nuevoPanel, JPanel contenedor) {
 		nuevoPanel.setBounds(10, 11, 841, 415);
 		contenedor.removeAll();
@@ -502,11 +507,11 @@ public class Pantalla {
 		contenedor.revalidate();
 		contenedor.repaint();
 	}
-	
+
 	private String cargarNombreDeArchivo() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 1));
-		JLabel label = new JLabel("Coloque el nombre del archivo:");
+		JLabel label = new JLabel("Coloque el nombre del archivo: numeroDeAnio-numeroDeMes-numeroDeDia");
 		panel.add(label);
 		JTextField textField = new JTextField(10);
 		panel.add(textField);
