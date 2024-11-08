@@ -114,31 +114,31 @@ public class LogicaOfertas {
 		mapDeOfertas.remove(dni);
 	}
 
-	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
+	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorGananciasPorHora(){
 
-		ArrayList<Oferta> listaDeOfertasOrdenada = new ArrayList<Oferta>(this.mapDeOfertas.values());
-		Collections.sort(listaDeOfertasOrdenada, (o1,o2) -> Double.compare(o1.calcularGananciasPorHora(), o2.calcularGananciasPorHora()));
-		Collections.reverse(listaDeOfertasOrdenada);
+		ArrayList<Oferta> listaDeOfertasOrdenadaPorGananciasPorHora = new ArrayList<Oferta>(this.mapDeOfertas.values());
+		Collections.sort(listaDeOfertasOrdenadaPorGananciasPorHora, (oferta1,oferta2) -> Double.compare(oferta1.calcularGananciasPorHora(), oferta2.calcularGananciasPorHora()));
+		Collections.reverse(listaDeOfertasOrdenadaPorGananciasPorHora);
 
-		return listaDeOfertasOrdenada;
+		return listaDeOfertasOrdenadaPorGananciasPorHora;
 
 	}
 
 	public ArrayList<Oferta> devolverOfertasQueNoSeSolapan(ArrayList<Oferta> listaDeOfertasOrdenada){
 		ArrayList<Oferta> listaDeOfertasQueNoSeSolapan = new ArrayList<Oferta>();
 
-		for (Oferta ofertaActual : listaDeOfertasOrdenada) {
+		for (Oferta oferta : listaDeOfertasOrdenada) {
 			boolean seSolapan = false;
 
-			for (Oferta ofertaSeleccionada : listaDeOfertasQueNoSeSolapan) {
-				if (ofertaActual.seSolapaCon(ofertaSeleccionada)) {
+			for (Oferta otraOferta : listaDeOfertasQueNoSeSolapan) {
+				if (oferta.seSolapaCon(otraOferta)) {
 					seSolapan = true;
 					break; 
 				}
 			}
 
 			if (!seSolapan) {
-				listaDeOfertasQueNoSeSolapan.add(ofertaActual);
+				listaDeOfertasQueNoSeSolapan.add(oferta);
 			}
 		}
 

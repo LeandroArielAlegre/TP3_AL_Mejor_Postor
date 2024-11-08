@@ -84,10 +84,10 @@ public class PresentadorOfertas {
 
 	}
 
-	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorBeneficio(){
+	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorGananciasPorHora(){
 
 		try {
-			return 	logica.devolverListaDeOfertasOrdenadaPorBeneficio();
+			return 	logica.devolverListaDeOfertasOrdenadaPorGananciasPorHora();
 
 		}catch (IllegalArgumentException e){
 			return null;
