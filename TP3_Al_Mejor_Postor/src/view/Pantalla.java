@@ -38,20 +38,17 @@ public class Pantalla {
 	private JPanel panelPaginas;
 	private PresentadorOfertas presentadorOfertas;
 	private Boolean diaTranscurrido;
-	
 	private JButton btnFinalizarDia;
 	private JButton btnGuardarOfertas;
 	protected JButton btnMejoresOfertas;
 	protected JButton btnSiguienteDia;
-
 	private Timer timer;
 	private Integer tiempoTranscurrido;
 	private long duracionDeDia = 30 * 1000;
 	private LocalDate fechaActual;
 	private JLabel lblTiempoActual;
 	private JLabel lblFechaActual;
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -64,7 +61,6 @@ public class Pantalla {
 			}
 		});
 	}
-
 
 	public Pantalla() {
 		initialize();
@@ -148,7 +144,7 @@ public class Pantalla {
 						new ArrayList<>(presentadorOfertas.
 								devolverOfertasQueNoSeSolapan(listaDeOfertasOrdenadasPorGananciasPorHora));
 				if (!mejoresOfertasPorBeneficio.isEmpty()) {
-					
+
 					tablaMejoresOfertas.limpiarTabla();
 					for (Oferta oferta : mejoresOfertasPorBeneficio) {
 						String dniCliente = String.valueOf(oferta.getDni());
@@ -160,7 +156,7 @@ public class Pantalla {
 								);
 					}
 					mostrarPanelEnOtroPanel(tablaMejoresOfertas,panelPaginas);
-						            		            	               
+
 				}   
 			} else {
 				JOptionPane.showMessageDialog(null, "Error: no existen ofertas");
@@ -168,17 +164,17 @@ public class Pantalla {
 		});
 		btnMejoresOfertas.setBounds(10, 233, 103, 35);
 		frame.getContentPane().add(btnMejoresOfertas);
-		
+
 		btnSiguienteDia = new JButton("Siguiente Dia");
 		btnSiguienteDia.setVisible(false);
 		btnSiguienteDia.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnSiguienteDia.setFocusable(false);
 		btnSiguienteDia.setBounds(10, 320, 103, 30);
 		btnSiguienteDia.addActionListener(e-> {
-				avanzarDia();				
+			avanzarDia();				
 		});				
 		frame.getContentPane().add(btnSiguienteDia);
-		
+
 		JButton btnCargarOfertas = new JButton("Cargar Ofertas");
 		btnCargarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnCargarOfertas.setFocusable(false);
@@ -195,7 +191,7 @@ public class Pantalla {
 			}else {
 				JOptionPane.showMessageDialog(null, "ERROR: nombre de archivo vacio");
 			}
-			
+
 		});
 		frame.getContentPane().add(btnCargarOfertas);
 
@@ -217,7 +213,6 @@ public class Pantalla {
 						"¿Está seguro que desea finalizar el día?\nNo podrá agregar más ofertas.",
 						"Confirmar finalización",
 						JOptionPane.YES_NO_OPTION);
-
 				if (confirmacion == JOptionPane.YES_OPTION) {
 					finalizarDia();
 				}
@@ -230,7 +225,7 @@ public class Pantalla {
 		panelCalendario.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelCalendario.setBounds(123, 30, 861, 435);
 		panelCalendario.setLayout(null);
-		
+
 		JCalendar calendario = new JCalendar();
 		calendario.setBounds(14, 8, panelCalendario.getWidth()-48, panelCalendario.getHeight()-102);
 		panelCalendario.add(calendario);
@@ -259,7 +254,6 @@ public class Pantalla {
 		btnCargarConCalendario.setText("<html>" + btnCargarConCalendario.getText().replace("\n", "<br>") + "</html>");		
 		btnCargarConCalendario.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnCargarConCalendario.addActionListener(e->{
-
 			mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);							
 		});
 		btnCargarConCalendario.setBounds(10, 361, 103, 47);
@@ -285,13 +279,18 @@ public class Pantalla {
 		iniciarTemporizadorDia();
 	}
 
+	private void incrementarUnDia() {
+		LocalDate nuevaFecha = fechaActual.plusDays(1);
+		fechaActual = nuevaFecha;
+		presentadorOfertas.actualizarFechaActual(nuevaFecha);	
+	}
 
 	private void finalizarDia() {
 		limpiarTablaOfertas();
 		diaTranscurrido = true;
 		btnMejoresOfertas.setVisible(true);                 
 		btnFinalizarDia.setVisible(false);
-		btnGuardarOfertas.setVisible(false); 
+		btnGuardarOfertas.setVisible(true); 
 		btnSiguienteDia.setVisible(true);
 		if (timer != null) {
 			timer.cancel();
@@ -301,7 +300,6 @@ public class Pantalla {
 				"Fin del día",
 				JOptionPane.INFORMATION_MESSAGE);		
 	}
-
 
 	private void agregarOfertasEnTabla() {
 		ArrayList<Integer> listaDeDNIClientes = presentadorOfertas.devolverDNISComoInteger();
@@ -313,13 +311,6 @@ public class Pantalla {
 		}
 		JOptionPane.showMessageDialog(null, "El archivo se cargo exitosamente");
 	}
-	
-	private void incrementarUnDia() {
-		LocalDate nuevaFecha = fechaActual.plusDays(1);
-		fechaActual = nuevaFecha;
-		presentadorOfertas.actualizarFechaActual(nuevaFecha);	
-	}
-
 
 	private String cargarNombreDeArchivo() {
 		JPanel panel = new JPanel();
@@ -339,7 +330,7 @@ public class Pantalla {
 			return null;
 		}
 	}
-	
+
 	private void iniciarTemporizadorDia() {
 		timer = new Timer();
 		tiempoTranscurrido = (int) (duracionDeDia/1000);;
@@ -359,7 +350,7 @@ public class Pantalla {
 			}
 		};
 		TimerTask tareaActualizarlbl = new TimerTask() {
-			
+
 			public void run() {						
 				EventQueue.invokeLater(() -> {
 					if(tiempoTranscurrido>0) { 
@@ -374,7 +365,7 @@ public class Pantalla {
 		timer.schedule(tarea1, duracionDeDia);
 		timer.scheduleAtFixedRate(tareaActualizarlbl, 0, 1000); 
 	}
-	
+
 	private void crearOfertaEnTabla() {
 		if (diaTranscurrido) {
 			JOptionPane.showMessageDialog(frame,
@@ -439,18 +430,18 @@ public class Pantalla {
 					int horarioFinal = Integer.parseInt(horarioF);
 					double precioOfertado = Double.parseDouble(precioOferta);
 					if(soloLetras(nombreOferta)){
-					try { 				
-						if (presentadorOfertas.puedeAgregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {					
-							presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
-							mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
-							String horarioOferta =  horarioI + " a " + horarioF;
+						try { 				
+							if (presentadorOfertas.puedeAgregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal)) {					
+								presentadorOfertas.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
+								mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
+								String horarioOferta =  horarioI + " a " + horarioF;
 
-							tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
-							eliminarFilaDeTablaConDniSiEsRepetido(dniCliente);						
+								tablaOfertas.agregarOfertaEnTabla(nombreOferta, dniOferta, precioOferta, horarioOferta);
+								eliminarFilaDeTablaConDniSiEsRepetido(dniCliente);						
+							}
+						}catch (IllegalArgumentException ex) {
+							JOptionPane.showMessageDialog(null, ex.getMessage());
 						}
-					}catch (IllegalArgumentException ex) {
-						JOptionPane.showMessageDialog(null, ex.getMessage());
-					}
 					}else {
 						JOptionPane.showMessageDialog(null,  "Error: El nombre no debe tener numeros");
 					}
@@ -465,7 +456,7 @@ public class Pantalla {
 		btnEnviar.setBounds(180, 350, 150, 25);
 		panel.add(btnEnviar);
 	}
-	
+
 	private void mostrarPanelEnOtroPanel(JPanel nuevoPanel, JPanel contenedor) {
 		nuevoPanel.setBounds(10, 11, 841, 415);
 		contenedor.removeAll();
@@ -473,7 +464,7 @@ public class Pantalla {
 		contenedor.revalidate();
 		contenedor.repaint();
 	}
-	
+
 	private boolean soloNumerosHorario(String horarioI, String horarioF) {
 		boolean condicion1= soloNumeros(horarioI);
 		boolean condicion2= soloNumeros(horarioF);
@@ -487,10 +478,11 @@ public class Pantalla {
 	private boolean soloNumeros(String string) {
 		return string.matches("^\\d+$");
 	}
+
 	private boolean soloLetras(String string) {
-	    return string.matches("^[a-zA-Z]+$");
+		return string.matches("^[a-zA-Z]+$");
 	}
-	
+
 	private void actualizarLabelFechaActual() {
 		String _fecha = convertirLocalDateAString(fechaActual);
 		lblFechaActual.setText(_fecha);
@@ -502,7 +494,7 @@ public class Pantalla {
 		String dia=String.valueOf(fecha.getDayOfMonth());
 		return año + " - " + mes + " - " + dia;
 	}
-	
+
 	public void eliminarFilaDeTablaConDniSiEsRepetido(int dni) {
 		String dniCliente = String.valueOf(dni);
 		if(tablaOfertas.contarDuplicadosPorDni(dniCliente) > 1){
@@ -517,6 +509,5 @@ public class Pantalla {
 
 	}
 
-	
 }
 

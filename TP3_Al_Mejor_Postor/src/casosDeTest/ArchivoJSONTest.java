@@ -16,16 +16,24 @@ public class ArchivoJSONTest {
 		oferta = unaOfertaPrecargada();	
 		listaDeOfertas.put(oferta.getDni(), oferta);
 		archivo.setListaDeOfertas(listaDeOfertas);
-		archivo.generarJSON("archivoPrueba");
+		
 	}
 	
 	@Test (expected= IllegalArgumentException.class)
 	public void leerRutaInexistenteTest() {
-        archivo.leerJSON("noExiste.txt");
+		archivo.generarJSON("archivoPrueba");
+        archivo.leerJSON("noExiste.json");
     }
 	@Test
 	public void leerRutaExistenteTest() {
+		archivo.generarJSON("archivoPrueba");
         assertNotNull(archivo.leerJSON("archivoPrueba"));       
+    }
+	@Test (expected = NullPointerException.class)
+	public void generarJsonConRutaInvalidaTest() {		
+		ArchivoJSON prueba = new ArchivoJSON();
+		prueba.setRuta(null);
+		prueba.generarJSON(null);
     }
 	
 	private Oferta unaOfertaPrecargada() {

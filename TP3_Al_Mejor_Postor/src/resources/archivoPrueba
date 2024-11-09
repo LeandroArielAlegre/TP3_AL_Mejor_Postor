@@ -1,0 +1,13 @@
+{
+  "listaDeOfertas": {
+    "25543423": {
+      "nombre": "Pedro",
+      "dni": 25543423,
+      "precio": 12000.0,
+      "horaDeInicio": 12,
+      "horaDeFinalizacion": 15
+    }
+  },
+  "fechaActual": [],
+  "ruta": "C:\\Users\\USUARIO\\git\\TP3_AL_Mejor_Postor\\TP3_Al_Mejor_Postor/src/resources/"
+}

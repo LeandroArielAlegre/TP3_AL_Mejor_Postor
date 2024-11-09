@@ -37,9 +37,6 @@ public class LogicaOfertas {
 			if (entry.getValue() == null) {
 				throw new IllegalArgumentException("Oferta nula encontrada para DNI: " + entry.getKey());
 			}
-			if (!entry.getKey().equals(entry.getValue().getDni())) {
-				throw new IllegalArgumentException("DNI inconsistente encontrado: " + entry.getKey());
-			}
 		}
 
 		this.mapDeOfertas = new HashMap<>(ofertasCargadas);
@@ -51,11 +48,8 @@ public class LogicaOfertas {
 	}
 
 	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-
-		if(validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion)){
-			return true;
-		}
-		return false;
+			return validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+			
 	}
 
 	private boolean validarDatosOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
@@ -75,27 +69,38 @@ public class LogicaOfertas {
 	}
 
 	public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-		if (mapDeOfertas.containsKey(dni)) {
-			manejarOfertaExistente(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+		if (existeOferta(dni)) {
+			Oferta ofertaExistente = mapDeOfertas.get(dni);
+			
+			revisarSiEsUnaOfertaIdentica(precio, horaDeInicio, horaDeFinalizacion, ofertaExistente);
+			comprobarPrecioIngresadoEsmayorQueElRegistrado(precio, ofertaExistente);        
+			mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+
 		} else {
 			agregarNuevaOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
 		}
 	}
 
-	private void manejarOfertaExistente(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) 
-	{
-		Oferta ofertaExistente = mapDeOfertas.get(dni);     
+	private void revisarSiEsUnaOfertaIdentica(double precio, int horaDeInicio, int horaDeFinalizacion,
+			Oferta ofertaExistente) {
+		if (esOfertaIdentica(ofertaExistente, precio, horaDeInicio, horaDeFinalizacion)) 
+		{
+			throw new IllegalArgumentException("Esta oferta es idéntica a la existente");
+		}
+	}
+
+	private void comprobarPrecioIngresadoEsmayorQueElRegistrado(double precio, Oferta ofertaExistente) {
 		if (ofertaExistente.getPrecio() > precio) 
 		{
 			throw new IllegalArgumentException("La nueva oferta debe superar el precio actual de " + 
 					ofertaExistente.getPrecio());
-		}        
-		if (esOfertaIdentica(ofertaExistente, precio, horaDeInicio, horaDeFinalizacion)) 
-		{
-			throw new IllegalArgumentException("Esta oferta es idéntica a la existente");
-		}      
-		mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+		}
 	}
+
+	private boolean existeOferta(int dni) {
+		return mapDeOfertas.containsKey(dni);
+	}
+
 	
 	private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
 		return oferta.getPrecio() == precio && 
@@ -108,7 +113,7 @@ public class LogicaOfertas {
 	}
 
 	public void eliminarOferta(int dni) {
-		if (!mapDeOfertas.containsKey(dni)) {
+		if (!existeOferta(dni)) {
 			throw new IllegalArgumentException("No existe ninguna oferta registrada con el DNI: " + dni);
 		}
 		mapDeOfertas.remove(dni);
@@ -151,7 +156,7 @@ public class LogicaOfertas {
 	}
 
 	public Oferta obtenerOfertaAsociadaConDNI(int dni) {
-		if (!mapDeOfertas.containsKey(dni)) {
+		if (!existeOferta(dni)) {
 			throw new IllegalArgumentException("No existe ninguna oferta con el DNI: " + dni);
 		}
 		return mapDeOfertas.get(dni);
@@ -198,17 +203,17 @@ public class LogicaOfertas {
 	}
 
 	public void actualizarFechaActual(LocalDate nuevaFechaActual) {
-		String año = String.valueOf(nuevaFechaActual.getYear());
-		String mes=String.valueOf(nuevaFechaActual.getMonthValue());
-		String dia=String.valueOf(nuevaFechaActual.getDayOfMonth());
-		ArrayList<String> _nuevaFechaActual = new ArrayList<String>();
-		_nuevaFechaActual.add(año);
-		_nuevaFechaActual.add(mes);
-		_nuevaFechaActual.add(dia);
+		ArrayList<String> _nuevaFechaActual = convertirFechaComoLista(nuevaFechaActual);
 		archivoJSON.setFecha(_nuevaFechaActual);
 		archivoJSON.generarJSON("fechaActual");  
 	}
 	public ArrayList<String> devolverFechaComoLista(LocalDate nuevaFechaActual) {
+		ArrayList<String> _nuevaFechaActual = convertirFechaComoLista(nuevaFechaActual);
+		return _nuevaFechaActual;
+
+	}
+
+	private ArrayList<String> convertirFechaComoLista(LocalDate nuevaFechaActual) {
 		String año = String.valueOf(nuevaFechaActual.getYear());
 		String mes=String.valueOf(nuevaFechaActual.getMonthValue());
 		String dia=String.valueOf(nuevaFechaActual.getDayOfMonth());
@@ -217,18 +222,14 @@ public class LogicaOfertas {
 		_nuevaFechaActual.add(mes);
 		_nuevaFechaActual.add(dia);
 		return _nuevaFechaActual;
-
 	}
+	
 	public LocalDate devolverFechaActual() {
-		archivoJSON = archivoJSON.leerJSON("fechaActual");
-		try {
+			archivoJSON = archivoJSON.leerJSON("fechaActual");
 			ArrayList<String> nuevaFecha = new ArrayList<String>();
 			nuevaFecha = archivoJSON.getFecha();
 			LocalDate fechaActual = LocalDate.of(Integer.parseInt(nuevaFecha.get(0)), Integer.parseInt(nuevaFecha.get(1)), Integer.parseInt(nuevaFecha.get(2)));
 			return fechaActual;
-		} catch (Exception e) {
-			throw new IllegalArgumentException("ERROR: No se pudo leer la fecha actual");
-		}
 	}
 
 	public boolean puedeGuardarOferta(String nombreDeArchivo) {
@@ -249,5 +250,5 @@ public class LogicaOfertas {
 			return false;
 		}
 	}
-
+	
 }

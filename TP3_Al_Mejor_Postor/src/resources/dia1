@@ -10,51 +10,9 @@
     "444": {
       "nombre": "leandro",
       "dni": 444,
-      "precio": 2.3523562E7,
+      "precio": 235235,
       "horaDeInicio": 2,
       "horaDeFinalizacion": 4
-    },
-    "4333": {
-      "nombre": "tinchi",
-      "dni": 4333,
-      "precio": 124566.0,
-      "horaDeInicio": 6,
-      "horaDeFinalizacion": 8
-    },
-    "4443621": {
-      "nombre": "leandroAlegre",
-      "dni": 4443621,
-      "precio": 463121.0,
-      "horaDeInicio": 4,
-      "horaDeFinalizacion": 12
-    },
-    "40": {
-      "nombre": "juancru",
-      "dni": 40,
-      "precio": 567423.0,
-      "horaDeInicio": 2,
-      "horaDeFinalizacion": 8
-    },
-    "4441": {
-      "nombre": "leandroPagnat",
-      "dni": 4441,
-      "precio": 23542.0,
-      "horaDeInicio": 1,
-      "horaDeFinalizacion": 4
-    },
-    "43334": {
-      "nombre": "tinchoAlderete",
-      "dni": 43334,
-      "precio": 257726.0,
-      "horaDeInicio": 2,
-      "horaDeFinalizacion": 10
-    },
-    "44436211": {
-      "nombre": "leandroRangler",
-      "dni": 44436211,
-      "precio": 463.0,
-      "horaDeInicio": 4,
-      "horaDeFinalizacion": 12
     }
   }
 }
