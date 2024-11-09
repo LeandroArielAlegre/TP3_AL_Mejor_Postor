@@ -177,7 +177,7 @@ public class LogicaOfertas {
 		return ofertaComoUnaLista;
 	}
 
-	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
+	public ArrayList<String> devolverTodosLosDniDeLosClientesComoString(){
 		ArrayList<String> listaDeDni = new ArrayList<String>();
 		for (Entry<Integer, Oferta> ofertaCliente : mapDeOfertas.entrySet()) {
 			String dniCliente = String.valueOf(ofertaCliente.getKey());
@@ -194,7 +194,7 @@ public class LogicaOfertas {
 		ArrayList<String> listaDeDniStrings = new ArrayList<String>();
 		ArrayList<Integer> listaDeDniNumericos = new ArrayList<Integer>();
 
-		listaDeDniStrings = devolverTodosLosDniDeLosClientes();
+		listaDeDniStrings = devolverTodosLosDniDeLosClientesComoString();
 		for (String dniString : listaDeDniStrings) {
 			int dniCliente = Integer.parseInt(dniString);
 			listaDeDniNumericos.add(dniCliente);

@@ -1,6 +1,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Oferta implements Serializable,  Comparable<Oferta>{
 	private String nombre;
@@ -65,6 +66,25 @@ public class Oferta implements Serializable,  Comparable<Oferta>{
 	public int getDni() {
 		return dni;
 	}   
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dni, horaDeFinalizacion, horaDeInicio, nombre, precio);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Oferta other = (Oferta) obj;
+		return dni == other.dni && horaDeFinalizacion == other.horaDeFinalizacion && horaDeInicio == other.horaDeInicio
+				&& Objects.equals(nombre, other.nombre)
+				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio);
+	}
 
 	@Override
 	public int compareTo(Oferta o) {

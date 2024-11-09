@@ -1,11 +1,13 @@
 package casosDeTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -24,6 +26,8 @@ public class LogicaTest {
 		LogicaOfertas logica = inicializar();
 		logica.obtenerOfertaAsociadaConDNI(1);
 	}
+	
+	
 	@Test(expected=IllegalArgumentException.class)
 	public void nombreVacioTest() {
 		LogicaOfertas logica = inicializar();
@@ -100,10 +104,19 @@ public class LogicaTest {
 		logica.eliminarOferta(545437);
 	}
 	@Test
+	public void ofertaExistenteConDNITest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44, 5000, 2, 8);
+		Oferta ofertaRecibida = new Oferta("leandro", 44, 5000, 2, 8);
+		assertEquals(ofertaRecibida,logica.obtenerOfertaAsociadaConDNI(44));
+		
+	}
+	/*
+	@Test
 	public void guardarOfertaTest() {
 		LogicaOfertas logica = inicializar();
 		logica.guardarOferta("test");
-	}
+	}*/
 	@Test
 	public void agregarOfertaTest() {
 		LogicaOfertas logica = inicializar();
@@ -156,11 +169,71 @@ public class LogicaTest {
 		assertEquals(esperada.toString(),recibida.toString());
 		}
 	}
+	
+	@Test
+	public void OfertasQueSeSolapanTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44610, 6000, 4, 8);
+		logica.agregarOferta("matias", 44620, 5000, 4, 8);
+		ArrayList<Oferta> recibido = logica.devolverListaDeOfertasOrdenadaPorGananciasPorHora();
+		ArrayList<Oferta> esperado = new ArrayList<Oferta>();
+		Oferta ofertaEsperada = new Oferta("leandro", 44610, 6000, 4, 8);
+		esperado.add(ofertaEsperada);
+		assertEquals(esperado.get(0),logica.devolverOfertasQueNoSeSolapan(recibido).get(0));
+	}
+	
+	@Test
+	public void OfertasQueNoSeSolapanTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44610, 6000, 4, 8);
+		logica.agregarOferta("matias", 44620, 5000, 9, 12);
+		ArrayList<Oferta> recibido = logica.devolverListaDeOfertasOrdenadaPorGananciasPorHora();
+		ArrayList<Oferta> esperado = new ArrayList<Oferta>();
+		Oferta ofertaEsperada1 = new Oferta("leandro", 44610, 6000, 4, 8);
+		Oferta ofertaEsperada2 = new Oferta("matias", 44620, 5000, 9, 12);
+		esperado.add(ofertaEsperada2);
+		esperado.add(ofertaEsperada1);
+		assertEquals(esperado,logica.devolverOfertasQueNoSeSolapan(recibido));
+	}
 	@Test
 	public void puedeAgregarOfertaTest() {
 		LogicaOfertas logica= new LogicaOfertas();
 		assertTrue(logica.puedeAgregarOferta("facha", 43, 46423.0, 4, 8));
 	}
+	
+	@Test
+	public void devolverOfertaComoUnaListaTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44610, 6000, 4, 8);
+		ArrayList<String> esperado = new ArrayList<>(List.of("leandro","44610","6000.0","4","8"));
+		assertEquals(esperado, logica.devolverOfertaComoUnaLista("44610"));
+		
+	}
+	@Test
+	public void devolverOfertaComoUnaListaDiferenteTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44610, 6000, 4, 8);
+		ArrayList<String> esperado = new ArrayList<>(List.of("leandro","44610","7000.0","4","8"));
+		assertNotEquals(esperado, logica.devolverOfertaComoUnaLista("44610"));
+		
+	}
+	
+	@Test
+	public void devolverTodosLosDniDeLosClientesComoStringTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44610, 6000, 4, 8);
+		assertEquals("44610", logica.devolverTodosLosDniDeLosClientesComoString().get(0));
+		
+	}
+	
+	@Test
+	public void devolverDNISComoListaDeIntegersTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("leandro", 44610, 6000, 4, 8);
+		Integer numero = 44610;
+		assertEquals(numero, logica.devolverDNISComoListaDeIntegers().get(0));
+	}
+
 
 	public LogicaOfertas inicializar() {
 		LogicaOfertas logica= new LogicaOfertas();
