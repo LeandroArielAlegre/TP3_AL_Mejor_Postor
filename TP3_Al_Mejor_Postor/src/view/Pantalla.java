@@ -243,8 +243,8 @@ public class Pantalla {
 			String stFecha= formato.format(fecha).replace("/", "-");
 			if(presentadorOfertas.puedeCargarOfertasDeArchivo(stFecha)) {
 				presentadorOfertas.cargarOfertasDeArchivo(stFecha);			
-				agregarOfertasEnTabla();
 				finalizarDia();
+				agregarOfertasEnTabla();
 			}else{
 				JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
 			}
