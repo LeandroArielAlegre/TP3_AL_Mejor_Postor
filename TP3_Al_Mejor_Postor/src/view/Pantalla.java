@@ -183,8 +183,10 @@ public class Pantalla {
 			String nombreDeArchivo = cargarNombreDeArchivo();
 			if(nombreDeArchivo != null) {
 				if(presentadorOfertas.puedeCargarOfertasDeArchivo(nombreDeArchivo)) {
-					presentadorOfertas.cargarOfertasDeArchivo(nombreDeArchivo);				
+					presentadorOfertas.cargarOfertasDeArchivo(nombreDeArchivo);	
 					finalizarDia();
+					agregarOfertasEnTabla();
+					
 				}else{
 					JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
 				}
@@ -240,9 +242,9 @@ public class Pantalla {
 			SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/d");
 			String stFecha= formato.format(fecha).replace("/", "-");
 			if(presentadorOfertas.puedeCargarOfertasDeArchivo(stFecha)) {
-				presentadorOfertas.cargarOfertasDeArchivo(stFecha);
-				finalizarDia();
+				presentadorOfertas.cargarOfertasDeArchivo(stFecha);			
 				agregarOfertasEnTabla();
+				finalizarDia();
 			}else{
 				JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
 			}
@@ -312,7 +314,7 @@ public class Pantalla {
 		JOptionPane.showMessageDialog(null, "El archivo se cargo exitosamente");
 	}
 
-	private String cargarNombreDeArchivo() {
+	private String cargarNombreDeArchivo() { 
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 1));
 		JLabel label = new JLabel("Coloque el nombre del archivo: numeroDeAnio-numeroDeMes-numeroDeDia");
