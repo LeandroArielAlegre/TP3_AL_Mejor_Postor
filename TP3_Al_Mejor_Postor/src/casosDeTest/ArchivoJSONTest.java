@@ -29,7 +29,7 @@ public class ArchivoJSONTest {
 		archivo.generarJSON("archivoPrueba");
         assertNotNull(archivo.leerJSON("archivoPrueba"));       
     }
-	@Test (expected = NullPointerException.class)
+	@Test (expected = IllegalArgumentException.class)
 	public void generarJsonConRutaInvalidaTest() {		
 		ArchivoJSON prueba = new ArchivoJSON();
 		prueba.setRuta(null);

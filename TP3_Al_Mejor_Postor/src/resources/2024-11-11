@@ -1,13 +1,17 @@
 {
   "listaDeOfertas": {
-    "233342": {
-      "nombre": "Prueba",
-      "dni": 233342,
-      "precio": 12.0,
+    "1": {
+      "nombre": "c",
+      "dni": 1,
+      "precio": 1.0,
       "horaDeInicio": 1,
-      "horaDeFinalizacion": 3
+      "horaDeFinalizacion": 2
     }
   },
-  "fechaActual": [],
+  "fechaActual": [
+    "2024",
+    "11",
+    "11"
+  ],
   "ruta": "C:\\Users\\USUARIO\\git\\TP3_AL_Mejor_Postor\\TP3_Al_Mejor_Postor/src/resources/"
 }

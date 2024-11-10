@@ -25,14 +25,10 @@ ruta = System.getProperty("user.dir") + "/src/resources/";
 public void generarJSON(String archivo) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(this);    
-    try {
-    	if(ruta!=null||archivo!=null) {
+    try {   
         FileWriter writer = new FileWriter(ruta + archivo);
         writer.write(json);
         writer.close();
-    	}else {
-    		throw new NullPointerException("ERROR INESPERADO: ");
-    	}
     } catch (Exception e) {
     	throw new NullPointerException("ERROR INESPERADO: " + e.getMessage());
     }
@@ -41,7 +37,9 @@ public void generarJSON(String archivo) {
 public ArchivoJSON leerJSON(String archivo) {
     Gson gson = new Gson();
     ArchivoJSON ret = null;
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
     try {
+    	System.out.print(false);
         BufferedReader br = new BufferedReader(new FileReader(ruta + archivo));
         ret = gson.fromJson(br, ArchivoJSON.class);
     } catch (Exception e) {
@@ -52,6 +50,9 @@ public ArchivoJSON leerJSON(String archivo) {
 }
 
 public void setRuta(String ruta) {
+	if (ruta==null) {
+		throw new IllegalArgumentException("La ruta especificada no existe");
+	}
 	this.ruta = ruta;
 }
 

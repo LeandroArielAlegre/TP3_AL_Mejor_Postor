@@ -15,17 +15,72 @@ public class LogicaOfertas {
 		this.mapDeOfertas = new HashMap<>();
 		archivoJSON = new ArchivoJSON();
 	}
+//	public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
+//        validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+//        
+//        if (mapDeOfertas.containsKey(dni)) {
+//            manejarOfertaExistente(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+//        } else {
+//            agregarNuevaOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+//        }
+//    }
 
-	public void guardarOferta(String nombreArchivo) {
-		HashMap<Integer, Oferta> ofertasLocales = getListaDeOfertas();		
-		archivoJSON.setListaDeOfertas(ofertasLocales);
-		actualizarFechaActual(devolverFechaActual());
-		archivoJSON.generarJSON(nombreArchivo);
+    private boolean validarDatosOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacío");
+        }
+        if (dni <= 0) {
+            throw new IllegalArgumentException("El DNI debe ser un número positivo");
+        }
+        if (precio <= 0) {
+            throw new IllegalArgumentException("El precio debe ser positivo");
+        }
+        if (horaDeInicio < 0 || horaDeFinalizacion > 24 || horaDeInicio >= horaDeFinalizacion) {
+            throw new IllegalArgumentException("El intervalo de tiempo es inválido");
+        }
+        return true;
+    }
+
+    private void manejarOfertaExistente(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
+        Oferta ofertaExistente = mapDeOfertas.get(dni);
+        
+        if (ofertaExistente.getPrecio() > precio) {
+            throw new IllegalArgumentException("La nueva oferta debe superar el precio actual de " + 
+                ofertaExistente.getPrecio());
+        }
+        
+        if (esOfertaIdentica(ofertaExistente, precio, horaDeInicio, horaDeFinalizacion)) {
+            throw new IllegalArgumentException("Esta oferta es idéntica a la existente");
+        }
+        
+        mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+    }
+
+//    private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
+//        return oferta.getPrecio() == precio && 
+//               oferta.getHoraDeInicio() == horaDeInicio && 
+//               oferta.getHoraDeFinalizacion() == horaDeFinalizacion;
+//    }
+
+//    private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {       
+//    	mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+//    }
+
+    public boolean guardarOferta(String nombreArchivo) {
+		HashMap<Integer, Oferta> ofertasLocales= getMapDeOfertas();
+	    try {
+	        archivoJSON.setListaDeOfertas(ofertasLocales);
+	        archivoJSON.generarJSON(nombreArchivo);
+	        return true;
+	    } catch (Exception e) {
+	        System.out.println("Error al guardar el archivo: " + e.getMessage());
+	        return false;
+	    }
 	}
-
-	public void cargarOfertasDeArchivo(String archivo) {
-		this.archivoJSON = archivoJSON.leerJSON(archivo);
-		setListaDeOfertas(archivoJSON.getListaDeOfertas());
+    
+	public void cargarOfertasDeArchivo(String archivo) {			
+			this.archivoJSON = archivoJSON.leerJSON(archivo);
+			setListaDeOfertas(archivoJSON.getListaDeOfertas());
 	}
 
 	public void setListaDeOfertas(HashMap<Integer, Oferta> ofertasCargadas) {
@@ -52,22 +107,6 @@ public class LogicaOfertas {
 			
 	}
 
-	private boolean validarDatosOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-		if (nombre == null || nombre.trim().isEmpty()) {
-			throw new IllegalArgumentException("El nombre no puede estar vacío");
-		}
-		if (dni <= 0) {
-			throw new IllegalArgumentException("El DNI debe ser un número positivo");
-		}
-		if (precio <= 0) {
-			throw new IllegalArgumentException("El precio debe ser positivo");
-		}
-		if (horaDeInicio < 0 || horaDeFinalizacion > 24 || horaDeInicio >= horaDeFinalizacion) {
-			throw new IllegalArgumentException("El intervalo de tiempo es inválido");
-		}
-		return true;
-	}
-
 	public void agregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
 		if (existeOferta(dni)) {
 			Oferta ofertaExistente = mapDeOfertas.get(dni);
@@ -80,7 +119,15 @@ public class LogicaOfertas {
 			agregarNuevaOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
 		}
 	}
+	
+	private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {        
+		mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
+	}
 
+	private boolean existeOferta(int dni) {
+		return mapDeOfertas.containsKey(dni);
+	}
+	
 	private void revisarSiEsUnaOfertaIdentica(double precio, int horaDeInicio, int horaDeFinalizacion,
 			Oferta ofertaExistente) {
 		if (esOfertaIdentica(ofertaExistente, precio, horaDeInicio, horaDeFinalizacion)) 
@@ -88,7 +135,13 @@ public class LogicaOfertas {
 			throw new IllegalArgumentException("Esta oferta es idéntica a la existente");
 		}
 	}
-
+	
+	private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
+		return oferta.getPrecio() == precio && 
+				oferta.getHoraDeInicio() == horaDeInicio && 
+				oferta.getHoraDeFinalizacion() == horaDeFinalizacion;
+	}
+	
 	private void comprobarPrecioIngresadoEsmayorQueElRegistrado(double precio, Oferta ofertaExistente) {
 		if (ofertaExistente.getPrecio() > precio) 
 		{
@@ -96,22 +149,7 @@ public class LogicaOfertas {
 					ofertaExistente.getPrecio());
 		}
 	}
-
-	private boolean existeOferta(int dni) {
-		return mapDeOfertas.containsKey(dni);
-	}
-
 	
-	private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
-		return oferta.getPrecio() == precio && 
-				oferta.getHoraDeInicio() == horaDeInicio && 
-				oferta.getHoraDeFinalizacion() == horaDeFinalizacion;
-	}
-
-	private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {        
-		mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
-	}
-
 	public void eliminarOferta(int dni) {
 		if (!existeOferta(dni)) {
 			throw new IllegalArgumentException("No existe ninguna oferta registrada con el DNI: " + dni);
@@ -151,7 +189,7 @@ public class LogicaOfertas {
 	}
 
 
-	public HashMap<Integer, Oferta> getListaDeOfertas() {
+	public HashMap<Integer, Oferta> getMapDeOfertas() {
 		return new HashMap<>(mapDeOfertas); 
 	}
 
@@ -187,6 +225,9 @@ public class LogicaOfertas {
 	}
 
 	public void borrarListaDeOfertas() {
+//		if (mapDeOfertas.isEmpty()) {
+//			throw new UnsupportedOperationException("No hay Ofertas que borrar");
+//		}
 		mapDeOfertas.clear();
 	}
 
@@ -233,22 +274,24 @@ public class LogicaOfertas {
 	}
 
 	public boolean puedeGuardarOferta(String nombreDeArchivo) {
-		if (nombreDeArchivo.isEmpty()||nombreDeArchivo==null) {
+		if (nombreDeArchivo==null) {
 			return false;
 		}
+		if (nombreDeArchivo.isEmpty()) {
+			return false;
+		}
+		
 		return true;
 	}
 
 	public boolean puedeCargarOfertasDeArchivo(String nombreDeArchivo) {
-		if (nombreDeArchivo.isEmpty()||nombreDeArchivo==null) {
-			return false;
+		if (nombreDeArchivo==null) {
+			throw new IllegalArgumentException("El nombre del archivo pasado por parametro es nulo");
 		}
-		try {
-			archivoJSON.leerJSON(nombreDeArchivo);
-			return true;
-		}catch(IllegalArgumentException e){
-			return false;
+		if (nombreDeArchivo.isEmpty()){
+			throw new IllegalArgumentException("El nombre del archivo pasado por parametro eesta vacio");
 		}
+			return true;		
 	}
 	
 }

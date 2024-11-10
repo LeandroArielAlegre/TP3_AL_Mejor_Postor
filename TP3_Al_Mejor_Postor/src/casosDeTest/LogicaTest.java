@@ -1,9 +1,11 @@
 package casosDeTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,15 +73,7 @@ public class LogicaTest {
 		logica.setListaDeOfertas(ofertasCargadas);
 
 	}
-	@Test(expected=IllegalArgumentException.class)
-	public void precioIdenticoTest() {
-		LogicaOfertas logica = inicializar();
-		Oferta oferta=new Oferta("Prueba", 233342, 12, 1, 3);
 
-		logica.agregarOferta(oferta.getNombre(), oferta.getDni(), oferta.getPrecio(), oferta.getHoraDeInicio(), oferta.getHoraDeFinalizacion());		
-		logica.agregarOferta(oferta.getNombre(), oferta.getDni(), oferta.getPrecio(), oferta.getHoraDeInicio(), oferta.getHoraDeFinalizacion());		
-
-	}
 	@Test(expected=IllegalArgumentException.class)
 	public void precioMenorTest() {
 		LogicaOfertas logica = inicializar();
@@ -103,6 +97,16 @@ public class LogicaTest {
 		LogicaOfertas logica = inicializar();
 		logica.eliminarOferta(545437);
 	}
+	@Test (expected=IllegalArgumentException.class)
+	public void cargarOfertasConNombreDeArchivoVacioTest() {
+		LogicaOfertas logica = inicializar();
+		logica.puedeCargarOfertasDeArchivo("");
+	}
+	@Test (expected=IllegalArgumentException.class)
+	public void cargarOfertasConNombreDeArchivoNullTest() {
+		LogicaOfertas logica = inicializar();
+		logica.puedeCargarOfertasDeArchivo(null);
+	}
 	@Test
 	public void ofertaExistenteConDNITest() {
 		LogicaOfertas logica = inicializar();
@@ -111,12 +115,13 @@ public class LogicaTest {
 		assertEquals(ofertaRecibida,logica.obtenerOfertaAsociadaConDNI(44));
 		
 	}
-	/*
 	@Test
 	public void guardarOfertaTest() {
 		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("Prueba", 233342, 12, 1, 3);
+
 		logica.guardarOferta("test");
-	}*/
+	}
 	@Test
 	public void agregarOfertaTest() {
 		LogicaOfertas logica = inicializar();
@@ -151,7 +156,7 @@ public class LogicaTest {
 	@Test
 	public void cargarArchivoTest() {
 		LogicaOfertas logica = inicializar();
-		logica.cargarOfertasDeArchivo("dia1");
+		logica.cargarOfertasDeArchivo("test");
 	}
 	@Test
 	public void devolverOfertasDeArchivoTest() {
@@ -233,8 +238,47 @@ public class LogicaTest {
 		Integer numero = 44610;
 		assertEquals(numero, logica.devolverDNISComoListaDeIntegers().get(0));
 	}
-
-
+	@Test
+	public void puedeguardarOfertaTest() {
+		LogicaOfertas logica = inicializar();
+		assertTrue(logica.puedeGuardarOferta("test"));
+	}
+	@Test
+	public void guardarOfertaConNombreDeArchivoVacioTest() {
+		LogicaOfertas logica = inicializar();
+		assertFalse(logica.puedeGuardarOferta(""));
+	}
+	@Test
+	public void guardarOfertaConNombreNullTest() {
+		LogicaOfertas logica = inicializar();
+		assertFalse(logica.puedeGuardarOferta(null));
+	}
+	@Test
+	public void fechaComoListaTest() {
+		LogicaOfertas logica = inicializar();
+		LocalDate fecha = logica.devolverFechaActual();	
+		ArrayList<String> recibido=logica.devolverFechaComoLista(fecha);		
+		ArrayList<String> esperado= new ArrayList<String>();
+		
+		esperado.add(recibido.get(0));
+		esperado.add(recibido.get(1));
+		esperado.add(recibido.get(2));
+		assertEquals(esperado,recibido);
+	}
+	@Test
+	public void eliminarOfertasIngresadasTest() {
+		LogicaOfertas logica = inicializar();
+		logica.agregarOferta("Bastian", 4532176, 170000, 1, 4);
+		logica.agregarOferta("Bastian", 4532146, 170000, 1, 4);
+		logica.borrarListaDeOfertas();
+		ArrayList<String> esperado=new ArrayList<String>();
+		assertEquals(esperado,logica.devolverTodosLosDniDeLosClientesComoString());		
+	}
+	@Test 
+	public void cargarOfertasDeArchivoTest() {
+		LogicaOfertas logica = inicializar();
+		logica.puedeCargarOfertasDeArchivo("Prueba");
+	}
 	public LogicaOfertas inicializar() {
 		LogicaOfertas logica= new LogicaOfertas();
 

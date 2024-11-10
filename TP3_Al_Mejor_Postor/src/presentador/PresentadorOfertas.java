@@ -3,6 +3,7 @@ package presentador;
 import java.time.LocalDate;
 import java.util.ArrayList;
 //import java.util.HashMap;
+import java.util.HashMap;
 
 import modelo.LogicaOfertas;
 import modelo.Oferta;
@@ -23,25 +24,25 @@ public class PresentadorOfertas {
 		logica.agregarOferta(nombreOferta, dniCliente, precioOfertado, horarioInicial, horarioFinal);
 
 	}
-//	public boolean eliminarOferta(int dni) {
-//		try {
-//			logica.eliminarOferta(dni);
-//			return true;
-//
-//		}catch (IllegalArgumentException e){
-//			return false;
-//
-//		}
-//	}
+	public boolean eliminarOferta(int dni) {
+		try {
+			logica.eliminarOferta(dni);
+			return true;
 
-//	public HashMap<Integer, Oferta> devolverOfertas() {
-//		try {
-//			return logica.getListaDeOfertas();
-//
-//		} catch (IllegalArgumentException e) {
-//			return null;
-//		}
-//	}
+		}catch (IllegalArgumentException e){
+			return false;
+
+		}
+	}
+
+	public HashMap<Integer, Oferta> devolverOfertas() {
+		try {
+			return logica.getMapDeOfertas();
+
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
 
 	public void guardarOfertas(String nombreArchivo) {
 		logica.guardarOferta(nombreArchivo);
@@ -62,11 +63,6 @@ public class PresentadorOfertas {
 			
 		}
 	}
-
-//	public HashMap<Integer, Oferta> devolverOfertasArchivo() {
-//
-//		return logica.devolverOfertasArchivo();
-//	}
 
 	public void borrarListaDeOfertas() {
 		logica.borrarListaDeOfertas();	
@@ -95,16 +91,16 @@ public class PresentadorOfertas {
 		}
 	}
 
-//	public ArrayList<String> devolverTodosLosDniDeLosClientes(){
-//		try {
-//			return 	logica.devolverTodosLosDniDeLosClientes();
-//
-//		}catch (IllegalArgumentException e){
-//			return null;
-//
-//		}
-//
-//	}
+	public ArrayList<String> devolverTodosLosDniDeLosClientesComoString(){
+		try {
+			return 	logica.devolverTodosLosDniDeLosClientesComoString();
+
+		}catch (IllegalArgumentException e){
+			return null;
+
+		}
+
+	}
 
 	public ArrayList<Oferta> devolverOfertasQueNoSeSolapan(ArrayList<Oferta> listaOfertaOrdenadas) {
 		try {
