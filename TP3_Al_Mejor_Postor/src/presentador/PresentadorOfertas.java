@@ -13,7 +13,7 @@ public class PresentadorOfertas {
 	public PresentadorOfertas() {
 		logica = new LogicaOfertas();
 	}
-
+ 
 	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {	
 		return logica.puedeAgregarOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);	   
 	}

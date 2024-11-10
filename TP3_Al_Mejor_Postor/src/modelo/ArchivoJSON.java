@@ -13,34 +13,29 @@ public class ArchivoJSON {
 
 private HashMap<Integer, Oferta> listaDeOfertas;
 private ArrayList<String> fechaActual;
-private String ruta;
-
 
 public ArchivoJSON() {
 this.listaDeOfertas=new HashMap<>();
 fechaActual =  new ArrayList<String>();
-ruta = System.getProperty("user.dir") + "/src/resources/";
 }
 
 public void generarJSON(String archivo) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    String json = gson.toJson(this);    
+    String json = gson.toJson(this);
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
     try {
-    	if(ruta!=null||archivo!=null) {
         FileWriter writer = new FileWriter(ruta + archivo);
         writer.write(json);
         writer.close();
-    	}else {
-    		throw new NullPointerException("ERROR INESPERADO: ");
-    	}
     } catch (Exception e) {
-    	throw new NullPointerException("ERROR INESPERADO: " + e.getMessage());
+        throw new IllegalArgumentException("ERROR INESPERADO: " + e.getMessage());
     }
 }
-
+ 
 public ArchivoJSON leerJSON(String archivo) {
     Gson gson = new Gson();
     ArchivoJSON ret = null;
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
     try {
         BufferedReader br = new BufferedReader(new FileReader(ruta + archivo));
         ret = gson.fromJson(br, ArchivoJSON.class);
@@ -49,10 +44,6 @@ public ArchivoJSON leerJSON(String archivo) {
     }
     
     return ret;
-}
-
-public void setRuta(String ruta) {
-	this.ruta = ruta;
 }
 
 public HashMap<Integer, Oferta> getListaDeOfertas() {

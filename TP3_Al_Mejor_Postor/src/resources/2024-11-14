@@ -1,0 +1,16 @@
+{
+  "listaDeOfertas": {
+    "4": {
+      "nombre": "a",
+      "dni": 4,
+      "precio": 4.0,
+      "horaDeInicio": 4,
+      "horaDeFinalizacion": 8
+    }
+  },
+  "fechaActual": [
+    "2024",
+    "11",
+    "14"
+  ]
+}

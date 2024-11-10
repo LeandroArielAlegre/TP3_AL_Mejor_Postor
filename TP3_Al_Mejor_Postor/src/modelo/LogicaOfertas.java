@@ -19,7 +19,7 @@ public class LogicaOfertas {
 	public void guardarOferta(String nombreArchivo) {
 		HashMap<Integer, Oferta> ofertasLocales = getListaDeOfertas();		
 		archivoJSON.setListaDeOfertas(ofertasLocales);
-		actualizarFechaActual(devolverFechaActual());
+		//actualizarFechaActual(devolverFechaActual());
 		archivoJSON.generarJSON(nombreArchivo);
 	}
 
@@ -46,6 +46,7 @@ public class LogicaOfertas {
 
 		return this.archivoJSON.getListaDeOfertas();
 	}
+	
 
 	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
 			return validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
@@ -185,7 +186,7 @@ public class LogicaOfertas {
 		}
 		return listaDeDni;
 	}
-
+ 
 	public void borrarListaDeOfertas() {
 		mapDeOfertas.clear();
 	}
