@@ -21,9 +21,6 @@ import javax.swing.JTextField;
 import modelo.Oferta;
 import presentador.PresentadorOfertas;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
@@ -31,7 +28,6 @@ import java.time.LocalDate;
 import com.toedter.calendar.JCalendar;
 
 public class Pantalla {
-
 	private JFrame frame;
 	private TablaOfertas tablaOfertas;
 	private TablaOfertas tablaMejoresOfertas;
@@ -42,12 +38,8 @@ public class Pantalla {
 	private JButton btnGuardarOfertas;
 	protected JButton btnMejoresOfertas;
 	protected JButton btnSiguienteDia;
-	private Timer timer;
-	private Integer tiempoTranscurrido;
-	private long duracionDeDia = 30 * 1000;
 	private LocalDate fechaActual;
-	private JLabel lblTiempoActual;
-	private JLabel lblFechaActual;
+    private JLabel lblFechaActual;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -77,7 +69,6 @@ public class Pantalla {
 		frame.setBounds(100, 100, 1010, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		iniciarTemporizadorDia();
 
 		panelPaginas = new JPanel();
 		panelPaginas.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -260,11 +251,6 @@ public class Pantalla {
 		});
 		btnCargarConCalendario.setBounds(10, 361, 103, 47);
 		frame.getContentPane().add(btnCargarConCalendario);								 	
-
-		lblTiempoActual = new JLabel("Tiempo restante");
-		lblTiempoActual.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTiempoActual.setBounds(789, 11, 166, 14);
-		frame.getContentPane().add(lblTiempoActual);
 	}
 
 
@@ -278,7 +264,6 @@ public class Pantalla {
 		limpiarTablaOfertas();
 		incrementarUnDia();
 		actualizarLabelFechaActual();
-		iniciarTemporizadorDia();
 	}
 
 	private void incrementarUnDia() {
@@ -294,9 +279,6 @@ public class Pantalla {
 		btnFinalizarDia.setVisible(false);
 		btnGuardarOfertas.setVisible(true); 
 		btnSiguienteDia.setVisible(true);
-		if (timer != null) {
-			timer.cancel();
-		}
 		JOptionPane.showMessageDialog(frame,
 				"El día ha finalizado. Ya no se pueden ingresar más ofertas.",
 				"Fin del día",
@@ -332,42 +314,6 @@ public class Pantalla {
 			return null;
 		}
 	}
-
-	private void iniciarTemporizadorDia() {
-		timer = new Timer();
-		tiempoTranscurrido = (int) (duracionDeDia/1000);;
-		TimerTask tarea1 = new TimerTask() {			
-			public void run() {							
-				EventQueue.invokeLater(() -> {
-					diaTranscurrido = true;
-					btnMejoresOfertas.setVisible(true);
-					btnSiguienteDia.setVisible(true);
-					btnFinalizarDia.setVisible(false);
-					btnGuardarOfertas.setVisible(true);
-					JOptionPane.showMessageDialog(frame, 
-							"El día ha finalizado. Ya no se pueden ingresar más ofertas.",
-							"Fin del día",
-							JOptionPane.INFORMATION_MESSAGE);
-				});
-			}
-		};
-		TimerTask tareaActualizarlbl = new TimerTask() {
-
-			public void run() {						
-				EventQueue.invokeLater(() -> {
-					if(tiempoTranscurrido>0) { 
-						tiempoTranscurrido--;	            	
-						lblTiempoActual.setText("Tiempo restante " + tiempoTranscurrido.toString());
-					}else {
-						timer.cancel();
-					}
-				});
-			}
-		};
-		timer.schedule(tarea1, duracionDeDia);
-		timer.scheduleAtFixedRate(tareaActualizarlbl, 0, 1000); 
-	}
-
 	private void crearOfertaEnTabla() {
 		if (diaTranscurrido) {
 			JOptionPane.showMessageDialog(frame,
