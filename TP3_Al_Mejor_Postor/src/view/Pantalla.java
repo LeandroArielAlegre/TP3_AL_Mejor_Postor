@@ -117,7 +117,7 @@ public class Pantalla {
 		btnGuardarOfertas = new JButton("Guardar Ofertas");
 		btnGuardarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnGuardarOfertas.setFocusable(false);
-		btnGuardarOfertas.setBounds(20, 476, 105, 32);
+		btnGuardarOfertas.setBounds(20, 476, 111, 32);
 		btnGuardarOfertas.setVisible(false);
 		btnGuardarOfertas.addActionListener(e -> {
 			String nombreDeArchivo = (fechaActual.toString());
@@ -179,7 +179,7 @@ public class Pantalla {
 		JButton btnCargarOfertas = new JButton("Cargar Ofertas");
 		btnCargarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnCargarOfertas.setFocusable(false);
-		btnCargarOfertas.setBounds(153, 476, 99, 32);
+		btnCargarOfertas.setBounds(153, 476, 111, 32);
 		btnCargarOfertas.addActionListener(e -> {			
 			String nombreDeArchivo = cargarNombreDeArchivo();
 			if(nombreDeArchivo != null) {
