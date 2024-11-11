@@ -284,7 +284,12 @@ public class Pantalla {
 				"Fin del día",
 				JOptionPane.INFORMATION_MESSAGE);		
 	}
-
+	
+	public void limpiarTablaOfertas() {
+		tablaOfertas.limpiarTabla();
+		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
+	}
+	
 	private void agregarOfertasEnTabla() {
 		ArrayList<Integer> listaDeDNIClientes = presentadorOfertas.devolverDNISComoInteger();
 		for (int dni : listaDeDNIClientes) {
@@ -448,12 +453,6 @@ public class Pantalla {
 		if(tablaOfertas.contarDuplicadosPorDni(dniCliente) > 1){
 			tablaOfertas.eliminarFilaPorDni(dniCliente);
 		}
-
-	}
-
-	public void limpiarTablaOfertas() {
-		tablaOfertas.limpiarTabla();
-		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
 
 	}
 
