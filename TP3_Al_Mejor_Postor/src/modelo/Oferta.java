@@ -68,11 +68,6 @@ public class Oferta implements Serializable,  Comparable<Oferta>{
 	}   
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(dni, horaDeFinalizacion, horaDeInicio, nombre, precio);
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

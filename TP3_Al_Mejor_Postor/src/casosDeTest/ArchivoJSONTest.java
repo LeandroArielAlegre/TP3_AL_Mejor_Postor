@@ -9,6 +9,7 @@ public class ArchivoJSONTest {
 	ArchivoJSON archivo;
 	Oferta oferta;
 	HashMap<Integer, Oferta> listaDeOfertas;
+	
 	@Before
 	public void archivoPrueba() {
 		listaDeOfertas=new HashMap<Integer, Oferta>();
@@ -29,13 +30,6 @@ public class ArchivoJSONTest {
 		archivo.generarJSON("archivoPrueba");
         assertNotNull(archivo.leerJSON("archivoPrueba"));       
     }
-	/*
-	@Test (expected = NullPointerException.class)
-	public void generarJsonConRutaInvalidaTest() {		
-		ArchivoJSON prueba = new ArchivoJSON();
-		prueba.setRuta(null);
-		prueba.generarJSON(null);
-    }*/
 	
 	private Oferta unaOfertaPrecargada() {
 		Oferta oferta = new Oferta("Pedro", 25543423, 12000, 12, 15);

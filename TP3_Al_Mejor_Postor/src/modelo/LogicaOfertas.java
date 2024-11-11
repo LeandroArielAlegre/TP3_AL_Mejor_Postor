@@ -19,7 +19,6 @@ public class LogicaOfertas {
 	public void guardarOferta(String nombreArchivo) {
 		HashMap<Integer, Oferta> ofertasLocales = getListaDeOfertas();		
 		archivoJSON.setListaDeOfertas(ofertasLocales);
-		//actualizarFechaActual(devolverFechaActual());
 		archivoJSON.generarJSON(nombreArchivo);
 	}
 
@@ -49,7 +48,8 @@ public class LogicaOfertas {
 	
 
 	public boolean puedeAgregarOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {
-			return validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
+			
+		return validarDatosOferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion);
 			
 	}
 
@@ -89,7 +89,12 @@ public class LogicaOfertas {
 			throw new IllegalArgumentException("Esta oferta es idéntica a la existente");
 		}
 	}
-
+	
+	private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
+		return oferta.getPrecio() == precio && 
+				oferta.getHoraDeInicio() == horaDeInicio && 
+				oferta.getHoraDeFinalizacion() == horaDeFinalizacion;
+	}
 	private void comprobarPrecioIngresadoEsmayorQueElRegistrado(double precio, Oferta ofertaExistente) {
 		if (ofertaExistente.getPrecio() > precio) 
 		{
@@ -100,13 +105,6 @@ public class LogicaOfertas {
 
 	private boolean existeOferta(int dni) {
 		return mapDeOfertas.containsKey(dni);
-	}
-
-	
-	private boolean esOfertaIdentica(Oferta oferta, double precio, int horaDeInicio, int horaDeFinalizacion) {
-		return oferta.getPrecio() == precio && 
-				oferta.getHoraDeInicio() == horaDeInicio && 
-				oferta.getHoraDeFinalizacion() == horaDeFinalizacion;
 	}
 
 	private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {        
@@ -250,7 +248,5 @@ public class LogicaOfertas {
 		}catch(IllegalArgumentException e){
 			return false;
 		}
-	}
-	
-	
+	}		
 }

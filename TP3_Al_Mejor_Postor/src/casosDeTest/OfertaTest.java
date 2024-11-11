@@ -1,3 +1,4 @@
+
 package casosDeTest;
 
 import static org.junit.Assert.assertEquals;
@@ -43,12 +44,13 @@ public class OfertaTest {
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void nuevoPrecioNegativoTest() {
-		Oferta oferta = new Oferta(null,1,100,1,2);
+		Oferta oferta = new Oferta("Nombre",1,100,1,2);
+		
 		oferta.setPrecio((double) -1);
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void nuevoPrecioMenorQueActualTest() {
-		Oferta oferta = new Oferta(null,1,100,1,2);
+		Oferta oferta = new Oferta("Nombre",1,100,1,2);
 		oferta.setPrecio(56.0);
 	}
 	@Test
@@ -85,6 +87,28 @@ public class OfertaTest {
 		Oferta oferta = new Oferta("Pablo",1135463,100,1,24);
 		assertNotNull(oferta);
 	}
+	@Test
+	public void ofertasIgualesTest() {
+		Oferta oferta = new Oferta("Pablo",1135463,100,1,24);
+		Oferta otro = new Oferta("Pablo",1135463,100,1,24);
+		assertTrue(oferta.equals(otro));
+	}
+	@Test
+	public void ofertasIgualesConOtraNullTest() {
+		Oferta oferta = new Oferta("Pablo",1135463,100,1,24);
+		Oferta otro = null;
+		assertFalse(oferta.equals(otro));
+	}
+	@Test
+	public void ofertasDistintasConCompareToTest(){
+		Oferta oferta = new Oferta("Pablo",1135463,100,1,24);
+		Oferta otro = new Oferta("Pablo",1135464,100,1,24);
+		assertEquals(-1,oferta.compareTo(otro));
+	}
+	@Test
+	public void setPrecioTest() {
+		Oferta oferta = new Oferta("Pablo",1135463,100,1,24);
+		oferta.setPrecio(200.0);
+		assertEquals(200.0,oferta.getPrecio(),0);
+	}
 }
-
-
