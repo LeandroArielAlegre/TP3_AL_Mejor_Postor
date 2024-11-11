@@ -5,11 +5,13 @@ import java.awt.EventQueue;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 
 
 import com.toedter.calendar.JCalendar;
+import javax.swing.JSeparator;
 
 public class Pantalla {
 	private JFrame frame;
@@ -40,7 +43,7 @@ public class Pantalla {
 	protected JButton btnSiguienteDia;
 	private LocalDate fechaActual;
     private JLabel lblFechaActual;
-
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -62,15 +65,20 @@ public class Pantalla {
 		diaTranscurrido = false;
 		presentadorOfertas = new PresentadorOfertas();
 		fechaActual = presentadorOfertas.devolverFechaActual();		
+		
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(0, 0, 0));
 		tablaOfertas = new TablaOfertas();
+		tablaOfertas.setBackground(new Color(192, 192, 192));
 		tablaMejoresOfertas = new TablaOfertas();
 
 		frame.setBounds(100, 100, 1010, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		setIconoDeVentana();
+		
 		panelPaginas = new JPanel();
+		panelPaginas.setBackground(new Color(0, 64, 128));
 		panelPaginas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelPaginas.setBounds(123, 30, 861, 435);
 		panelPaginas.setLayout(null);
@@ -78,8 +86,10 @@ public class Pantalla {
 		mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);
 
 		lblFechaActual = new JLabel(" ");
+		lblFechaActual.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		lblFechaActual.setOpaque(true);
 		lblFechaActual.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFechaActual.setBounds(407, 11, 166, 14);
+		lblFechaActual.setBounds(447, 11, 94, 14);
 		actualizarLabelFechaActual();
 		frame.getContentPane().add(lblFechaActual);
 
@@ -253,6 +263,178 @@ public class Pantalla {
 		});
 		btnCargarConCalendario.setBounds(10, 361, 103, 47);
 		frame.getContentPane().add(btnCargarConCalendario);								 	
+		
+		diseñarFrame();
+	}
+
+	private void diseñarFrame() {
+		JSeparator separator = new JSeparator();
+		separator.setBackground(new Color(121, 64, 0));
+		separator.setOpaque(true);
+		separator.setBounds(10, 0, 26, 519);
+		frame.getContentPane().add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOpaque(true);
+		separator_1.setBackground(new Color(121, 64, 0));
+		separator_1.setBounds(46, 0, 26, 519);
+		frame.getContentPane().add(separator_1);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOpaque(true);
+		separator_2.setBackground(new Color(121, 64, 0));
+		separator_2.setBounds(82, 0, 26, 519);
+		frame.getContentPane().add(separator_2);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setOpaque(true);
+		separator_3.setBackground(new Color(121, 64, 0));
+		separator_3.setBounds(118, 0, 26, 519);
+		frame.getContentPane().add(separator_3);
+		
+		JSeparator separator_4 = new JSeparator();
+		separator_4.setBounds(154, 0, 26, 519);
+		frame.getContentPane().add(separator_4);
+		separator_4.setOpaque(true);
+		separator_4.setBackground(new Color(121, 64, 0));
+		
+		JSeparator separator_5 = new JSeparator();
+		separator_5.setOpaque(true);
+		separator_5.setBackground(new Color(121, 64, 0));
+		separator_5.setBounds(190, 0, 26, 519);
+		frame.getContentPane().add(separator_5);
+		
+		JSeparator separator_6 = new JSeparator();
+		separator_6.setOpaque(true);
+		separator_6.setBackground(new Color(121, 64, 0));
+		separator_6.setBounds(226, -235, 26, 754);
+		frame.getContentPane().add(separator_6);
+		
+		JSeparator separator_7 = new JSeparator();
+		separator_7.setOpaque(true);
+		separator_7.setBackground(new Color(121, 64, 0));
+		separator_7.setBounds(262, 0, 26, 519);
+		frame.getContentPane().add(separator_7);
+		
+		JSeparator separator_8 = new JSeparator();
+		separator_8.setOpaque(true);
+		separator_8.setBackground(new Color(121, 64, 0));
+		separator_8.setBounds(298, 0, 26, 519);
+		frame.getContentPane().add(separator_8);
+		
+		JSeparator separator_9 = new JSeparator();
+		separator_9.setOpaque(true);
+		separator_9.setBackground(new Color(121, 64, 0));
+		separator_9.setBounds(334, 0, 26, 519);
+		frame.getContentPane().add(separator_9);
+		
+		JSeparator separator_10 = new JSeparator();
+		separator_10.setOpaque(true);
+		separator_10.setBackground(new Color(121, 64, 0));
+		separator_10.setBounds(370, 0, 26, 519);
+		frame.getContentPane().add(separator_10);
+		
+		JSeparator separator_11 = new JSeparator();
+		separator_11.setOpaque(true);
+		separator_11.setBackground(new Color(121, 64, 0));
+		separator_11.setBounds(407, 0, 26, 519);
+		frame.getContentPane().add(separator_11);
+		
+		JSeparator separator_12 = new JSeparator();
+		separator_12.setOpaque(true);
+		separator_12.setBackground(new Color(121, 64, 0));
+		separator_12.setBounds(443, 0, 26, 519);
+		frame.getContentPane().add(separator_12);
+		
+		JSeparator separator_13 = new JSeparator();
+		separator_13.setOpaque(true);
+		separator_13.setBackground(new Color(121, 64, 0));
+		separator_13.setBounds(479, 0, 26, 519);
+		frame.getContentPane().add(separator_13);
+		
+		JSeparator separator_14 = new JSeparator();
+		separator_14.setOpaque(true);
+		separator_14.setBackground(new Color(121, 64, 0));
+		separator_14.setBounds(515, 0, 26, 519);
+		frame.getContentPane().add(separator_14);
+		
+		JSeparator separator_15 = new JSeparator();
+		separator_15.setOpaque(true);
+		separator_15.setBackground(new Color(121, 64, 0));
+		separator_15.setBounds(551, 0, 26, 519);
+		frame.getContentPane().add(separator_15);
+		
+		JSeparator separator_16 = new JSeparator();
+		separator_16.setOpaque(true);
+		separator_16.setBackground(new Color(121, 64, 0));
+		separator_16.setBounds(587, 0, 26, 519);
+		frame.getContentPane().add(separator_16);
+		
+		JSeparator separator_17 = new JSeparator();
+		separator_17.setOpaque(true);
+		separator_17.setBackground(new Color(121, 64, 0));
+		separator_17.setBounds(623, 0, 26, 519);
+		frame.getContentPane().add(separator_17);
+		
+		JSeparator separator_18 = new JSeparator();
+		separator_18.setOpaque(true);
+		separator_18.setBackground(new Color(121, 64, 0));
+		separator_18.setBounds(659, 0, 26, 519);
+		frame.getContentPane().add(separator_18);
+		
+		JSeparator separator_19 = new JSeparator();
+		separator_19.setOpaque(true);
+		separator_19.setBackground(new Color(121, 64, 0));
+		separator_19.setBounds(695, 0, 26, 519);
+		frame.getContentPane().add(separator_19);
+		
+		JSeparator separator_20 = new JSeparator();
+		separator_20.setOpaque(true);
+		separator_20.setBackground(new Color(121, 64, 0));
+		separator_20.setBounds(731, 0, 26, 519);
+		frame.getContentPane().add(separator_20);
+		
+		JSeparator separator_21 = new JSeparator();
+		separator_21.setOpaque(true);
+		separator_21.setBackground(new Color(121, 64, 0));
+		separator_21.setBounds(767, 0, 26, 519);
+		frame.getContentPane().add(separator_21);
+		
+		JSeparator separator_22 = new JSeparator();
+		separator_22.setOpaque(true);
+		separator_22.setBackground(new Color(121, 64, 0));
+		separator_22.setBounds(803, 0, 26, 519);
+		frame.getContentPane().add(separator_22);
+		
+		JSeparator separator_23 = new JSeparator();
+		separator_23.setOpaque(true);
+		separator_23.setBackground(new Color(121, 64, 0));
+		separator_23.setBounds(839, 0, 26, 519);
+		frame.getContentPane().add(separator_23);
+		
+		JSeparator separator_24 = new JSeparator();
+		separator_24.setOpaque(true);
+		separator_24.setBackground(new Color(121, 64, 0));
+		separator_24.setBounds(875, 0, 26, 519);
+		frame.getContentPane().add(separator_24);
+		
+		JSeparator separator_25 = new JSeparator();
+		separator_25.setOpaque(true);
+		separator_25.setBackground(new Color(121, 64, 0));
+		separator_25.setBounds(911, 0, 26, 519);
+		frame.getContentPane().add(separator_25);
+		
+		JSeparator separator_26 = new JSeparator();
+		separator_26.setOpaque(true);
+		separator_26.setBackground(new Color(121, 64, 0));
+		separator_26.setBounds(947, 0, 26, 519);
+		frame.getContentPane().add(separator_26);
+		
+		JSeparator separator_27 = new JSeparator();
+		separator_27.setOpaque(true);
+		separator_27.setBackground(new Color(121, 64, 0));
+		separator_27.setBounds(983, 0, 11, 519);
+		frame.getContentPane().add(separator_27);
 	}
 
 	private void avanzarDia() {
@@ -457,6 +639,9 @@ public class Pantalla {
 		}
 
 	}
-
+	private void setIconoDeVentana() {
+		Image icon = new ImageIcon(getClass().getResource("/resources/Icono.png")).getImage();
+		frame.setIconImage(icon);
+	}
 }
 
