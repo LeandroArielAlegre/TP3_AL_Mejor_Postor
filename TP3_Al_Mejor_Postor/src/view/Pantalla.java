@@ -177,7 +177,7 @@ public class Pantalla {
 					presentadorOfertas.cargarOfertasDeArchivo(nombreDeArchivo);	
 					finalizarDia();
 					agregarOfertasEnTabla();
-					
+					btnGuardarOfertas.setVisible(false);
 				}else{
 					JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
 				}
@@ -253,7 +253,6 @@ public class Pantalla {
 		frame.getContentPane().add(btnCargarConCalendario);								 	
 	}
 
-
 	private void avanzarDia() {
 		diaTranscurrido=false;
 		btnMejoresOfertas.setVisible(false);
@@ -319,6 +318,7 @@ public class Pantalla {
 			return null;
 		}
 	}
+	
 	private void crearOfertaEnTabla() {
 		if (diaTranscurrido) {
 			JOptionPane.showMessageDialog(frame,
