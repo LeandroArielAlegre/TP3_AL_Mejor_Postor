@@ -175,7 +175,7 @@ public class Pantalla {
 			avanzarDia();				
 		});				
 		frame.getContentPane().add(btnSiguienteDia);
-
+ 
 		JButton btnCargarOfertas = new JButton("Cargar Ofertas");
 		btnCargarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnCargarOfertas.setFocusable(false);
