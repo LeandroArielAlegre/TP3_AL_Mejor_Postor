@@ -236,6 +236,7 @@ public class Pantalla {
 				presentadorOfertas.cargarOfertasDeArchivo(stFecha);			
 				finalizarDia();
 				agregarOfertasEnTabla();
+				btnGuardarOfertas.setVisible(false);
 			}else{
 				JOptionPane.showMessageDialog(null, "ERROR: no se pudo cargar el archivo");
 			}
