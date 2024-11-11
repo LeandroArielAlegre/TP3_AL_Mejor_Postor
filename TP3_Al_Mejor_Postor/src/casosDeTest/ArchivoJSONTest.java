@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import modelo.ArchivoJSON;
 import modelo.Oferta;
+
 public class ArchivoJSONTest {
 	ArchivoJSON archivo;
 	Oferta oferta;

@@ -21,7 +21,11 @@ public class LogicaOfertas {
 		archivoJSON.setListaDeOfertas(ofertasLocales);
 		archivoJSON.generarJSON(nombreArchivo);
 	}
-
+	
+	public HashMap<Integer, Oferta> getListaDeOfertas() {
+		return new HashMap<>(mapDeOfertas); 
+	}
+	
 	public void cargarOfertasDeArchivo(String archivo) {
 		this.archivoJSON = archivoJSON.leerJSON(archivo);
 		setListaDeOfertas(archivoJSON.getListaDeOfertas());
@@ -103,10 +107,6 @@ public class LogicaOfertas {
 		}
 	}
 
-	private boolean existeOferta(int dni) {
-		return mapDeOfertas.containsKey(dni);
-	}
-
 	private void agregarNuevaOferta(String nombre, int dni, double precio, int horaDeInicio, int horaDeFinalizacion) {        
 		mapDeOfertas.put(dni, new Oferta(nombre, dni, precio, horaDeInicio, horaDeFinalizacion));
 	}
@@ -117,7 +117,17 @@ public class LogicaOfertas {
 		}
 		mapDeOfertas.remove(dni);
 	}
-
+	
+	public Oferta obtenerOfertaAsociadaConDNI(int dni) {
+		if (!existeOferta(dni)) {
+			throw new IllegalArgumentException("No existe ninguna oferta con el DNI: " + dni);
+		}
+		return mapDeOfertas.get(dni);
+	}
+	
+	private boolean existeOferta(int dni) {
+		return mapDeOfertas.containsKey(dni);
+	}
 	public ArrayList<Oferta> devolverListaDeOfertasOrdenadaPorGananciasPorHora(){
 
 		ArrayList<Oferta> listaDeOfertasOrdenadaPorGananciasPorHora = new ArrayList<Oferta>(this.mapDeOfertas.values());
@@ -147,20 +157,8 @@ public class LogicaOfertas {
 		}
 
 		return listaDeOfertasQueNoSeSolapan;
-	}
-
-
-	public HashMap<Integer, Oferta> getListaDeOfertas() {
-		return new HashMap<>(mapDeOfertas); 
-	}
-
-	public Oferta obtenerOfertaAsociadaConDNI(int dni) {
-		if (!existeOferta(dni)) {
-			throw new IllegalArgumentException("No existe ninguna oferta con el DNI: " + dni);
-		}
-		return mapDeOfertas.get(dni);
-	}
-
+	}	
+	
 	public ArrayList<String> devolverOfertaComoUnaLista(String dni){
 		int dniCliente = Integer.parseInt(dni);
 		ArrayList<String> ofertaComoUnaLista = new ArrayList<String>();

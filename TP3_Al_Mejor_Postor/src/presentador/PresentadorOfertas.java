@@ -2,8 +2,6 @@ package presentador;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-//import java.util.HashMap;
-
 import modelo.LogicaOfertas;
 import modelo.Oferta;
 
