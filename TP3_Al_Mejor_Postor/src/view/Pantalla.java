@@ -98,7 +98,7 @@ public class Pantalla {
 		btnAgregarOfertaEnTabla.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnAgregarOfertaEnTabla.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAgregarOfertaEnTabla.setHorizontalAlignment(SwingConstants.LEFT);
-		btnAgregarOfertaEnTabla.setBounds(10, 69, 103, 30);
+		btnAgregarOfertaEnTabla.setBounds(20, 86, 93, 47);
 		btnAgregarOfertaEnTabla.addActionListener(e -> {
 			crearOfertaEnTabla();
 		});
@@ -107,17 +107,17 @@ public class Pantalla {
 		JButton btnLimpiarOfertasIngresadas = new JButton("Limpiar Ofertas");
 		btnLimpiarOfertasIngresadas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnLimpiarOfertasIngresadas.setFocusable(false);
-		btnLimpiarOfertasIngresadas.setBounds(10, 110, 103, 30);
+		btnLimpiarOfertasIngresadas.setBounds(20, 144, 93, 47);
 		btnLimpiarOfertasIngresadas.addActionListener(e -> {			
 			presentadorOfertas.borrarListaDeOfertas();
 			limpiarTablaOfertas();
 		});
 		frame.getContentPane().add(btnLimpiarOfertasIngresadas);
 
-		btnGuardarOfertas = new JButton("Guardar");
+		btnGuardarOfertas = new JButton("Guardar Ofertas");
 		btnGuardarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnGuardarOfertas.setFocusable(false);
-		btnGuardarOfertas.setBounds(10, 151, 103, 30);
+		btnGuardarOfertas.setBounds(20, 476, 105, 32);
 		btnGuardarOfertas.setVisible(false);
 		btnGuardarOfertas.addActionListener(e -> {
 			String nombreDeArchivo = (fechaActual.toString());
@@ -163,14 +163,14 @@ public class Pantalla {
 				JOptionPane.showMessageDialog(null, "Error: no existen ofertas");
 			}
 		});
-		btnMejoresOfertas.setBounds(10, 233, 103, 35);
+		btnMejoresOfertas.setBounds(20, 202, 93, 47);
 		frame.getContentPane().add(btnMejoresOfertas);
 
 		btnSiguienteDia = new JButton("Siguiente Dia");
 		btnSiguienteDia.setVisible(false);
 		btnSiguienteDia.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnSiguienteDia.setFocusable(false);
-		btnSiguienteDia.setBounds(10, 320, 103, 30);
+		btnSiguienteDia.setBounds(20, 318, 93, 47);
 		btnSiguienteDia.addActionListener(e-> {
 			avanzarDia();				
 		});				
@@ -179,7 +179,7 @@ public class Pantalla {
 		JButton btnCargarOfertas = new JButton("Cargar Ofertas");
 		btnCargarOfertas.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnCargarOfertas.setFocusable(false);
-		btnCargarOfertas.setBounds(10, 192, 103, 30);
+		btnCargarOfertas.setBounds(153, 476, 99, 32);
 		btnCargarOfertas.addActionListener(e -> {			
 			String nombreDeArchivo = cargarNombreDeArchivo();
 			if(nombreDeArchivo != null) {
@@ -204,7 +204,7 @@ public class Pantalla {
 		btnVolver.addActionListener(e-> {
 			mostrarPanelEnOtroPanel(tablaOfertas,panelPaginas);					
 		});
-		btnVolver.setBounds(10, 28, 103, 30);
+		btnVolver.setBounds(19, 28, 94, 47);
 		frame.getContentPane().add(btnVolver);
 
 		btnFinalizarDia = new JButton("Finalizar Dia");
@@ -221,7 +221,7 @@ public class Pantalla {
 				}
 			}
 		});
-		btnFinalizarDia.setBounds(10, 279, 103, 30);
+		btnFinalizarDia.setBounds(20, 260, 93, 47);
 		frame.getContentPane().add(btnFinalizarDia);				
 
 		JPanel panelCalendario = new JPanel();
@@ -261,7 +261,7 @@ public class Pantalla {
 		btnCargarConCalendario.addActionListener(e->{
 			mostrarPanelEnOtroPanel(panelCalendario,panelPaginas);							
 		});
-		btnCargarConCalendario.setBounds(10, 361, 103, 47);
+		btnCargarConCalendario.setBounds(20, 376, 93, 47);
 		frame.getContentPane().add(btnCargarConCalendario);								 	
 		
 		diseñarFrame();
