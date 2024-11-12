@@ -583,7 +583,7 @@ public class Pantalla {
 						JOptionPane.showMessageDialog(null,  "Error: El nombre no debe tener numeros");
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Error: Las entradas numericas no deben tener letras involucradas");
+					JOptionPane.showMessageDialog(null, "Error: Las entradas numericas solo deben tener numeros");
 				}
 
 			} else {
